@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h5 class="modal-title">Заполнение данных организаций.</h5>
+  <button type="button" class="close" data-dismiss="modal" (click)="dialogRef.dismiss()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="editForm">
+    <div class="">
+      <p>Вы действительно хотите подтвердить этот документ?</p>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-secondary ml-2"
+          (click)="dialogRef.dismiss()">Закрыть
+  </button>
+  <button type="button"
+          class="btn btn-primary mr-2"
+          [disabled]="loading"
+          (click)="confirm()">Подтвердить
+  </button>
+</div>

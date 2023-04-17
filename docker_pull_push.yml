@@ -1,0 +1,11 @@
+---
+- name: Docker Pull&Push
+  hosts: vps-appserv09.kaztoll.kz
+  become: yes
+
+  tasks:
+    - name: Docker pull nc-registry.kaztoll.kz/kaztoll-enterprise-front
+      ansible.builtin.shell: docker pull nexus.kaztoll.kz/kaztoll-enterprise-frontend:0.0.20
+
+  #- name: Docker push registry.k10.kaztoll.kz/kaztoll-enterprise-frontend
+  #  ansible.builtin.shell: docker push registry.k10.kaztoll.kz/kaztoll-enterprise-frontend

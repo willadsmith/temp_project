@@ -1,0 +1,296 @@
+<div style="margin-right: 30px;">
+  <div class="mb-2 row">
+    <button class="btn btn-default ml-3" (click)="backToLegalAccount()">
+      <fa-icon icon="reply" class="mr-1"></fa-icon>Назад
+    </button>
+    <h4 class="text-uppercase pageTitle ng-star-inserted"
+        style="font-size: 1.5rem;" *ngIf="!vehicle">
+      <span>{{licencePlate}}</span>
+    </h4>
+    <h4 class="text-uppercase pageTitle ng-star-inserted"
+        style="font-size: 1.5rem;" *ngIf="vehicle">
+      <span>{{vehicle.licencePlate}} : </span>
+      <span>{{vehicle.model}}</span>
+    </h4>
+  </div>
+  <div class="card mb-3"  *ngIf="!vehicle">
+    <div class="card-body">
+      <div class="bg-light text-gray-dark rounded my-2 p-2" *ngIf="loadingVehicle">
+        <div class="load"></div>
+      </div>
+      <div class="rounded text-danger font-weight-bold my-2 p-2" *ngIf="forbiddenVehicle">
+        У вас нету доступа к указанному ТС
+      </div>
+    </div>
+  </div>
+  <div class="card mb-3"  *ngIf="vehicle">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <app-form-control valueClass="bg-light-own">
+            <form-label>{{'Класс:'}}</form-label>
+            <form-value>
+              <p class="form-control-plaintext font-weight-bold">
+                {{vehicle.vehicleClass ? vehicle.vehicleClass.description : vehicle.vehicleClass?.code}}
+              </p>
+            </form-value>
+          </app-form-control>
+          <app-form-control valueClass="bg-light-own">
+            <form-label>{{'Группа:'}}</form-label>
+            <form-value>
+              <p class="form-control-plaintext font-weight-bold">
+                {{vehicle.vehicleGroup ? vehicle.vehicleGroup.description : vehicle.vehicleGroup?.code}}
+                <span *ngIf="vehicle.vehicleGroupExpirationDate && vehicle.vehicleGroup.code !== 'DEFAULT'">
+                    (до {{vehicle.vehicleGroupExpirationDateNew | date: 'dd.MM.yyyy'}})
+                </span>
+              </p>
+            </form-value>
+          </app-form-control>
+          <app-form-control valueClass="bg-light-own">
+            <form-label>{{'Модель:'}}</form-label>
+            <form-value>
+              <p class="form-control-plaintext font-weight-bold">
+                {{vehicle.model}}<span *ngIf="vehicle.vehicleYear">{{', ' + vehicle.vehicleYear + ' '}}{{'год'}}</span>
+              </p>
+            </form-value>
+          </app-form-control>
+          <app-form-control valueClass="bg-light-own">
+            <form-label>{{'ИИН/БИН владельца:'}}</form-label>
+            <form-value>
+              <p class="form-control-plaintext font-weight-bold">{{vehicle.owner?.xin || 'Нет'}}</p>
+            </form-value>
+            <form-extra>
+              <!--<div class="d-flex align-items-center">
+                  <button type="button" class="btn btn-sm btn-outline-primary">
+                      <i class="fa fa-2x fa-plus"></i>
+                  </button>
+              </div>-->
+            </form-extra>
+          </app-form-control>
+        </div>
+        <div class="col-md-6">
+          <div *ngIf="accountInfos">
+            <app-form-control valueClass="bg-light-own" *ngIf="personalAccountInfo">
+              <form-label>{{'Лицевой счет:'}}</form-label>
+              <form-value>
+                <p class="form-control-plaintext font-weight-bold">{{personalAccountInfo.accountNumber}}</p>
+              </form-value>
+            </app-form-control>
+            <app-form-control valueClass="bg-light-own" *ngIf="personalAccountInfo">
+              <form-label>{{'Баланс на лицевом счете:'}}</form-label>
+              <form-value>
+                <p class="form-control-plaintext font-weight-bold">{{personalAccountInfo.balance}}</p>
+              </form-value>
+            </app-form-control>
+            <app-form-control valueClass="bg-light-own" *ngIf="nativeAccountInfo">
+              <form-label>{{personalAccountInfo ? ('Баланс на счете ГРНЗ') : ('Баланс')}}:</form-label>
+              <form-value>
+                <p class="form-control-plaintext font-weight-bold">{{nativeAccountInfo.balance}}</p>
+              </form-value>
+            </app-form-control>
+            <app-form-control valueClass="bg-light-own" *ngIf="payTotal != null">
+              <form-label>{{'К оплате:'}}</form-label>
+              <form-value>
+                <p class="form-control-plaintext font-weight-bold">{{payTotal}}</p>
+              </form-value>
+            </app-form-control>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5" *ngIf="vehicle">
+    <ngb-tabset type="pills" justify="center">
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <h6 class="display-4 my-0 tabTitle">{{'Неоплаченные проезды'}}</h6>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <hr class="mt-3 mb-3"/>
+          <div class="bg-light text-gray-dark rounded my-2 p-2" *ngIf="loadingBill">
+            <div class="load"></div>
+          </div>
+          <div class="bg-white border border-success rounded mb-3 p-4 text-center" *ngIf="!loadingBill && payTotal == 0 && !failedBill">
+            <h3 class="display-4 text-success tabContent">У вас нет задолженностей.</h3>
+          </div>
+          <div class="bg-white border border-danger rounded mb-3 p-4 text-center" *ngIf="failedBill">
+            <h3 class="display-4 text-danger tabContent">Не удалось загрузить данные.</h3>
+          </div>
+          <div class="card my-2" *ngIf="!loadingBill && bill && bill.items && bill.items.length > 0 && !isNativeBill">
+            <div class="card-body card-body-detalization">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Дата проезда</th>
+                  <th>Участок</th>
+                  <th class="text-right">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of bill.items">
+                  <td>
+                    <span class="badge badge-dark badge-85">{{item.passageDate | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+                  </td>
+                  <td>
+                    {{item.roadSectorName}}
+                  </td>
+                  <td class="text-right">
+                    {{item.amount}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card my-2" *ngIf="!loadingNativeBill && nativeBill && nativeBill.items && nativeBill.items.length > 0 && isNativeBill">
+            <div class="card-body">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Дата проезда</th>
+                  <th>Участок</th>
+                  <th class="text-right">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of nativeBill.items">
+                  <td>
+                    <span class="badge badge-dark badge-85">{{item.passageDate | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+                  </td>
+                  <td>
+                    {{item.roadSectorName}}
+                  </td>
+                  <td class="text-right">
+                    {{item.amount}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <h6 class="display-4 my-0 tabTitle">{{'Оплаты'}}</h6>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <hr class="mt-3 mb-3 "/>
+          <div class="bg-white border border-success rounded mb-3 p-4 text-center" *ngIf="loadingPayments">
+            <div class="load" style="height: 100px;"></div>
+          </div>
+          <div class="bg-white border border-danger rounded mb-3 p-4 text-center" *ngIf="failedPayments">
+            <h3 class="display-4 text-danger tabContent">Не удалось загрузить данные.</h3>
+          </div>
+          <div class="bg-white border border-success rounded mb-3 p-4 text-center" *ngIf="!loadingPayments && (!payments || payments.length < 1) && !failedPayments">
+            <h3 class="display-4 text-success tabContent">Оплат не найдено.</h3>
+          </div>
+          <div class="card my-2" *ngIf="!loadingPayments && payments && payments.length > 0">
+            <div class="card-body card-body-detalization">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Дата оплаты</th>
+                  <th>Сумма</th>
+                  <th>Полоса</th>
+                  <th>Тип</th>
+                  <th class="text-right"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of payments">
+                  <td>
+                    <span class="badge badge-dark badge-85">{{item.createdDate | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="item.reversed">-</span>{{item.total}}
+                  </td>
+                  <td>
+                    {{currentLang === 'kz' && item.descriptionKz ? item.descriptionKz : (item.descriptionRu ? item.descriptionRu : item.sourceUser)}}
+                  </td>
+                  <td>
+                    <span class="badge badge-info" *ngIf="item.paymentType === 'CASH' && item.sourceType === 'CASH'">{{'Наличные'}}</span>
+                    <span class="badge badge-info" *ngIf="item.paymentType === 'CASH' && item.sourceType === 'POS'">POS</span>
+                    <span class="badge badge-info" *ngIf="item.paymentType === 'CARD'">{{'Карта'}}</span>
+                    <span class="badge badge-primary" *ngIf="item.paymentType === 'ACCOUNT'">
+                        {{item.accountNumber == licencePlate ? 'Со счёта ГРНЗ' : 'С лицевого счёта: ' + item.accountNumber}}
+                    </span>
+                    <span class="badge badge-dark" *ngIf="item.paymentType === 'ACCOUNT' && item.sourceType === 'SUBSCRIBER'">
+                        {{'Абонплата'}}
+                    </span>
+                  </td>
+                  <td class="text-right">
+                    <span class="badge badge-warning mr-3 mt-2" style="color: black;" *ngIf="item.reversed">{{'Сторнирован'}}</span>
+                    <button type="button" class="btn btn-sm btn-primary" *ngIf="item.sourceType !== 'SUBSCRIBER'" (click)="showPaymentDetails(item)">
+                      <span>Подробнее</span>
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <app-pagination-template
+            *ngIf="payments && payments.length > 0"
+            [page]="currentPaymentsPage" [totalItems]="totalPaymentsItems" [itemsPerPage]="itemsPerPage"
+            (onPageChanged)="pageChanged($event, 'payments')"></app-pagination-template>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <h6 class="display-4 my-0 tabTitle">{{'Пополнения счета'}}</h6>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <hr class="mt-3 mb-3 "/>
+          <div class="bg-white border border-success rounded mb-3 p-4 text-center" *ngIf="loadingDeposits">
+            <div class="load" style="height: 100px;"></div>
+          </div>
+          <div class="bg-white border border-danger rounded mb-3 p-4 text-center" *ngIf="failedDeposits">
+            <h3 class="display-4 text-danger tabContent">Не удалось загрузить данные.</h3>
+          </div>
+          <div class="bg-white border border-success rounded mb-3 p-4 text-center" *ngIf="!loadingDeposits && (!deposits || deposits.length < 1) && !failedDeposits">
+            <h3 class="display-4 text-success tabContent">У вас нет пополнений.</h3>
+          </div>
+          <div class="card my-2" *ngIf="!loadingDeposits && deposits && deposits.length > 0">
+            <div class="card-body card-body-detalization">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Дата пополнения</th>
+                  <th>Данные</th>
+                  <th class="text-right">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of deposits">
+                  <td>
+                    <span class="badge badge-dark badge-85">{{item.createdDate | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-info badge-85 mr-1"
+                          *ngIf="item.sourceGroup === 'WEB_OPERATOR' && item.sourceCode === 'MOBILE_CASHIER'">{{'Оператор ПВП'}}</span>
+                    <span class="badge badge-info badge-85 mr-1"
+                          *ngIf="item.sourceGroup === 'WEB_OPERATOR' && item.sourceCode === 'VEHICLE_ACCOUNT'">{{'Бухгалтерия Казавтожол'}}</span>
+                    <span class="badge badge-info badge-85 mr-1" *ngIf="item.sourceGroup === 'PLAZA' && item.sourceCode === 'HCM'">
+                        {{'Полоса оплаты'}} <span *ngIf="item.descriptionRu">({{item.descriptionRu}})</span>
+                    </span>
+                    <span class="badge badge-info badge-85 mr-1" *ngIf="item.sourceGroup === 'OPS'">{{item.sourceName}}</span>
+                    <!--<button type="button" class="btn btn-sm btn-primary mr-1"  *ngIf="item.sourceGroup === 'OPS' && item.ticketNotFound != true && item.createdDate > '2021-11-03 01:00:00'"-->
+                            <!--(click)="openDepositTicket(item)">-->
+                      <!--<span>ЧЕК</span>-->
+                    <!--</button>-->
+                    <!--<span class="badge badge-danger mr-1" *ngIf="item.ticketNotFound === true">{{'vehicles.deposit.ticketNotFound' | translate}}</span>-->
+                  </td>
+                  <td class="text-right">
+                    {{item.amount}}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+@import "../variables";
+
+.fw-font-sf-text {
+  font-family: 'SF UI Text', Arial, sans-serif;
+}
+
+@each $value in $fz {
+  .fw-fz-#{$value} {
+    font-size: #{$value}px;
+  }
+}
+
+@each $value in $fz {
+  @media screen and (min-width: $sm) {
+    .fw-fz-#{$value}\@sm {
+      font-size: #{$value}px;
+    }
+  }
+}
+
+@each $value in $fz {
+  @media screen and (min-width: $md) {
+    .fw-fz-#{$value}\@md {
+      font-size: #{$value}px;
+    }
+  }
+}
+
+@each $value in $fz {
+  @media screen and (min-width: $lg) {
+    .fw-fz-#{$value}\@lg {
+      font-size: #{$value}px;
+    }
+  }
+}
+
+@each $value in $fz {
+  @media screen and (min-width: $xl) {
+    .fw-fz-#{$value}\@xl {
+      font-size: #{$value}px;
+    }
+  }
+}
+
+@each $value in $fontWeight {
+  .fw-text-#{$value} {
+    font-weight: $value;
+  }
+}
+
+@each $value in $fontWeight {
+  @media screen and (min-width: $md) {
+    .fw-text-#{$value}\@md {
+      font-weight: $value;
+    }
+  }
+}
+
+.fw-text-uppercase {
+  text-transform: uppercase;
+}
+
+.fw-pointer {
+  cursor: pointer;
+}
+
+.fw-lh-normal {
+  line-height: normal;
+}
+
+.fw-text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-underline {
+  text-decoration: underline;
+}

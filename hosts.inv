@@ -1,0 +1,5 @@
+[k10_registry]
+10.0.125.13 ansible_user=root
+
+[vps-appserv09.kaztoll.kz]
+10.0.103.28 ansible_user=root

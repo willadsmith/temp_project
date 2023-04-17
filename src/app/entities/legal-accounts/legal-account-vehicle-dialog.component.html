@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span>Добавление ТС</span><br/>
+    <span style="font-weight: bold;">(Ваше действие нужно подвердить подписью!)</span>
+  </h5>
+  <button type="button" class="close" data-dismiss="modal" [disabled]="signLoading" (click)="dialogRef.close({result: anyAdded})">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="m-2 p-2">
+    <form name="editForm" role="form" novalidate #editForm="ngForm">
+      <div class="form-group row" style="margin-bottom: 10px !important;" *ngFor="let vehicle of vehicles; let i = index">
+        <label class="col-4 col-form-label text-right">
+          ГРНЗ: <span *ngIf="vehicles.length > 1">{{i + 1}}</span>
+        </label>
+        <div class="col-6">
+          <input class="form-control own-form-control" [ngClass]="vehicle.licencePlate.toUpperCase() === this.invalidLicencePlate ? 'redBorder' : ''"
+                 [disabled]="signLoading || vehicle.isAdded" [name]="'licencePlate_'+i" [(ngModel)]="vehicle.licencePlate"
+                 (keypress)="withOutSpaces($event)" minlength="4" required  autocomplete="off"
+                 maxlength="50"/>
+        </div>
+        <div class="col-2">
+          <button class="btn btn-sm btn-danger" style="padding: 3px 0 0 3px; border-radius: 5px;"
+                  (click)="removeVehicle(i)" *ngIf="vehicles.length > 1 && !vehicle.isAdded" [disabled]="signLoading">
+            <i class="ni ni-fat-remove mr-1" style="font-size: 20px;"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label text-right">
+        </label>
+        <div class="col-6">
+          <button class="btn btn-sm btn-info" (click)="addNewVehicle()" [disabled]="signLoading"><i class="ni ni-fat-add mr-1"></i> Добавить ещё ТС</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-secondary mr-1"
+          (click)="dialogRef.close({result: anyAdded})" [disabled]="signLoading">Отмена
+  </button>
+  <button type="button"
+          class="btn btn-primary ml-1"
+          [disabled]="editForm.form.invalid || signLoading"
+          (click)="save()">Добавить
+  </button>
+</div>

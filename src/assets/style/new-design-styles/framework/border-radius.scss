@@ -1,0 +1,5 @@
+@each $value in $border-radius-list {
+  .fw-border-radius-#{$value} {
+    border-radius: #{$value}px;
+  }
+}

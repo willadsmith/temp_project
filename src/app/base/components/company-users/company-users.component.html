@@ -1,0 +1,81 @@
+<div class="col-12 mt-2" style="padding-left: 0;">
+  <div class="card shadow">
+    <div class="card-header" style="border-bottom: 1px solid rgba(0, 0, 0, 0.3);">
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="row align-items-end">
+            <div class="col-5">
+              <h3 class="mb-0">Список подписантов</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loadingUsers">
+        <div class="load"></div>
+      </div>
+      <div class="my-2 p-2" *ngIf="(!users || users.length < 1) && !loadingUsers">
+        <div>Подписанты не найдены</div>
+      </div>
+      <div class="table-responsive"  *ngIf="users && users.length > 0 && !loadingUsers">
+        <table class="table align-items-center table-flush">
+          <thead class="thead-light">
+          <tr>
+            <th>ФИО</th>
+            <th>email</th>
+            <th>Должность</th>
+            <th>Документ руководителя</th>
+            <th class="text-right">действия</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users; let i = index" >
+            <td style="max-width: 250px; white-space: normal;">
+              {{user.lastName + ' ' + user.firstName + ' ' + user.middleName}}
+            </td>
+            <td>
+              {{user.email}}
+            </td>
+            <td>
+              <span class="badge badge-primary badge-85 company-badge mr-1">{{user.position}}</span>
+            </td>
+            <td>
+              {{user.operatorDoc}}
+            </td>
+            <td class="text-right">
+              <span *ngIf="user.isMain === true" class="badge badge-dark mr-1"
+                    style="font-size: 80%; max-width: 300px; white-space: normal;">
+                  Основной в договоре
+              </span>
+              <button *ngIf="user.isMain !== true"
+                      type="button" class="btn btn-warning btn-sm mr-1" style="border-radius: 5px;" [disabled]="user.loading"
+                      (click)="editCompany(user)">Указать в договоре</button>
+<!--              <a class="action-icon mr-1 text-warning"-->
+<!--                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user)">-->
+<!--                 <span class="d-none d-lg-block"><fa-icon [icon]="'eye'"></fa-icon></span>-->
+<!--              </a>-->
+              <a class="action-icon mr-1 text-warning"
+                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user)">
+                <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="users && users.length > 0" style="padding: 0.8rem 0.5rem 0 0.5rem !important;"
+             class="d-flex justify-content-between align-items-center bg-light text-gray-dark rounded my-2 p-2 text-center">
+          <div> </div>
+          <div>
+            <ngb-pagination class="pagination-container d-block" [maxSize]="10"
+                            [pageSize]="itemsPerPage" [collectionSize]="usersTotalItems" [(page)]="usersPage"
+                            (pageChange)="companiesPageChanged($event)"></ngb-pagination>
+          </div>
+          <h5 class="m-0">
+            <span class="badge badge-dark badge-90">{{getCountFrom()}}-{{getCountTo()}} / {{usersTotalItems}}</span>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

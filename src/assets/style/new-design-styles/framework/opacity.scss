@@ -1,0 +1,5 @@
+@each $value in $opacity {
+  .fw-opacity-#{$value} {
+    opacity: $value/100;
+  }
+}

@@ -1,0 +1,37 @@
+$white: #fff;
+$pink-secondary: #e0e0e0;
+$green: #4caf50;
+$dark: #222222;
+$reddish: #d43636;
+$steel: #7f8488;
+$orange: #d18e04;
+$ice: #eafaf2;
+
+$colors: (dark: $dark, green: $green, steel: $steel, reddish: $reddish, white: $white, orange: $orange, ice: $ice);
+
+@each $color in $colors {
+  $key: inspect(nth($color, 1));
+  $value: nth($color, 2);
+
+  .fw-bg-color-#{$key} {
+    background-color: $value;
+  }
+
+  .fw-color-#{$key} {
+    color: $value;
+  }
+
+  .fw-hover-color-#{$key} {
+    &:hover {
+      color: $value
+    }
+  }
+
+  .fw-hover-bg-color-#{$key} {
+    &:hover {
+      background-color: $value
+    }
+  }
+
+}
+

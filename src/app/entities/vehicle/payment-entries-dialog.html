@@ -1,0 +1,95 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        {{'Детали оплаты'}}
+        <span *ngIf="payment && payment.accountNumber">: {{payment.accountNumber}}</span>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dialogRef.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="" *ngIf="payment">
+        <div class="row">
+            <div class="col-md-6">
+                <app-form-control valueClass="bg-light-own2">
+                    <form-label>{{'Дата оплаты'}}:</form-label>
+                    <form-value>
+                        <p class="form-control-plaintext font-weight-bold">{{payment.createdDate | date: 'dd.MM.yyyy HH:mm:ss'}}</p>
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="bg-light-own2">
+                    <form-label>{{'Полоса'}}:</form-label>
+                    <form-value>
+                        <p class="form-control-plaintext font-weight-bold">
+                            {{(payment.descriptionRu ? payment.descriptionRu : payment.sourceUser)}}
+                        </p>
+                    </form-value>
+                </app-form-control>
+            </div>
+            <div class="col-md-6">
+                <app-form-control valueClass="bg-light-own2">
+                    <form-label>{{'Тип оплаты'}}:</form-label>
+                    <form-value>
+                        <p class="form-control-plaintext font-weight-bold">
+                            <span class="badge badge-primary"
+                                  *ngIf="payment.paymentType === 'CASH' && payment.sourceType === 'CASH'">{{'Наличные'}}</span>
+                            <span class="badge badge-primary"
+                                  *ngIf="payment.paymentType === 'CASH' && payment.sourceType === 'POS'">POS</span>
+                            <span class="badge badge-primary" *ngIf="payment.paymentType === 'CARD'">{{'Карта'}}</span>
+                            <span class="badge badge-primary" *ngIf="payment.paymentType === 'ACCOUNT'">
+                                {{payment.accountNumber == licencePlate ? 'Со счёта ГРНЗ' : 'С лицевого счёта: ' + payment.accountNumber}}
+                            </span>
+                            <span class="badge badge-dark" *ngIf="payment.paymentType === 'ACCOUNT' && payment.sourceType === 'SUBSCRIBER'">
+                                {{'Абонплата'}}
+                            </span>
+                        </p>
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="bg-light-own2">
+                    <form-label>{{'Сумма'}}:</form-label>
+                    <form-value>
+                        <p class="form-control-plaintext font-weight-bold">
+                            <span *ngIf="payment.reversed">-</span>{{payment.total}}
+                        </p>
+                    </form-value>
+                </app-form-control>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="bg-white border border-success rounded mb-3 p-4 text-center"
+             *ngIf="!loading && (!items || items.length < 1)">
+            <h3 class="display-4 text-success">Деталей оплаты не найдено.</h3>
+        </div>
+
+        <div *ngIf="!loading && items && items.length > 0">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Дата проезда</th>
+                    <th>Участок</th>
+                    <th>К оплате</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of items">
+                    <td>
+                        <span class="badge badge-dark badge-85">{{item.passageDate | date: 'dd.MM.yyyy HH:mm:ss'}}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-info roadSectorName badge-85">{{item.roadSectorName}}</span>
+                    </td>
+                    <td>
+                        <strong>{{item.amount}}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary mr-1" (click)="dialogRef.close(false)">Закрыть</button>
+</div>

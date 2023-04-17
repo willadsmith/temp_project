@@ -1,0 +1,31 @@
+@import "../colors";
+@import "../variables";
+
+.fw-reset {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  list-style: none;
+
+  &:hover, &:active, &:focus {
+    color: inherit;
+  }
+}
+
+.fw-transition {
+  transition: all 0.3s ease;
+}
+
+.round-block {
+  border-radius: $border-radius;
+  border: 1px solid $pink-secondary;
+  
+  &--black {
+    color: #fff;
+    border: none;
+    background-color: #4a4a4a;
+  }
+}

@@ -1,0 +1,94 @@
+<div class="flex-grow-1 ml-5">
+    <!-- <button (click)="getItems()">Получить список документов</button> -->
+    <table>
+      <tbody>
+        <tr><strong>Список документов</strong></tr>
+        <td>
+          <!-- <div class="card_doc" *ngFor="let doc of docs">
+            <div>
+            <h4>Имя документа: {{doc.name}}</h4>
+            <h6>Дата создания: {{doc.createdAt}}</h6>
+            <span class="text-warning" *ngIf="doc.status === 'PENDING'">Статус документа: Требует подписания</span>
+            <span class="text-danger" *ngIf="doc.status === 'DECLINE'">Статус документа: Отклонен</span>
+            <span class="text-success" *ngIf="doc.status === 'SIGNED'">Статус документа: Подписан</span>
+            <button *ngIf="doc.status === 'PENDING'" class="btn btn-1 btn-success" type="button" (click)="startProcessSign('PKSC12', doc.body_html)"> Подписать документ </button>
+            </div>
+          </div> -->
+
+          <div class="card_doc" *ngFor="let doc of docs">
+            <div>
+              <h4>Имя документа: {{'Договор'}}</h4>
+              <h5>Дата создания: {{doc.dateSign ? (doc.dateSign | date: 'dd.MM.yyyy HH:mm:ss') : ''}}</h5>
+              <h5 *ngIf="doc.status === 'SIGNED' && doc.contractNumber">Номер договора: {{doc.contractNumber ? doc.contractNumber : ''}}</h5>
+              <span class="text-warning" *ngIf="doc.status === 'PENDING'"><b>Статус документа:</b> Требуется заполнения данных</span>
+              <span class="text-danger" *ngIf="doc.status === 'DECLINE'"><b>Статус документа:</b> Отклонен</span>
+              <span class="text-warning" *ngIf="doc.status === 'CHECKING'"><b>Статус документа:</b> На проверке Оператором</span>
+              <span class="text-warning" *ngIf="doc.status === 'PASSED'"><b>Статус документа:</b> Ожидание подписи Оператором</span>
+              <span class="text-success" *ngIf="doc.status === 'APPROVED'"><b>Статус </b> Подписан Оператором (Подпишите договор)</span><br>
+<!--              <span class="text-danger" *ngIf="doc.status === 'APPROVED' || doc.enableResign"><b>В связи с праздничными выходными регистрация и заключение договоров будет доступно 5 Января</b></span>-->
+              <p class="text-dark font-weight-bold doc_info" *ngIf="doc.status === 'SIGNED'">
+                Ваш договор успешно подписан.<br>
+                На основании договора был создан лицевой счет.<br>
+                Для добавления ТС пройдите в раздел «Лицевые счета»
+              </p>
+              <div class="text-danger" *ngIf="doc.comments && doc.status === 'DECLINE'">
+                <b>Причина:</b> {{doc.comments}}
+              </div>
+              <hr *ngIf="doc.status === 'PENDING' || doc.asset" style="margin-top: 1rem; margin-bottom: 1rem;">
+              <div>
+                <button *ngIf="doc.status === 'APPROVED'"
+                        class="btn btn-1 btn-success ml-1 mt-1" type="button"
+                        (click)="singDocument(doc,!!doc.asset, doc.body, false)"
+                      [disabled]="signLoading">Подписать документ</button>
+                <button *ngIf="(doc.status === 'DECLINE' && doc.declineType === 'INVALID_NAME')"
+                        class="btn btn-1 btn-warning ml-1 mt-1" type="button"
+                        (click)="renameCompany(doc)"
+                        [disabled]="signLoading">{{'Изменить наименование организаций'}} </button>
+                <button *ngIf="(!doc.asset || (doc.status === 'DECLINE' && doc.declineType === 'OTHERS') || doc.status === 'PENDING' || doc.status === 'CHECKING')"
+                        class="btn btn-1 btn-warning ml-1 mt-1" type="button"
+                        (click)="fillContractData(doc)"
+                        [disabled]="signLoading">{{!doc.asset ? 'Заполнить данные' : 'Перезаполнить данные'}} </button>
+                <button *ngIf="doc.asset && doc.status !== 'DECLINE'"
+                        class="btn btn-1 btn-info  ml-1 mt-1" type="button"
+                        (click)="downloadDocument(doc.company && doc.company.bin ? doc.company.bin : '', doc.id)"
+                        [disabled]="signLoading"> {{'Скачать документ'}} </button>
+                <button *ngIf="doc.status === 'SIGNED' && !doc.hasQr"
+                        class="btn btn-1 btn-dark ml-1 mt-1" type="button"
+                        (click)="reSingDocument(doc,doc.body, true)"
+                        [disabled]="signLoading">Добавить QR в документ</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="card_doc">
+            <div>
+            <h4>Имя документа: Документ 1</h4>
+            <h6>Дата создания: 01/12/20</h6>
+            <span class="text-warning">Статус документа: Требует подписания</span>
+            <hr>
+            <button class="btn btn-1 btn-success" type="button" (click)="startProcessSign('PKSC12', 'html')"> Подписать документ </button>
+            </div>
+          </div>
+
+          <div class="card_doc">
+            <div>
+            <h4>Имя документа: Документ 2</h4>
+            <h6>Дата создания: 13/08/20</h6>
+            <hr>
+            <span class="text-danger">Статус документа: Отклонен</span>
+            </div>
+          </div>
+
+          <div class="card_doc">
+            <div>
+            <h4>Имя документа: Документ 3</h4>
+            <h6>Дата создания: 23/02/21</h6>
+            <hr>
+            <span class="text-success">Статус документа: Подписан</span>
+            </div>
+          </div> -->
+
+        </td>
+      </tbody>
+    </table>
+</div>

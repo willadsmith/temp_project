@@ -1,0 +1,36 @@
+﻿<ng-template [ngIf]="isLoginPage">
+  <router-outlet></router-outlet>
+</ng-template>
+<ng-template [ngIf]="!isLoginPage">
+  <ng-template [ngIf]="isBasePage">
+    <div class="row" style="margin-left: 0px; margin-right: 0px;">
+      <div class="col-3" style=" flex: 0 0 275px; max-width: 275px;">
+        <app-base-sidebar></app-base-sidebar>
+      </div>
+      <div class="col-9" style="min-height: 100vh; padding-left: 0; padding-right: 0; padding-top: 1rem; flex: 0 0 calc(100% - 275px); max-width: calc(100% - 275px);">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="!isBasePage">
+    <div class="application-container container-fluid d-flex flex-column">
+      <app-header [isMenuOpened]="isMenuOpened" (toggleMenuState)="toggleMenuState($event)"></app-header>
+      <div class="row d-flex flex-grow-1">
+        <div class="d-flex flex-grow-1 col-12 p-0">
+          <div class="navigation" [ngClass]="{'opened': isMenuOpened}">
+            <app-navbar></app-navbar>
+          </div>
+          <toaster-container [toasterconfig]="config"></toaster-container>
+          <div class="content-container d-flex flex-column flex-grow-1 col-12" id="content-container">
+            <router-outlet></router-outlet>
+
+            <app-footer class="footer-m-l"></app-footer>
+            <div class="mobile-menu-overlay"
+                 [ngClass]="{'active': isMenuOpened}"
+                 (click)="toggleMenuState($event)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

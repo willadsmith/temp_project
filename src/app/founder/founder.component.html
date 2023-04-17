@@ -1,0 +1,18 @@
+<div id="not_found_page">
+	<div id="notfound">
+		<div class="notfound">
+			<div class="notfound-404">
+				<h1>Oops!</h1>
+				<h2>Увы, страница не найдена!</h2>
+			</div>
+            <div *ngIf="roleUser === 'USER'">
+                <button (click)="goToUser()" class="btn btn-1 btn-success" type="button">Вернуться в личный кабинет</button>
+            </div>
+            <div *ngIf="roleUser === 'ADMIN'">
+                <button (click)="goToAdmin()" class="btn btn-1 btn-success" type="button">Вернуться в панель оператора</button>
+            </div>
+		</div>
+	</div>
+</div>
+
+

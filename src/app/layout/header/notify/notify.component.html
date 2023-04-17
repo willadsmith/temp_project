@@ -1,0 +1,52 @@
+<div class="layout-notif-icon-w" dropdown>
+  <div class="layout-notif-icon" dropdownToggle>
+    <div class="bell_icon">
+    </div>
+    <div class="layout-n-icon-red" *ngIf="notifyCount !== undefined && notifyCount !== 0">
+      <p class="layout-n-icon-digit">{{notifyCount}}</p>
+    </div>
+    <div *dropdownMenu class="dropdown-menu animated">
+      <div class="dropdown-triangle"></div>
+      <div class="dropdown-list-w">
+        <ul class="dropdown-list">
+          <li class="dropdown-list__item" *ngFor="let notify of notifyList">
+            <div class="dropdown-list__link">
+              <p class="dropdown-list__txt1">Уведомления</p>
+              <!--p class="dropdown-list__txt2">ЗАКРЫТЬ</p-->
+              <div class="clear"></div>
+              <p class="dropdown-list__txt3">Новые</p>
+              <div class="dropdown-list__line"></div>
+              <!-- <div *ngIf="notify.transfer">
+                <p class="dropdown-list__txt4">Входящий перевод</p>
+                <p class="dropdown-list__txt5">{{notify.transfer.date}}</p>
+                <div class="clear"></div>
+                <p class="dropdown-list__txt6">{{notify.transfer.amount | balance}} {{notify.transfer.currency === 'KZT' ? '₸' : notify.transfer.currency === 'USD' ? '$' : notify.transfer.currency === 'EUR' ? '€' : notify.transfer.currency === 'RUB' ? '₽' : notify.transfer.currency === 'KGS' ? 'C' : notify.transfer.currency === 'GBP' ? '£' : '' }}</p>
+                <p class="dropdown-list__txt7">от {{notify.transfer.name}}</p>
+              </div> -->
+              <div *ngIf="notify.transfer === undefined" class="dropdown-list__txt8">
+                {{notify.content}}
+              </div>
+              <div class="dropdown-list__txt10" *ngIf="notify.transfer && notify.transfer.status === -1">Комменатрии от Банка</div>
+              <div class="dropdown-list__txt11" *ngIf="notify.transfer && notify.transfer.status === -1">{{notify.transfer.reason}}</div>
+              <div class="sb-button dropdown-list__btn1" (click)="onClickNotice(notify)" *ngIf="notify.transfer === undefined">
+                <button class="btn">Ознакомиться</button>
+              </div>
+              <div class="sb-button dropdown-list__btn1" (click)="onClickNotice(notify)" *ngIf="notify.transfer && notify.transfer.status === 0">
+                <button class="btn">Ознакомиться</button>
+              </div>
+              <div class="sb-button dropdown-list__btn2" (click)="onClickNoticeReject(notify)" *ngIf="notify.transfer && notify.transfer.status === -1">
+                <button class="btn">Отклонить</button>
+              </div>
+              <div class="sb-button dropdown-list__btn3" (click)="onClickNotice(notify)" *ngIf="notify.transfer && notify.transfer.status === -1">
+                <button class="btn">Повторить</button>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown-list__item last" *ngIf="notifyCount === 0">
+            <p class="dropdown-list__txt9" [translate]="'page.main.NO_NEW_NOTICE'">Нет новых уведомлений</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

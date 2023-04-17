@@ -1,0 +1,56 @@
+.fw-grid {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > * {
+    flex-shrink: 0;
+    min-width: 0;
+    padding-right: 0;
+  }
+}
+
+@each $value in ($grid) {
+  .fw-grid-#{$value} {
+    margin-left: -#{$value}px;
+    margin-bottom: -#{$value}px;
+
+    & > * {
+      padding-left: #{$value}px;
+      margin-bottom: #{$value}px;
+    }
+  }
+}
+
+@each $value in ($grid) {
+  .fw-grid-#{$value}\@lg {
+    @media screen and (max-width: 1200px) {
+      margin-left: -#{$value}px;
+      margin-bottom: -#{$value}px;
+    }
+
+    & > * {
+      @media screen and (max-width: 1200px) {
+        padding-left: #{$value}px;
+        margin-bottom: #{$value}px;
+      }
+    }
+  }
+}
+
+.fw-grid-mb-16 {
+  margin-bottom: -16px;
+
+  & > * {
+    margin-bottom: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .fw-grid-mb-8\@xs {
+    margin-bottom: -8px;
+
+    & > * {
+      margin-bottom: 8px;
+    }
+  }
+}

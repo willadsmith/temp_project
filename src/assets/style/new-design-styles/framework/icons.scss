@@ -1,0 +1,146 @@
+@import "../colors";
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-box {
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 3px 9px rgba(153, 163, 179, 0.2);
+  border-radius: 12px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+
+  @media screen and (max-width: 767px) {
+    margin-right: 8px;
+  }
+
+  .icon-box-img {
+    &-kzt {
+      width: 14px;
+      height: 18px;
+    }
+
+    &-usd {
+      width: 11px;
+      height: 22px;
+    }
+
+    &-eur {
+      width: 14px;
+      height: 19px;
+    }
+
+    &-rub {
+      width: 14px;
+      height: 18px;
+    }
+
+    &-gbp {
+      width: 14px;
+      height: 18px;
+    }
+  }
+}
+
+.icon-arrow-down {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:after {
+    display: block;
+    content: '';
+    border-bottom: 1px solid $steel;
+    border-right: 1px solid $steel;
+    width: 8px;
+    height: 8px;
+    transform: translateY(-40%) rotate(45deg);
+  }
+
+  &.small {
+    &:after {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
+  &.green {
+    &:after {
+      border-color: $green;
+    }
+  }
+
+  &.active {
+    &:after {
+      transform: translateY(-40%) rotate(-135deg);
+    }
+  }
+}
+
+.arrow-top {
+  margin-top: 15px;
+  transform: translateY(-40%) rotate(-180deg);
+}
+
+.icon-ru {
+  width: 17px;
+  height: 12px;
+  background: url("/assets/images/new-design/icons/ru.png")no-repeat;
+  margin: 0 5px 0 0;
+}
+
+.icon-kz {
+  width: 17px;
+  height: 15px;
+  background: url("/assets/images/new-design/icons/kz.png")no-repeat;
+  margin: 0 1px 0 0;
+}
+
+.icon-en {
+  width: 17px;
+  height: 10px;
+  background: url("/assets/images/new-design/icons/en.png")no-repeat;
+  margin: 0 5px 0 0;
+}
+
+.icon-cross {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  transform: rotate(45deg);
+  cursor: pointer;
+
+  &:hover {
+    &:after, &:before {
+      background-color: $green;
+    }
+  }
+
+  &:after, &:before {
+    position: absolute;
+    display: block;
+    content: '';
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    background-color: #868686;
+    transition: all 0.3s ease;
+  }
+
+  &:after {
+    height: 2px;
+    width: 80%;
+  }
+}

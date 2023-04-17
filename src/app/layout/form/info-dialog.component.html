@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{infoTitle || 'Подробная информация'}}</h4>
+</div>
+<div class="modal-body">
+  <div class="m-2 p-2">
+    <div *ngIf="infoText" [innerHtml]="infoText"></div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-primary"
+          (click)="dialogRef.dismiss()">Закрыть
+  </button>
+</div>

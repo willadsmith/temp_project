@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="/" />
+    <title>KAZTOLL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./assets/img/mini-logo.png">
+    <!-- bootstrap css -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link href="./assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./assets/style/loadingModal.css" rel="stylesheet" />
+</head>
+<body>
+    <app-main>Загрузка....</app-main>
+</body>
+<script src="assets/scripts/ncalayer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        const EventBus = {
+          channels: {},
+          subscribe (channelName, listener) {
+            if (!this.channels[channelName]) {
+              this.channels[channelName] = []
+            }
+            this.channels[channelName].push(listener)
+          },
+
+          publish (channelName, data) {
+            const channel = this.channels[channelName];
+            if (!channel || !channel.length) {
+              return
+            }
+
+            channel.forEach(listener => listener(data))
+          },
+
+          unsubscribe (channelName) {
+            this.channels[channelName] = [];
+          }
+        };
+
+        function getActiveTokensCall() {
+          getActiveTokens("getActiveTokensBack");
+        }
+
+        function getActiveTokensBack(result) {
+          return EventBus.publish('token', result);
+        }
+
+        function changeLocaleCall(value) {
+          changeLocale(value);
+        }
+
+        function signXmlBack(result) {
+          return EventBus.publish('signed', result);
+        }
+
+        function selectSignType(requestType) { // eslint-disable-line
+          /**
+           * CONNECTING 0 The connection is not yet open.
+           * OPEN 1 The connection is open and ready to communicate.
+           * CLOSING 2 The connection is in the process of closing.
+           * CLOSED 3 The connection is closed or couldn't be opened.
+           */
+          signType = requestType;
+
+          if (webSocket === null || webSocket.readyState === 3 || webSocket.readyState === 2) {
+              initNCALayer('selectNCAStore');
+          } else {
+              selectNCAStore();
+          }
+        }
+      </script>
+</html>

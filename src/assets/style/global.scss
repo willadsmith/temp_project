@@ -1,0 +1,477 @@
+@import 'https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway:300,400';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+$blue: #4582ec;
+$red: #FF4A53;
+$dark: #333;
+
+$accent: $blue;
+$accent-inactive: desaturate($accent, 85%);
+$secondary: $accent-inactive;
+
+
+$tab-count: 4;
+$indicator-width: 50px;
+$indicator-height: 4px;
+
+
+$breakpoints: (
+  medium: #{$tab-count*250px},
+  small: #{$tab-count*150px}
+);
+
+
+$label-selector: "~ ul > li";
+$slider-selector: "~ .slider";
+$content-selector: "~ .content > section";
+
+@mixin tabs(
+  $label-selector: $label-selector,
+  $slider-selector: $slider-selector,
+  $content-selector: $content-selector) {
+
+  @for $i from 1 through $tab-count {
+    &:nth-of-type(#{$i}):checked {
+      #{$label-selector}:nth-child(#{$i}) {
+        @content;
+      }
+
+      #{$slider-selector} {
+        transform: translateX(#{100% * ($i - 1)});
+      }
+
+      #{$content-selector}:nth-child(#{$i}) {
+        display: block;
+      }
+    }
+  }
+}
+
+body {
+  background: #efefef;
+  color: $dark;
+  font-family: "Raleway";
+  height: 100%;
+
+  h1 {
+    text-align: center;
+    color: $accent;
+    font-weight: 300;
+    padding: 40px 0 20px 0;
+    margin: 0;
+  }
+}
+
+a {
+  cursor: pointer
+}
+
+.tabs {
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  background: white;
+  padding: 50px;
+  padding-bottom: 80px;
+  width: 70%;
+  height: 250px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 5px;
+  min-width: #{$tab-count * 60px};
+
+  input[name="tab-control"] {
+    display: none;
+  }
+
+  .content section h2,
+  ul li label {
+    font-family: "Montserrat";
+    font-weight: bold;
+    font-size: 18px;
+    color: $accent;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    li {
+      box-sizing: border-box;
+      flex: 1;
+      width: #{100%/$tab-count};
+      padding: 0 10px;
+      text-align: center;
+
+      label {
+        transition: all 0.3s ease-in-out;
+        color: $secondary;
+        padding: 5px auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        white-space: nowrap;
+        -webkit-touch-callout: none;
+        // @include user-select(none);
+
+        br {
+          display: none;
+        }
+
+        svg {
+          fill: $secondary;
+          height: 1.2em;
+          vertical-align: bottom;
+          margin-right: 0.2em;
+          transition: all 0.2s ease-in-out;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+          outline: 0;
+          color: lighten($secondary, 15%);
+
+          svg {
+            fill: lighten($secondary, 15%);
+          }
+        }
+      }
+    }
+  }
+
+  .slider {
+    position: relative;
+    width: #{100%/$tab-count};
+    transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+
+    .indicator {
+      position: relative;
+      width: $indicator-width;
+      max-width: 100%;
+      margin: 0 auto;
+      height: $indicator-height;
+      background: $accent;
+      border-radius: 1px;
+    }
+
+  }
+
+  .content {
+    margin-top: 30px;
+
+    section {
+      display: none;
+      animation: {
+        name: content;
+        direction: normal;
+        duration: 0.3s;
+        timing-function: ease-in-out;
+        iteration-count: 1;
+      }
+      line-height: 1.4;
+
+      h2 {
+        color: $accent;
+        display: none;
+
+        &::after {
+          content: "";
+          position: relative;
+          display: block;
+          width: 30px;
+          height: 3px;
+          background: $accent;
+          margin-top: 5px;
+          left: 1px;
+        }
+      }
+    }
+  }
+
+  input[name="tab-control"] {
+    @include tabs {
+      > label {
+        cursor: default;
+        color: $accent;
+
+        svg {
+          fill: $accent;
+        }
+
+        @media (max-width: map-get($breakpoints, small)) {
+          background: rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
+  }
+
+  @keyframes content {
+    from {
+      opacity: 0;
+      transform: translateY(5%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+
+  @media (max-width: map-get($breakpoints, medium)) {
+    ul li label {
+      white-space: initial;
+
+      br {
+        display: initial;
+      }
+
+      svg {
+        height: 1.5em;
+      }
+    }
+  }
+
+  @media (max-width: map-get($breakpoints, small)) {
+    ul li label {
+      padding: 5px;
+      border-radius: 5px;
+
+      span {
+        display: none;
+      }
+    }
+
+    .slider {
+      display: none;
+    }
+
+    .content {
+      margin-top: 20px;
+
+      section h2 {
+        display: block;
+      }
+    }
+  }
+}
+
+.card_doc {
+  // width: 360px;
+  // height: 285px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 2px 3px -1px rgb(151 171 187 / 70%);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  padding: 16px;
+  margin: 10px;
+  max-width: 465px;
+}
+
+.main_text_login {
+  text-align: center;
+}
+
+.unvisible_tab {
+  display: none;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+.flex-column .nav-pills {
+  flex-direction: unset !important;
+}
+
+.load {
+  width: 0;
+  display: block;
+  margin: 0 auto;
+  height: 200px;
+  position: relative;
+}
+
+/* -------------------LOADING------------------*/
+.load:before {
+  content: ' ';
+  position: absolute;
+  display: block;
+  top: 40%;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0);
+  border: 5px solid rgba(70, 70, 70, 0.9);
+  opacity: 0.9;
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  border-radius: 50px;
+  box-shadow: 0 0 35px #000000;
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
+  -webkit-animation: spinPulse 1s infinite linear;
+}
+
+.load:after {
+  content: ' ';
+  top: 40%;
+  left: 10px;
+  display: block;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  border: 5px solid rgba(70, 70, 70, 0.9);
+  opacity: 0.9;
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-radius: 50px;
+  box-shadow: 0 0 15px #000000;
+  width: 30px;
+  height: 30px;
+  margin: 10px 0 0 -25px;
+  -webkit-animation: spinoffPulse 1s infinite linear;
+}
+
+@-webkit-keyframes spinPulse {
+  0% {
+    -webkit-transform: rotate(160deg);
+    opacity: 0;
+    box-shadow: 0 0 1px #000000;
+  }
+  50% {
+    -webkit-transform: rotate(145deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotate(-320deg);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes spinoffPulse {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+/* -------------------LOADING------------------*/
+
+b {
+  font-weight: bold !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef !important;
+}
+
+.own-form-control {
+  padding: 0rem 0.75rem !important;
+  line-height: 1 !important;
+  height: 35px !important;
+}
+
+.contract-detail-title {
+  width: 100%;
+  padding-left: 30px;
+  padding-bottom: 15px;
+  font-weight: bold;
+  color: red;
+  border-bottom: 1px solid #c3c3c3;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.file-input {
+  display: none;
+}
+
+.btn-upload {
+
+}
+.upload-div {
+  border: 2px dashed #e68420;
+  border-radius: 10px;
+  padding: 5px 5px 10px 5px;
+}
+.main-image {
+  text-align: center;
+  color: #4582ec;
+  font-weight: 300;
+  padding: 40px 0 20px 0;
+  margin: 0;
+}
+
+.badge-85 {
+  font-size: 85% !important;
+}
+
+.badge-90 {
+  font-size: 90% !important;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.bg-light-own {
+  background-color: #ced4da82 !important;
+}
+
+.display-4 {
+  font-size: 1rem !important;
+}
+
+.badge-dark {
+  color: white !important;
+  background: black !important;
+  border-radius: 0 !important;
+}
+
+.bg-light-own2 {
+  background-color: #fff!important;
+  border: 1px solid rgba(0,0,0,.1);
+}
+
+.legal-accounts td, .legal-accounts th {
+    white-space: normal !important;
+}
+
+.legal-accounts td div {
+  white-space: normal !important;
+}
+
+.ng-option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal !important;
+  font-size: 14px !important;
+}
+
+.ng-input input {
+  font-size: 14px;
+}
+
+.ng-value-label {
+  font-size: 14px;
+}
+
+.redBorder {
+  border: 1px solid red !important;
+}
+
+.contract-p {
+  padding-top: 10px;
+  text-indent: 30px;
+}

@@ -1,0 +1,106 @@
+<div class="col-12 mt-2" style="padding-left: 0;">
+  <div class="card shadow">
+    <div class="card-header" style="border-bottom: 1px solid rgba(0, 0, 0, 0.3);">
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="row align-items-end">
+            <div class="col-5">
+              <h3 class="mb-0">Список пользователей</h3>
+            </div>
+            <div class="col ml-auto text-right">
+              <div class="d-flex justify-content-end align-items-end">
+                <div class="mr-2 text-left">
+                  <small>ИИН пользователя:</small>
+                  <input class="form-control form-control-sm" [(ngModel)]="iin" name="iinQuery"
+                         autocomplete="off" (keyup.enter)="loadUsers(true)">
+                </div>
+                <div class="mr-2 text-left">
+                  <small>БИН компании:</small>
+                  <input class="form-control form-control-sm" [(ngModel)]="bin" name="binQuery"
+                         autocomplete="off" (keyup.enter)="loadUsers(true)">
+                </div>
+                <div class="ml-1">
+                  <button class="btn btn-sm btn-primary" type="button" (click)="loadUsers(true)">
+                    <fa-icon icon="search"></fa-icon>
+                  </button>
+                </div>
+                <div class="ml-1">
+                  <button class="btn btn-sm btn-danger" type="button" (click)="clearQueries()">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loadingUsers">
+        <div class="load"></div>
+      </div>
+      <div class="my-2 p-2" *ngIf="(!users || users.length < 1) && !loadingUsers">
+        <div>Пользователей не найдено</div>
+      </div>
+      <div class="table-responsive"  *ngIf="users && users.length > 0 && !loadingUsers">
+        <table class="table align-items-center table-flush">
+          <thead class="thead-light">
+          <tr>
+            <th>ФИО</th>
+            <th>ИИН</th>
+            <!--                <th>Документ</th>-->
+            <th>ТИП</th>
+            <th>Дата регистраций</th>
+            <th class="text-right">Компания : БИН</th>
+            <th class="text-right">Действия</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users; let i = index" >
+            <td style="max-width: 250px; white-space: normal;">
+              {{user.firstName + ' ' + user.lastName}}
+            </td>
+            <td>
+              {{user.idn}}
+            </td>
+            <td>
+              <span *ngIf="user.role === 'USER'" class="text-success">Пользователь</span>
+              <span *ngIf="user.role === 'ADMIN'" class="text-danger">Администратор</span>
+            </td>
+            <td>
+              <span *ngIf="user.createdAt" class="badge badge-dark badge-85">{{user.createdAt | date: 'dd.MM.yyyy HH:mm:ss'}}</span><br>
+            </td>
+            <td  class="text-right">
+              <div *ngIf="user.company">
+                <span class="badge badge-primary badge-85 company-badge mr-1">{{user.company.name}}</span> :
+                <span *ngIf="user.company.info">
+                  <span class="badge badge-success badge-85 ml-1 mr-1">{{user.company.info}}</span> :
+                </span>
+                <span class="badge badge-warning badge-85 ml-1">{{user.company.bin}}</span>
+              </div>
+            </td>
+            <td class="text-right">
+              <a *ngIf="user.role !== 'ADMIN' && user.company && user.company.bin"  class="action-icon mr-1 text-warning"
+                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user.company, user.id)">
+                <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="users && users.length > 0" style="padding: 0.8rem 0.5rem 0 0.5rem !important;"
+             class="d-flex justify-content-between align-items-center bg-light text-gray-dark rounded my-2 p-2 text-center">
+          <div> </div>
+          <div>
+            <ngb-pagination class="pagination-container d-block" [maxSize]="10"
+                            [pageSize]="itemsPerPage" [collectionSize]="usersTotalItems" [(page)]="usersPage"
+                            (pageChange)="companiesPageChanged($event)"></ngb-pagination>
+          </div>
+          <h5 class="m-0">
+            <span class="badge badge-dark badge-90">{{getCountFrom()}}-{{getCountTo()}} / {{usersTotalItems}}</span>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

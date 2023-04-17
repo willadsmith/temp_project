@@ -1,0 +1,9 @@
+@each $value in (1, 2, 3) {
+  .flex-grow-#{$value} {
+    flex-grow: $value;
+  }
+}
+
+.fw-flex-basis-0 {
+  flex-basis: 0;
+}

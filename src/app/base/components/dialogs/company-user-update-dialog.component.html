@@ -1,0 +1,78 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span>Редактировать подписанта</span><br/>
+  </h5>
+  <button type="button" class="close" data-dismiss="modal" [disabled]="loading" (click)="dialogRef.close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 0.7rem 1.5rem;">
+  <form name="editForm" novalidate #editForm="ngForm">
+    <div class="m-2 p-2" style="padding-top: 0 !important;">
+      <div>
+        <app-form-control labelClass="col-4" valueClass="col-6">
+          <form-label></form-label>
+          <form-value>
+          </form-value>
+        </app-form-control>
+        <div class="form-group row" style="margin-bottom: 13px;">
+          <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;">
+            ФИО:
+          </label>
+          <div class="col-4">
+            <input type="text" class="form-control own-form-control" name="lastName" [(ngModel)]="companyUser.lastName" required autocomplete="off" placeholder="Фамилие">
+          </div>
+          <div class="col-2">
+            <input type="text" class="form-control own-form-control" name="firstName" [(ngModel)]="companyUser.firstName" required autocomplete="off" placeholder="Имя">
+          </div>
+          <div class="col-2">
+            <input type="text" class="form-control own-form-control" name="middleName" [(ngModel)]="companyUser.middleName" required autocomplete="off" placeholder="Отчество">
+          </div>
+        </div>
+        <app-form-control labelClass="col-4" valueClass="col-6">
+          <form-label>Долженность:</form-label>
+          <form-value>
+            <input type="text" class="form-control own-form-control" name="position" [(ngModel)]="companyUser.position" required autocomplete="off">
+          </form-value>
+        </app-form-control>
+        <app-form-control valueClass="col-6">
+          <form-label>Документ руководителя:</form-label>
+          <form-value>
+            <input type="text" class="form-control own-form-control" name="operatorDoc" [(ngModel)]="companyUser.operatorDoc" required autocomplete="off">
+          </form-value>
+        </app-form-control>
+      </div>
+    </div>
+  </form>
+  <hr style="margin-top: 1rem; margin-bottom: 1rem;">
+  <div class="preview">
+    <div class="title text-center font-weight-bold">
+      Договор №####
+    </div>
+    <div class="contract-p">
+      Настоящий Публичный договор (далее – Договор) определяет условия проезда по платным автомобильным дорогам (участкам)
+      общего пользования республиканского значения и иных связанных с ним услуг, оказываемых
+      Акционерным обществом «Национальная компания «ҚазАвтоЖол» в качестве доверительного управляющего по Договору от 30.05.2013г. №2/7, от имени которого действует Филиал «Дирекция платных
+      автомобильных дорог», именуемый в дальнейшем «Оператор», в лице <b>{{companyUser.position}}</b>
+      {{' '}}<b>{{companyUser.lastName + ' ' + companyUser.firstName + ' ' + companyUser.middleName}}</b>,
+      действующего на основании <b>{{companyUser.operatorDoc}}</b> с одной стороны, и
+    </div>
+    <div class="contract-p">
+      <b>[Наименование организаций]</b>, именуемое в дальнейшем «Пользователь», в лице <b>[должность руководителя Пользователя]</b>
+      <b>[ФИО руководителя Пользователя]</b> действующего на основании <b>[действующего на основании Документ Пользователя]</b> с другой стороны, заключили
+      настоящий Договор и пришли к соглашению о нижеследующем:
+    </div>
+  </div>
+    <!--</div>-->
+  <!--</div>-->
+</div>
+<div class="modal-footer">
+  <button type="button"
+          class="btn btn-secondary mr-1"
+          (click)="dialogRef.close()" [disabled]="loading">Закрыть
+  </button>
+  <button type="button"
+          class="btn btn-primary mr-1"
+          (click)="updateCompanyUser()" [disabled]="loading || editForm.invalid">Сохранить
+  </button>
+</div>

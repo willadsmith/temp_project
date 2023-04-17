@@ -1,0 +1,62 @@
+<div class="flex-grow-1 ml-5">
+    <!-- <button (click)="getItems()">Получить список документов</button> -->
+    <table>
+      <tbody>
+        <tr><strong>Лицевые счета</strong></tr>
+      </tbody>
+    </table>
+  <div class="card legal-accounts">
+    <div class="card-body position-relative">
+      <div *ngIf="loading">
+        <div class="load"></div>
+      </div>
+      <div *ngIf="(!legalAccounts || legalAccounts.length < 1) && !loading">
+        <div>Лицевых счетов не найдено (<b>Нужно заключить договор!</b>)</div>
+      </div>
+      <table class="table table-sm table-hover" *ngIf="legalAccounts && legalAccounts.length > 0 && !loading">
+        <thead>
+        <tr>
+          <th><div>Номер счета</div></th>
+          <th><div>ИИН/БИН владельца</div></th>
+          <th><div>Наименование/ФИО</div></th>
+          <th><div>Дата регистрации счета</div></th>
+          <th><div>Номер договора</div></th>
+          <th><div>Баланс</div></th>
+          <th class="min-width-230"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let legalAccount of legalAccounts;">
+          <td>{{legalAccount.accountNumber}}</td>
+          <td>
+            <div *ngIf="legalAccount.owner">
+              {{legalAccount.owner.xin}}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="legalAccount.owner && legalAccount.owner.ownerType === 'COMPANY'">
+              {{legalAccount.owner.companyName}}
+            </div>
+            <div *ngIf="legalAccount.owner && legalAccount.owner.ownerType === 'PERSON'">
+              {{legalAccount.owner.lastName}} {{legalAccount.owner.firstName}} {{legalAccount.owner.middleName}}
+            </div>
+          </td>
+          <td>{{legalAccount.registrationDate | date:'dd.MM.yyyy'}}</td>
+          <td>{{legalAccount.contractNumber}}</td>
+          <td>{{legalAccount.balance}}</td>
+          <td>
+            <div class="text-right">
+              <button type="button"
+                      class="btn btn-sm btn-warning"
+                      (click)="setMain(legalAccount)">
+                <span>Выбрать Лицевой счет</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+@import "../variables";
+
+@each $val in $margins {
+  .fw-margin-#{$val} {
+    margin: #{$val}px;
+  }
+}
+
+@each $val in $margins {
+  .fw-mt-#{$val} {
+    margin-top: #{$val}px;
+  }
+
+  .fw-mb-#{$val} {
+    margin-bottom: #{$val}px;
+  }
+
+  .fw-ml-#{$val} {
+    margin-left: #{$val}px;
+  }
+
+  .fw-mr-#{$val} {
+    margin-right: #{$val}px;
+  }
+}
+
+@each $val in $paddings {
+  .fw-padding-#{$val} {
+    padding: #{$val}px;
+  }
+}
+
+@each $val in $paddings {
+  .fw-pt-#{$val} {
+    padding-top: #{$val}px;
+  }
+
+  .fw-pb-#{$val} {
+    padding-bottom: #{$val}px;
+  }
+
+  .fw-pl-#{$val} {
+    padding-left: #{$val}px;
+  }
+
+  .fw-pr-#{$val} {
+    padding-right: #{$val}px;
+  }
+}

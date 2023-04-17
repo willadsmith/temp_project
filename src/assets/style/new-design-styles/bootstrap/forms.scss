@@ -1,0 +1,56 @@
+@import "../colors";
+
+.form-control {
+  height: 48px;
+  border-radius: 8px;
+  border: solid 1px #cdcdcd;
+  background-color: $white;
+
+  &:focus, &:active {
+    outline: none;
+    box-shadow: none;
+    border-color: $green;
+  }
+
+  &.has-search-icon {
+    & + .icon-search {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 16px;
+    }
+  }
+
+  &.error {
+    border-color: $reddish;
+    color: $reddish;
+  }
+
+  &-icon {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    border-radius: 16px;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #868686;
+
+    &-card {
+      width: 60px;
+    }
+  }
+}
+
+.icon-search2 {
+  position: absolute;
+  right: 13px;
+  top: 12px;
+  background: url(/assets/images/svg/search.svg) center center no-repeat/cover;
+  width: 24px;
+  height: 24px;
+  z-index: 8;
+}

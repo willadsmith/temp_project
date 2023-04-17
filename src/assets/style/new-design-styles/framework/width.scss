@@ -1,0 +1,11 @@
+@each $value in $width {
+  .fw-width-#{$value} {
+    width: #{$value}px;
+  }
+}
+
+@each $value in $maxWidth {
+  .fw-max-width-#{$value} {
+    max-width: #{$value}px;
+  }
+}
