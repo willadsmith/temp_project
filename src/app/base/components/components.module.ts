@@ -15,16 +15,18 @@ import { CompanyUserUpdateDialogComponent } from './dialogs/company-user-update-
 import { LayoutModule } from '@app/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        NgbModule,
-        LayoutModule,
-        FormsModule,
-        NgSelectModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgbModule,
+    LayoutModule,
+    FormsModule,
+    NgSelectModule,
+    TranslateModule
+  ],
   declarations: [
     BaseFooterComponent,
     BaseNavbarComponent,

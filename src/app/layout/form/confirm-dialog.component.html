@@ -1,19 +1,19 @@
 <div class="modal-header">
-  <h4 class="modal-title">Подтвердите действие</h4>
+  <h4 class="modal-title" [translate]="'home_confirm_action'">Подтвердите действие</h4>
 </div>
 <div class="modal-body">
   <div class="m-2 p-2">
     <p *ngIf="confirmText" [innerHTML]="confirmText"></p>
-    <p *ngIf="!confirmText">Вы уверены?</p>
+    <p *ngIf="!confirmText" [translate]="'home_are_you_sure'">Вы уверены?</p>
   </div>
 </div>
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary mr-1"
-          (click)="dialogRef.dismiss()">Отмена
+          (click)="dialogRef.dismiss()" [translate]="'home_cancel'">Отмена
   </button>
   <button type="button"
           class="btn btn-primary ml-1"
-          (click)="confirm()">Да
+          (click)="confirm()" [translate]="'home_yes'">Да
   </button>
 </div>

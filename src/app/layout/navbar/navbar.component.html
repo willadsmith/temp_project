@@ -9,12 +9,12 @@
     <a class="navigation__link" routerLinkActive="navigation__link-active"   [routerLink]="['cabinet']">
       <i class="ni ni-folder-17"></i>
       <!-- <svg class="navigation__image" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><path class="navigation__image__path" fill="#4caf50" fill-rule="evenodd" d="M13.06 12.841l2.118 2.143 6.715-6.757a.364.364 0 0 0 .003-.508l-1.608-1.615a.364.364 0 0 0-.507-.005l-6.721 6.742zm-.563.853l-1.475 3.288 3.293-1.449-1.818-1.839zm2.871 2.468l-5.133 2.259a.5.5 0 0 1-.658-.662l2.28-5.082.103-.149 7.118-7.14a1.367 1.367 0 0 1 1.914.005l1.616 1.624c.519.53.519 1.379-.003 1.912l-7.084 7.128-.153.105zM20.867 22v-6.3a.5.5 0 1 1 1 0v6.8a.5.5 0 0 1-.5.5H5.5a.5.5 0 0 1-.5-.5V6.595a.5.5 0 0 1 .5-.5h6.712a.5.5 0 1 1 0 1H6V22h14.867z"/></svg> -->
-      <div class="navigation__title">Мои документы</div>
+      <div class="navigation__title" [translate]="'home_my_docs'">Мои документы</div>
     </a>
     <a class="navigation__link" routerLinkActive="navigation__link-active"  [routerLink]="['legal-account']">
       <i class="ni ni-badge"></i>
       <!-- <svg class="navigation__image" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><path class="navigation__image__path" fill="#4caf50" fill-rule="evenodd" d="M13.06 12.841l2.118 2.143 6.715-6.757a.364.364 0 0 0 .003-.508l-1.608-1.615a.364.364 0 0 0-.507-.005l-6.721 6.742zm-.563.853l-1.475 3.288 3.293-1.449-1.818-1.839zm2.871 2.468l-5.133 2.259a.5.5 0 0 1-.658-.662l2.28-5.082.103-.149 7.118-7.14a1.367 1.367 0 0 1 1.914.005l1.616 1.624c.519.53.519 1.379-.003 1.912l-7.084 7.128-.153.105zM20.867 22v-6.3a.5.5 0 1 1 1 0v6.8a.5.5 0 0 1-.5.5H5.5a.5.5 0 0 1-.5-.5V6.595a.5.5 0 0 1 .5-.5h6.712a.5.5 0 1 1 0 1H6V22h14.867z"/></svg> -->
-      <div class="navigation__title">Лицевые счета</div>
+      <div class="navigation__title" [translate]="'home_personal_accounts'">Лицевые счета</div>
     </a>
     <!--<a class="navigation__link">-->
       <!--&lt;!&ndash; <a class="navigation__link" [routerLink]="['/settings']" routerLinkActive="navigation__link-active"> &ndash;&gt;-->
@@ -24,4 +24,14 @@
     <!--</a>-->
   </nav>
   <app-menu class="d-flex flex-column d-lg-none w-100 mt-4"></app-menu>
+  <div style="position: absolute;bottom: 94px;left: 37px;width: 77px;height: 44px;">
+    <div ngbDropdown>
+    <button type="button" class="btn btn-outline-success" id="dropdownConfig" ngbDropdownToggle [translate]="'language'">Язык</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+      <button ngbDropdownItem>Русский</button>
+      <button ngbDropdownItem>Казакша</button>
+      <button ngbDropdownItem>English</button>
+  </div>
+  </div>
+</div>
 </div>

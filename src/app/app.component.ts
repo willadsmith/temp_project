@@ -4,12 +4,14 @@ import {ActivatedRouteSnapshot, NavigationEnd, Router, RoutesRecognized} from '@
 import { AuthenticationService } from './_services';
 import { User } from './_models';
 import { ToasterConfig } from 'angular2-toaster';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({ selector: 'app-main', templateUrl: 'app.component.html' })
 export class AppComponent implements OnInit {
     currentUser: User;
     isLoginPage: boolean;
     isBasePage = true;
+    lang: string
 
     public config: ToasterConfig =
       new ToasterConfig({
@@ -20,12 +22,21 @@ export class AppComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private translate: TranslateService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
     ngOnInit() {
+      if (localStorage.getItem('lang') === 'ru' || localStorage.getItem('lang') === 'kz' || localStorage.getItem('lang') === 'en') {
+        this.translate.use(localStorage.getItem('lang'));
+      } else {
+        // Set default language
+         localStorage.setItem('lang', 'ru');
+         this.translate.use('ru');
+      }
+
       this.router.events.subscribe((event: any) => {
         if (event instanceof RoutesRecognized) {
           if (event && event.url) {

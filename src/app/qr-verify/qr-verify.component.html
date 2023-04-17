@@ -15,40 +15,40 @@
                   </a>
                 </div>
                 <div style="text-align: center; margin-top: 10px;">
-                  <span class="font-weight-bold title">QR-ВЕРИФИКАЦИЯ ДОКУМЕНТА.</span>
+                  <span class="font-weight-bold title" [translate]="'qr_verify_doc'">QR-ВЕРИФИКАЦИЯ ДОКУМЕНТА.</span>
                 </div>
                 <hr style="margin-top: 1rem;margin-bottom: 1rem;">
                 <div data-v-08a509ac="" class="aic_card-item margin-b-4" *ngIf="signatures && signatures.length > 1; else notFullSignature">
                   <div class="aic_card-icon text-center">
                     <img src="/assets/img/document.svg">
-                    <div class="text height-24 font-weight-bold color-00" style="display: inline-block">Публичный договор № {{contractNumber}}</div>
+                    <div class="text height-24 font-weight-bold color-00" style="display: inline-block"> <span [translate]="'qr_public_contract_number'">Публичный договор №</span> {{contractNumber}}</div>
                   </div>
                   <div class="aic_card-info">
                     <div style="margin-bottom: 15px">
-                      <b>Подписанты:</b>
+                      <b [translate]="'qr_signers'">Подписанты:</b>
                     </div>
                     <table class="table">
                       <thead>
                         <tr class="table-dark">
-                          <td>ЭЦП</td>
-                          <td>ФИО</td>
-                          <td>Пользователь</td>
-                          <td>Дата подписи</td>
+                          <td [translate]="'qr_ecp'">ЭЦП</td>
+                          <td [translate]="'qr_fio'">ФИО</td>
+                          <td [translate]="'qr_user'">Пользователь</td>
+                          <td [translate]="'qr_start_sign'">Дата подписи</td>
                           <td>XML</td>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let signature of signatures">
-                          <td><img src="assets/img/verified.png" placement="top" ngbTooltip="Подписан"/></td>
+                          <td><img src="assets/img/verified.png" placement="top" [ngbTooltip]="'qr_sign_completed' | translate"/></td>
                           <td>{{signature.fio}}</td>
                           <td>
-                            <span class="badge badge-dark badge-90" style="border-radius: 16px !important;" *ngIf="signature.name === 'operatorSignature'">Оператор</span>
-                            <span class="badge badge-90" style="color: #ffffff; background-color: rgb(129 183 71);" *ngIf="signature.name === 'clientSignature'">Клиент</span>
+                            <span class="badge badge-dark badge-90" style="border-radius: 16px !important;" *ngIf="signature.name === 'operatorSignature'" [translate]="'qr_operator'">Оператор</span>
+                            <span class="badge badge-90" style="color: #ffffff; background-color: rgb(129 183 71);" *ngIf="signature.name === 'clientSignature'" [translate]="'qr_client'">Клиент</span>
                           </td>
                           <td>{{signature.created_at | date: 'dd.MM.yyyy'}}</td>
                           <td class="text-right">
                               <span class="cursorPointer mr-1 text-warning" style="font-size: 24px" (click)="downloadXML(signature.body)"
-                                    placement="top" ngbTooltip="Скачать XML"><fa-icon [icon]="'file-code'"></fa-icon></span>
+                                    placement="top" [ngbTooltip]="'qr_download_xml' | translate"><fa-icon [icon]="'file-code'"></fa-icon></span>
                           </td>
                         </tr>
                       </tbody>
@@ -56,12 +56,12 @@
                   </div>
                 </div>
                 <ng-template #notFullSignature>
-                  <span class="text-warning warnSignature" *ngIf="!loadingSignatures">
+                  <span class="text-warning warnSignature" *ngIf="!loadingSignatures" [translate]="'qr_doc_no_sign_on_both_sides'">
                     Документ не подписан с обоих сторон
                   </span>
                 </ng-template>
                 <div *ngIf="notFoundDocument && !loadingSignatures" class="warnSignature">
-                  <span class="text-danger">
+                  <span class="text-danger" [translate]="'qr_doc_not_found'">
                     Документ не найден
                   </span>
                 </div>

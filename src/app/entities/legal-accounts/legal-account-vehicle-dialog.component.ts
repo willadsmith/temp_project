@@ -4,7 +4,7 @@ import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {ToastrService} from 'ngx-toastr';
 import {BackendService} from '@app/_services/backend-service';
 import {LoadingService} from '@app/_services/loading.service';
-import {HttpErrorResponse} from "@angular/common/http";
+import {TranslatePipe} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
@@ -12,7 +12,8 @@ declare var startConnection: any;
 
 @Component({
   selector: 'app-legal-account-vehicle-dialog',
-  templateUrl: './legal-account-vehicle-dialog.component.html'
+  templateUrl: './legal-account-vehicle-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class LegalAccountVehicleDialogComponent implements OnInit {
   accountNumber: string;
@@ -28,6 +29,7 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
     public dialogRef: NgbActiveModal,
     private toastr: ToastrService,
     private loadingService: LoadingService,
+    private translatePipe: TranslatePipe,
     private backendService: BackendService) {}
 
   ngOnInit() {
@@ -71,7 +73,7 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
       if (res === 1) {
         this.signatureConfirm();
       } else {
-        this.toastr.warning('Не запущен или не установлен NCALayer', 'Ошибка NCALayer!');
+        this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_error_connection_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
         this.signLoading = false;
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
@@ -86,7 +88,7 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
       console.log('signed start', res);
       if (res['code'] === '500') {
         if (res.message ===  'action.canceled') {
-          this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
+          this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_cancel_sign_process') + '!', this.translatePipe.transform('login_main_error_nca_layer') + '!');
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -142,8 +144,12 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
                       isMulti = true;
                     }
                   }
-                  this.toastr.warning((isMulti ? 'Указанные' : 'Указанный') + ' вами ГРНЗ '
-                    + licencePlate + ' не ' + (isMulti ? 'найдены' : 'найден') + ' в нашей системе', 'Ошибка!',
+                  this.toastr.warning((isMulti ?
+                    this.translatePipe.transform('legal_account_vehicle_dialog_grnz_not_found_many')
+                    + licencePlate + this.translatePipe.transform('legal_account_vehicle_dialog_grnz_not_found_many2')
+                    : this.translatePipe.transform('legal_account_vehicle_dialog_grnz_not_found_once')
+                    + licencePlate + this.translatePipe.transform('legal_account_vehicle_dialog_grnz_not_found_once2')
+                    ), 'Ошибка!',
                     {timeOut: 10000});
                 }
               }
@@ -153,7 +159,7 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
             (err: any) => {
               // console.log(err);
               if (err && err.error && err.error.message === 'error.server_not_respond') {
-                this.toastr.warning('Данные текущего пользователя и сертификата не совпадают!', 'Ошибка!');
+                this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_error_data_user_sign'), this.translatePipe.transform('legal_account_vehicle_dialog_error_data_user_sign') + '!');
               } else {
                 if (err.error && err.error.error
                   && err.error.error.code === 6) {
@@ -171,14 +177,17 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
                         break;
                       }
                     }
-                    this.toastr.warning('Указанный вами ГРНЗ ' + this.invalidLicencePlate +
-                      ' уже имеет признак Лицевого Счета (Возможно другого Лицевого Счета, проверьте Ваш список ТС)', 'Ошибка!',
+                    this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_grnz_busy') + this.invalidLicencePlate +
+                      this.translatePipe.transform('legal_account_vehicle_dialog_grnz_busy2'),
+                      this.translatePipe.transform('legal_account_vehicle_dialog_error_data_user_sign') + '!',
                       {timeOut: 12000});
                   } else {
-                    this.toastr.warning('Не удалось добавить ТС', 'Ошибка Сервиса!');
+                    this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_error_add_ts'),
+                      this.translatePipe.transform('legal_account_vehicle_dialog_error_service'));
                   }
                 } else {
-                  this.toastr.warning('Не удалось добавить ТС', 'Ошибка Сервиса!');
+                  this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_error_add_ts'),
+                    this.translatePipe.transform('legal_account_vehicle_dialog_error_service'));
                 }
               }
               this.signLoading = false;
