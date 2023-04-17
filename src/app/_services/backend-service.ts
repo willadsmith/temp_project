@@ -184,25 +184,20 @@ export class BackendService {
     return this.http.post<any>(environment.apiUrl + '/company', body);
   }
 
-  downloadDocumentRemote(documentId: string, companyId?: string): any {
-    let documentIdParam = '';
+  downloadDocumentRemote(companyId: any): any {
     let companyIdParam = '';
-    if (documentId) {
-      documentIdParam = '?documentId=' + documentId;
-    }
     if (companyId) {
-      companyIdParam = '&companyId=' + companyId;
+      companyIdParam = '?companyid=' + companyId;
     }
-    console.log(companyIdParam)
-    return this.http.get(environment.apiUrl + '/contract' + documentIdParam + companyIdParam, {responseType: 'arraybuffer'});
+    return this.http.get(environment.apiUrl + '/contract' + companyIdParam, {responseType: 'arraybuffer'});
   }
 
   downloadAssetRemote(assetId: any): any {
     return this.http.get(environment.apiUrl + '/contract/downloadAssets?assetId=' + assetId, {responseType: 'arraybuffer'});
   }
 
-  passDocument(documentId: any) {
-    return this.http.post<any>(environment.apiUrl + '/documents/passed?documentId=' + documentId, {});
+  passDocument(companyId: any) {
+    return this.http.post<any>(environment.apiUrl + '/documents/passed?companyId=' + companyId, {});
   }
 
   declineDocument(body: any) {

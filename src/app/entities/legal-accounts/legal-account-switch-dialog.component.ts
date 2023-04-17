@@ -5,6 +5,7 @@ import {ToastrService} from 'ngx-toastr';
 import {BackendService} from '@app/_services/backend-service';
 import {LoadingService} from '@app/_services/loading.service';
 import {Router} from "@angular/router";
+import {TranslatePipe} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
@@ -12,7 +13,8 @@ declare var startConnection: any;
 
 @Component({
   selector: 'app-legal-account-switch-dialog',
-  templateUrl: './legal-account-switch-dialog.component.html'
+  templateUrl: './legal-account-switch-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class LegalAccountSwitchDialogComponent implements OnInit {
   accountNumber: string;
@@ -28,6 +30,7 @@ export class LegalAccountSwitchDialogComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private loadingService: LoadingService,
+    private translatePipe: TranslatePipe,
     private backendService: BackendService) {}
 
   ngOnInit() {
@@ -58,7 +61,7 @@ export class LegalAccountSwitchDialogComponent implements OnInit {
         this.loading = false;
       }, err => {
         this.loading = false;
-        this.toastr.error('Не удалось загрузить данные', 'Ошибка!');
+        this.toastr.error(this.translatePipe.transform('legal_account_switch_not_upload_error'), this.translatePipe.transform('dashboard_error') + '!');
       }
     );
   }
@@ -97,7 +100,7 @@ export class LegalAccountSwitchDialogComponent implements OnInit {
         this.router.navigate(['/legal-account/' + data.iban]);
       }, err => {
         // this.loading = false;
-        this.toastr.error('Не удалось выбрать лицевой счет', 'Ошибка!');
+        this.toastr.error(this.translatePipe.transform('legal_account_switch_error_choose_account'), this.translatePipe.transform('dashboard_error') + '!');
       }
     );
   }

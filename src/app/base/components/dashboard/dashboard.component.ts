@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '@app/_services';
 import { ToastrService } from 'ngx-toastr';
-import { ContractDetailDialogComponent } from '@app/entities/cabinet/contract-detail-dialog.component';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DeclineDocumentDialogComponent } from '../dialogs/decline-document-dialog.component';
-import { PassDocumentDialogComponent } from '../dialogs/pass-document-dialog.component';
-import { BackendService } from '@app/_services/backend-service';
+import {ContractDetailDialogComponent} from '@app/entities/cabinet/contract-detail-dialog.component';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {DeclineDocumentDialogComponent} from '../dialogs/decline-document-dialog.component';
+import {PassDocumentDialogComponent} from '../dialogs/pass-document-dialog.component';
+import {BackendService} from '@app/_services/backend-service';
 import * as FileSaver from 'file-saver';
 import * as lodash from 'lodash';
-import { LoadingService } from '@app/_services/loading.service';
+import {LoadingService} from '@app/_services/loading.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
@@ -21,7 +22,8 @@ declare var chooseNCAStorage: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [TranslatePipe]
 })
 export class BaseDashboardComponent implements OnInit {
 
@@ -33,8 +35,9 @@ export class BaseDashboardComponent implements OnInit {
     public dialog: NgbModal,
     private toastr: ToastrService,
     private loadingService: LoadingService,
-    private backendService: BackendService
-  ) { }
+    private backendService: BackendService,
+    private translatePipe: TranslatePipe
+) { }
 
   public clicked = true;
   public clicked1 = false;
@@ -61,7 +64,7 @@ export class BaseDashboardComponent implements OnInit {
     this.loadDocuments(true);
   }
 
-  companiesPageChanged(event) {
+  companiesPageChanged(event){
     console.log(event);
     console.log('Page changed to: ' + event);
     this.companiesPage = event;
@@ -75,7 +78,7 @@ export class BaseDashboardComponent implements OnInit {
     this.loadDocuments(true);
   }
 
-  loadDocuments(isReset) {
+  loadDocuments(isReset){
     if (isReset) {
       this.companiesPage = 1;
     }
@@ -83,16 +86,16 @@ export class BaseDashboardComponent implements OnInit {
     this.dashboardService.docsCompany('/company?page=' + this.companiesPage + '&take='
       + this.itemsPerPage + '&sort=' + this.sort + '&order=' + this.order,
       this.currentStatus, this.companyName, this.bin).subscribe((res: any) => {
-        this.docsCompany = res.data;
-        for (let i = 0; i < this.docsCompany.length; i++) {
-          this.docsCompany[i].company.name = lodash.unescape(this.docsCompany[i].company.name);
-        }
-        this.companiesTotalItems = res.meta.itemCount;
-        this.loadingDocuments = false;
-      }, err => {
-        // console.log(err);
-        this.loadingDocuments = false;
-      });
+      this.docsCompany = res.data;
+      for (let i = 0; i < this.docsCompany.length; i++) {
+        this.docsCompany[i].name = lodash.unescape(this.docsCompany[i].name);
+      }
+      this.companiesTotalItems = res.meta.itemCount;
+      this.loadingDocuments = false;
+    }, err => {
+      // console.log(err);
+      this.loadingDocuments = false;
+    });
   }
 
   startProcessSign(storage: string, sign: string, id: string, docComp: any) {
@@ -106,7 +109,7 @@ export class BaseDashboardComponent implements OnInit {
 
         this.signatureDocsConfirm(docComp);
       } else {
-        this.toastr.error('Не запущен или не установлен NCALayer', 'Ошибка');
+        this.toastr.error(this.translatePipe.transform('dashboard_off_nca_layer'), this.translatePipe.transform('dashboard_error'));
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
         EventBus.unsubscribe('token');
@@ -114,24 +117,12 @@ export class BaseDashboardComponent implements OnInit {
     });
   }
 
-  createDocument(companyId: string) {
-    if (!confirm('Вы уверены, что хотите создать документ?')) return;
-    this.loadingDocuments = true;
-    this.dashboardService.createDocument(companyId).subscribe(response => {
-      this.loadingDocuments = false;
-      this.toastr.success('Документ успешно создан', 'Успешно');
-      this.loadDocuments(false);
-    }, error => {
-      this.loadDocuments(false);
-      this.toastr.error('Не удалось создать документ', 'Ошибка!');
-    });
-  }
   signatureDocsConfirm(docComp: any) {
     this.signXmlCall();
     EventBus.subscribe('signed', async (res) => {
       if (res['code'] === '500') {
-        if (res.message !== 'action.canceled') {
-          this.toastr.error(`Ошибка NCALayer: ${res.message}`, 'Ошибка');
+        if (res.message !==  'action.canceled') {
+          this.toastr.error(this.translatePipe.transform('dashboard_error_nca_layer') + ':' + res.message, this.translatePipe.transform('dashboard_error'));
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -146,17 +137,17 @@ export class BaseDashboardComponent implements OnInit {
           this.signStatus = true;
           docComp.loading = true;
 
-          this.dashboardService.sign('/signature/operator', this.companyId, docComp.id, { xml }).
+          this.dashboardService.sign('/signature/operator', this.companyId, {xml}).
             subscribe(response => {
               // console.log(response);
               docComp.loading = false;
-              this.toastr.success('Документ успешно подписан', 'Подписано');
+              this.toastr.success(this.translatePipe.transform('dashboard_document_signed'), this.translatePipe.transform('dashboard_signed_to'));
               this.loadDocuments(false);
             }, error => {
               if (error && error.error && error.error.message === 'Пожалуйста используйте верную подпись') {
-                this.toastr.error(error.error.message, 'Ошибка!');
+                this.toastr.error(error.error.message, this.translatePipe.transform('dashboard_error') + '!');
               } else {
-                this.toastr.error('Не удалось подписать документ', 'Ошибка!');
+                this.toastr.error(this.translatePipe.transform('dashboard_not_signed'), this.translatePipe.transform('dashboard_error') + '!');
               }
               docComp.loading = false;
             });
@@ -179,12 +170,12 @@ export class BaseDashboardComponent implements OnInit {
     signXml(selectedStorage, 'SIGNATURE', xmlToSign, 'signXmlBack');
   }
 
-  approveDocument(documentId: string) {
+  approveDocument(companyId: string) {
     this.contractPassDialogRef = this.dialog.open(PassDocumentDialogComponent as Component, {
       size: 'lg',
       backdrop: 'static'
     });
-    this.contractPassDialogRef.componentInstance.documentId = documentId;
+    this.contractPassDialogRef.componentInstance.companyId = companyId;
 
     this.contractPassDialogRef.result
       .then(response => {
@@ -197,12 +188,11 @@ export class BaseDashboardComponent implements OnInit {
       });
   }
 
-  declineDocument(documentId: string,companyId:string, status: string) {
+  declineDocument(companyId: string, status: string) {
     this.contractDeclineDialogRef = this.dialog.open(DeclineDocumentDialogComponent as Component, {
       size: 'lg',
       backdrop: 'static'
     });
-    this.contractDeclineDialogRef.componentInstance.documentId = documentId;
     this.contractDeclineDialogRef.componentInstance.companyId = companyId;
     this.contractDeclineDialogRef.componentInstance.currentStatus = status;
 
@@ -217,14 +207,13 @@ export class BaseDashboardComponent implements OnInit {
       });
   }
 
-  downloadDocument(bin: string, documentId: string, companyId:string) {
-    console.log(companyId)
-    this.backendService.downloadDocumentRemote(documentId,companyId)
+  downloadDocument(bin: string, companyId: any) {
+    this.backendService.downloadDocumentRemote(companyId)
       .subscribe(response =>
-        this.saveToFileSystem(response, 'Договор-' + bin + '.pdf', 'application/pdf'),
-        error => {
-          this.toastr.warning('Не удалось скачать файл', 'Ошибка');
-        });
+          this.saveToFileSystem(response, 'Договор-' + bin + '.pdf', 'application/pdf'),
+       error => {
+        this.toastr.warning(this.translatePipe.transform('dashboard_not_download'), this.translatePipe.transform('dashboard_error'));
+      });
   }
 
   downloadAsset(asset) {
@@ -233,12 +222,12 @@ export class BaseDashboardComponent implements OnInit {
     // name: "M02Z01R1P01L01-2021-7b638efe-45e2-11ec-ab60-20677cf2af78.jpg"
     this.backendService.downloadAssetRemote(asset.id)
       .subscribe(response => this.saveToFileSystem(response, asset.name, asset.mimeType), error => {
-        this.toastr.warning('Не удалось скачать файл', 'Ошибка');
+        this.toastr.warning(this.translatePipe.transform('dashboard_not_download'), this.translatePipe.transform('dashboard_error'));
       });
   }
 
   private saveToFileSystem(response: any, name: string, type: string) {
-    const blob = new Blob([response], { type: type });
+    const blob = new Blob([response], { type:  type});
     FileSaver.saveAs(blob, name);
   }
 

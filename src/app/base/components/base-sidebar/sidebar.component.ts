@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/_services';
+import {TranslatePipe} from '@ngx-translate/core';
 
 declare interface RouteInfo {
     path: string;
@@ -22,7 +23,8 @@ export const ROUTES: RouteInfo[] = [
 @Component({
   selector: 'app-base-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  providers: [TranslatePipe]
 })
 export class BaseSidebarComponent implements OnInit {
 

@@ -19,26 +19,36 @@
                 </a>
               </div>
               <div class="header_text">
-                <div class="font-weight-bold mb-3">Добро пожаловать в Личный кабинет АО «НК «КазАвтоЖол» для юридических лиц и индивидуальных предпринимателей.</div>
+                <div class="font-weight-bold mb-3">{{ 'login_main_title' | translate }}</div>
                 <div class="mt-3 mb-3">
-                  Если вы не пользовались ранее Личным  кабинетом,  то, пожалуйста, нажмите <b>«Зарегистрироваться»</b> и следуйте инструкциям системы. Использование функций Личного кабинета возможно только при наличии ЭЦП, подтверждающего Вашу причастность к юридическому лицу/ИП.
+                  <span>{{ 'login_main_title1' | translate }}</span>
+                  <span class="font-weight-900">{{ 'login_main_bold_title_reg' | translate }}</span>
+                  <span>{{ 'login_main_title2' | translate }}</span>
                 </div>
-                <div class="mt-3 mb-3">
+                <div class="mt-3 mb-3" [innerHTML]="'login_main_description' | translate">
                   Подробное описание процедуры регистарции и других функций системы находится в <b><a href="https://law.kaztoll.kz/documentation/" rel="nofollow" target="_blank">Руководстве пользователя</a></b>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-11 col-md-9 col-lg-5 pl-lg-0 pr-lg-4 pb-sm-3 pt-lg-4">
+              <div class="selector-field-language">
+                <input type="radio" id='switch-one' name='toggle-switch' (click)="setLang('ru')" value='ru' [checked]="currentLang === 'ru'"/>
+                <label for="switch-one">Русский</label>
+                <input type="radio" id='switch-two' name='toggle-switch' (click)="setLang('kz')" value='kz' [checked]="currentLang === 'kz'" />
+                <label for="switch-two">Қазақша</label>
+                <input type="radio" id='switch-three' name='toggle-switch' (click)="setLang('en')" value='en' [checked]="currentLang === 'en'" />
+                <label for="switch-three">English</label>
+              </div>
               <div class="col2 mainpage_login_form_block mb-3 py-3 px-4 mt-2">
-                <h1 class="p-b content_title">Личный кабинет</h1>
+                <h1 class="p-b content_title" [translate]="'login_main_personal_area'">Личный кабинет</h1>
                 <div class="content_data_form">
                   <div class="row">
                     <div class="col-12">
                       <form name="form_auth" method="post" target="_top" action="https://lku.gesbt.ru/?login=yes">
                         <div [ngClass]="{ unvisible_tab: regItem }">
                           <div class="d-flex flex-column w-100 align-items-center justify-content-center">
-                            <button class="btn w-100 btn-success d-block" [disabled]="loading" (click)="selectNCAStore()" type="button"><i class="ni ni-credit-card mr-2"></i> Вход по ЭЦП</button>
-                            <button class="btn w-100 btn-success d-block mt-3" [disabled]="loading" (click)="changeReg()" type="button"><i class="ni ni-key-25 mr-2"></i>Зарегистрироваться</button>
+                            <button class="btn w-100 btn-success d-block" [disabled]="loading" (click)="selectNCAStore()" type="button"><i class="ni ni-credit-card mr-2"></i> <span [translate]="'login_main_personal_area'">Вход по ЭЦП</span></button>
+                            <button class="btn w-100 btn-success d-block mt-3" [disabled]="loading" (click)="changeReg()" type="button"><i class="ni ni-key-25 mr-2"></i><span [translate]="'login_main_entry_of_ecp'">Зарегистрироваться</span></button>
                           </div>
                         </div>
                         <div [ngClass]="{ unvisible_tab: !regItem }">
@@ -56,12 +66,12 @@
 <!--                              <label class="custom-control-label" for="customRadio7">Акционерное общество</label>-->
 <!--                            </div>-->
                             <div class="form-group row" style="margin-bottom: 5px;">
-                              <label class="col-4 col-form-label text-right" style="font-size: 14px; font-weight: bold;">Тип Юр.Лица:</label>
+                              <label class="col-4 col-form-label text-right" style="font-size: 14px; font-weight: bold;" [translate]="'login_main_legal_entity'">Тип Юр.Лица:</label>
                               <div class="col-8">
                                 <ng-select [items]="companyTypes"
                                            bindLabel="description"
                                            bindValue="code"
-                                           placeholder="Выберите..."
+                                           [placeholder]="'login_main_choose' | translate "
                                            [ngModelOptions]="{standalone: true}"
                                            (ngModelChange)="changeOwnerType($event)"
                                            [(ngModel)]="companyType" >
@@ -72,48 +82,48 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-single-copy-04"></i></span>
                               </div>
-                              <input [(ngModel)]="idn" class="form-control" placeholder="ИИН руководителя/лица по доверенности" [textMask]="{mask: xinMask}" required name="idn">
+                              <input [(ngModel)]="idn" class="form-control" [placeholder]="'login_main_iin_by_agreement' | translate" [textMask]="{mask: xinMask}" required name="idn">
                             </div>
                             <div class="input-group input-group-alternative mt-3" *ngIf="companyType !== 'ИП'">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-single-copy-04"></i></span>
                               </div>
-                              <input [(ngModel)]="bin" class="form-control" placeholder="БИН Компании" [textMask]="{mask: xinMask}" required name="bin">
+                              <input [(ngModel)]="bin" class="form-control" [placeholder]="'login_main_bin_company' | translate" [textMask]="{mask: xinMask}" required name="bin">
                             </div>
                             <div class="input-group input-group-alternative mt-3">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                               </div>
-                              <input [(ngModel)]="email" class="form-control" placeholder="Электронная почта" type="email" required name="email">
+                              <input [(ngModel)]="email" class="form-control" [placeholder]="'login_main_email' | translate" type="email" required name="email">
                             </div>
 
                             <div *ngIf="companyType === 'ИП'">
                               <div class="custom-control custom-radio mt-3 mb-2" style="padding-left: 1.5rem;">
                                 <input [(ngModel)]="companyNameType" name="custom-radio-3" class="custom-control-input" value="FIO" id="customRadio8" type="radio" (ngModelChange)="changeCompanyNameType($event)" required>
-                                <label class="custom-control-label" for="customRadio8">Наименование ИП на основе ФИО</label>
+                                <label class="custom-control-label" for="customRadio8" [translate]="'login_main_name_ip_fio' | translate" ]>Наименование ИП на основе ФИО</label>
                               </div>
                               <div class="custom-control custom-radio" style="padding-left: 1.5rem;">
                                 <input [(ngModel)]="companyNameType" name="custom-radio-3" class="custom-control-input" value="OWN_NAME" id="customRadio9" type="radio" (ngModelChange)="changeCompanyNameType($event)" required>
-                                <label class="custom-control-label" for="customRadio9">Другое наименование</label>
+                                <label class="custom-control-label" for="customRadio9" [translate]="'login_main_another_name' | translate" ]>Другое наименование</label>
                               </div>
                             </div>
                             <div class="input-group input-group-alternative mt-3" *ngIf="companyType === 'ИП' && companyNameType === 'OWN_NAME'">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
                               </div>
-                              <input [(ngModel)]="companyName" class="form-control" placeholder="Наименование ИП" type="text" required name="companyName">
+                              <input [(ngModel)]="companyName" class="form-control" [placeholder]="'login_main_name_ip' | translate" type="text" required name="companyName">
                             </div>
                           </form>
                           <small class="form-text text-warning" style="font-weight: bold; margin-top: 8px;">
-                            {{'Данные ЭЦП и указанного ИИН/БИН-а должны совпадать'}}
+                            {{'login_main_validate_description_ecp_bin' | translate}}
                           </small>
                           <div class="form-group mt-3 row">
                             <div class="col-md-6">
-                              <button (click)="changeReg()"  class="btn btn-1 btn-default d-block">Назад</button>
+                              <button (click)="changeReg()"  class="btn btn-1 btn-default d-block">{{'login_main_back' | translate}}</button>
                             </div>
                             <div class="col-md-6">
                               <button class="btn btn-1 btn-success d-block float-right"
-                                      (click)="selectNCAStoreReg()" [disabled]="(registerForm && registerForm.form.invalid) || loading">Зарегистрироваться</button>
+                                      (click)="selectNCAStoreReg()" [disabled]="(registerForm && registerForm.form.invalid) || loading">{{'login_main_sign_up' | translate}}</button>
                             </div>
                           </div>
                         </div>
@@ -135,7 +145,8 @@
 <!--                  </div>-->
                   <div class="row">
                     <div class="col help_info">
-                      При возникновении технических проблем или других вопросов обратитесь в Контакт-Центр по номеру <b>1403</b> или оставьте обращение в Открытой линии на сайте
+<!--                      <span [translate]="'login_main_information' | translate">При возникновении технических проблем или других вопросов обратитесь в Контакт-Центр по номеру <b>1403</b> или оставьте обращение в Открытой линии на сайте</span>-->
+                      <span [innerHTML]="'login_main_information' | translate"></span>
                       <b><a href="https://qaj.kz" rel="nofollow" target="_blank">QAJ.KZ</a></b>
                     </div>
                   </div>
@@ -153,38 +164,38 @@
         <div class="block_functions">
           <div class="content_block">
             <div class="row content_block_row">
-              <h2 class="col-12 functions_title">Функциональные возможности</h2>
+              <h2 class="col-12 functions_title" [translate]="'login_main_functional_capability'">Функциональные возможности</h2>
             </div>
             <div class="row justify-content-around content_block_row p-t-md">
               <div class="col-6 col-sm-3 col-lg-2 m-b-lg functions_item_col">
                 <div class="functions_icon">
                   <fa-icon icon="angle-down"></fa-icon>
                 </div>
-                <div class="functions_descript">Подписание/расторжение договора при помощи электронно-цифровой подписи</div>
+                <div class="functions_descript" [translate]="'login_main_termination_ecp'">Подписание/расторжение договора при помощи электронно-цифровой подписи</div>
               </div>
               <div class="col-6 col-sm-3 col-lg-2 m-b-lg functions_item_col">
                 <div class="functions_icon">
                   <fa-icon icon="angle-down"></fa-icon>
                 </div>
-                <div class="functions_descript">Просмотр информации по вашему лицевому счету</div>
+                <div class="functions_descript" [translate]="'login_main_of_your_account'">Просмотр информации по вашему лицевому счету</div>
               </div>
               <div class="col-6 col-sm-3 col-lg-2 m-b-lg functions_item_col">
                 <div class="functions_icon">
                   <fa-icon icon="angle-down"></fa-icon>
                 </div>
-                <div class="functions_descript">Самостоятельное управление транспортными средствами: добавление/удаление</div>
+                <div class="functions_descript" [translate]="'login_main_independent_management_ts'">Самостоятельное управление транспортными средствами: добавление/удаление</div>
               </div>
               <div class="col-6 col-sm-3 col-lg-2 m-b-lg functions_item_col">
                 <div class="functions_icon">
                   <fa-icon icon="angle-down"></fa-icon>
                 </div>
-                <div class="functions_descript">Детализация проездов каждого ТС (в разработке)»</div>
+                <div class="functions_descript" [translate]="'login_main_detailing_every_road_ts'">Детализация проездов каждого ТС (в разработке)»</div>
               </div>
             </div>
           </div>
         </div>
         <div class="row content_block_row">
-          <h4 class="col-12 contract_title text-warning">Все действия в Личном кабинете подтверждаются ЭЦП Вашего юридического лица/ИП.</h4>
+          <h4 class="col-12 contract_title text-warning" [translate]="'login_main_all_actions_confirm_ecp'">Все действия в Личном кабинете подтверждаются ЭЦП Вашего юридического лица/ИП.</h4>
         </div>
       </div>
     </div>

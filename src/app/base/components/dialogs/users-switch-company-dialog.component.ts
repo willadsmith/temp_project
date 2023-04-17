@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {DashboardService} from "@app/_services";
 import * as lodash from "lodash";
 import {Company, CompanyEntity} from "@app/_models";
+import {TranslatePipe} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
@@ -15,7 +16,8 @@ declare var startConnection: any;
 
 @Component({
   selector: 'app-user-switch-company-dialog',
-  templateUrl: './users-switch-company-dialog.component.html'
+  templateUrl: './users-switch-company-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class UsersSwitchCompanyDialogComponent implements OnInit {
   accountNumber: string;
@@ -42,6 +44,7 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
     private router: Router,
     private loadingService: LoadingService,
     private backendService: BackendService,
+    private translatePipe: TranslatePipe,
     private dashboardService: DashboardService) {}
 
   ngOnInit() {
@@ -76,7 +79,7 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
     }, err => {
       // console.log(err);
       this.loading = false;
-      this.toastr.error('Не удалось загрузить данные', 'Ошибка!');
+      this.toastr.error(this.translatePipe.transform('users_switch_download_error_data'), this.translatePipe.transform('users_switch_error'));
     });
   }
 
@@ -113,7 +116,7 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
         this.dialogRef.close({ result: true });
       }, err => {
         this.selectLoading = false;
-        this.toastr.error('Не удалось выбрать компанию', 'Ошибка!');
+        this.toastr.error(this.translatePipe.transform('users_switch_update_invalid_company'), this.translatePipe.transform('users_switch_error'));
       }
     );
   }
@@ -140,7 +143,7 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
         this.setMain(data.id);
       }, err => {
         this.selectLoading = false;
-        this.toastr.error('Не удалось создать новый филиал', 'Ошибка!');
+        this.toastr.error(this.translatePipe.transform('users_switch_not_create_new_branch'), this.translatePipe.transform('users_switch_error'));
       }
     );
   }
@@ -157,7 +160,7 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
         this.closeUpdateCompany();
       }, err => {
         this.selectLoading = false;
-        this.toastr.error('Не удалось обновить компанию', 'Ошибка!');
+        this.toastr.error(this.translatePipe.transform('users_switch_update_invalid_company'), this.translatePipe.transform('users_switch_error'));
       }
     );
   }
