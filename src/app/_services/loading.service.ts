@@ -22,8 +22,8 @@ export class LoadingService {
         return this.textLoading = 'Подождите, идет загрузка...';
       case 'kz':
         return this.textLoading = 'Күте тұрыңыз, жүктеу жүріп жатыр...';
-      case 'en':
-        return this.textLoading = 'Подождите, идет загрузка...';
+      // case 'en':
+      //   return this.textLoading = 'Подождите, идет загрузка...';
       default:
         break;
     }

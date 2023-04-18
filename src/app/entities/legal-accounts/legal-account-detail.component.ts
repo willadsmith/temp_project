@@ -11,12 +11,13 @@ import { LegalAccountSwitchDialogComponent } from './legal-account-switch-dialog
 import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {LoadingService} from '@app/_services/loading.service';
 import {LegalAccountVehicleCardDialogComponent} from '@app/entities/legal-accounts/legal-account-vehicle-card-dialog.component';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
 declare var startConnection: any;
+declare var changeLocaleCall: any;
 
 @Component({
   selector: 'app-legal-account-detail',
@@ -66,6 +67,7 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private confirmService: ConfirmService,
     private backendService: BackendService,
+    private translate: TranslateService,
     private translatePipe: TranslatePipe
   ) {
     this.itemsPerPage = 20;
@@ -199,6 +201,8 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
     this.loadingService.showLoading();
     EventBus.subscribe('connect', res => {
       if (res === 1) {
+        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz': this.translate.currentLang);
+
         this.signatureConfirm(method, vehicles);
       } else {
         this.toastr.warning(this.translatePipe.transform('legal_account_detail_disconnected_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');

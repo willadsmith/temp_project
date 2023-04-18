@@ -90,11 +90,11 @@ export class DeclineDocumentDialogComponent implements OnInit {
           {description: 'Ұйымның дұрыс емес атауы', code: 'INVALID_NAME'},
           {description: 'Басқа', code: 'OTHERS'}
         );
-      case 'en':
-        return this.types.push(
-          {description: 'Неправильное наименование огранизации', code: 'INVALID_NAME'},
-          {description: 'Другое', code: 'OTHERS'}
-        );
+      // case 'en':
+      //   return this.types.push(
+      //     {description: 'Неправильное наименование огранизации', code: 'INVALID_NAME'},
+      //     {description: 'Другое', code: 'OTHERS'}
+      //   );
       default:
         break;
     }

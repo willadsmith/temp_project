@@ -11,12 +11,13 @@ import {ConfirmService} from '@app/layout/form/confirm.service';
 import {LoadingService} from '@app/_services/loading.service';
 import {RenameCompanyDialogComponent} from "@app/entities/cabinet/rename-company-dialog.component";
 import {CompanyDetailService} from "@app/_services/company-detail.service";
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
 declare var startConnection: any;
+declare var changeLocaleCall: any;
 
 @Component({
   selector: 'app-layout',
@@ -46,6 +47,7 @@ export class CabinetComponent implements OnInit {
     private confirmService: ConfirmService,
     private backendService: BackendService,
     private translatePipe: TranslatePipe,
+    private translate: TranslateService,
     private companyDetailService: CompanyDetailService
   ) {
     router.events.subscribe((url: any) => this.currentUrl = router.url);
@@ -104,6 +106,7 @@ export class CabinetComponent implements OnInit {
     this.loadingService.showLoading();
     EventBus.subscribe('connect', res => {
       if (res === 1) {
+        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz' : this.translate.currentLang);
 
         this.signatureDocsConfirm(isResign);
       } else {

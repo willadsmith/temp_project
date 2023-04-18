@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-      if (localStorage.getItem('lang') === 'ru' || localStorage.getItem('lang') === 'kz' || localStorage.getItem('lang') === 'en') {
+      if (localStorage.getItem('lang') === 'ru' || localStorage.getItem('lang') === 'kz') {
         this.translate.use(localStorage.getItem('lang'));
       } else {
         // Set default language

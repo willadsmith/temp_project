@@ -4,11 +4,12 @@ import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {ToastrService} from 'ngx-toastr';
 import {BackendService} from '@app/_services/backend-service';
 import {LoadingService} from '@app/_services/loading.service';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
 declare var startConnection: any;
+declare var changeLocaleCall: any;
 
 @Component({
   selector: 'app-legal-account-vehicle-dialog',
@@ -30,6 +31,7 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
     private toastr: ToastrService,
     private loadingService: LoadingService,
     private translatePipe: TranslatePipe,
+    private translate: TranslateService,
     private backendService: BackendService) {}
 
   ngOnInit() {
@@ -71,6 +73,8 @@ export class LegalAccountVehicleDialogComponent implements OnInit {
     this.loadingService.showLoading();
     EventBus.subscribe('connect', res => {
       if (res === 1) {
+        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz' : this.translate.currentLang);
+
         this.signatureConfirm();
       } else {
         this.toastr.warning(this.translatePipe.transform('legal_account_vehicle_dialog_error_connection_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');

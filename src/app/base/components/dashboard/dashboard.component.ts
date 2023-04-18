@@ -9,7 +9,7 @@ import {BackendService} from '@app/_services/backend-service';
 import * as FileSaver from 'file-saver';
 import * as lodash from 'lodash';
 import {LoadingService} from '@app/_services/loading.service';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
@@ -18,6 +18,7 @@ declare var startConnection: any;
 declare var getActiveTokens: any;
 declare var selectSignType: any;
 declare var chooseNCAStorage: any;
+declare var changeLocaleCall: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -36,6 +37,7 @@ export class BaseDashboardComponent implements OnInit {
     private toastr: ToastrService,
     private loadingService: LoadingService,
     private backendService: BackendService,
+    private translate: TranslateService,
     private translatePipe: TranslatePipe
 ) { }
 
@@ -106,6 +108,7 @@ export class BaseDashboardComponent implements OnInit {
     this.loadingService.showLoading();
     EventBus.subscribe('connect', res => {
       if (res === 1) {
+        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz' : this.translate.currentLang);
 
         this.signatureDocsConfirm(docComp);
       } else {
