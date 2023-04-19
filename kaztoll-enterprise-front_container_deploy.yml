@@ -1,41 +1,41 @@
 ---
- - name: kaztoll-enterprise-frontend docker container deploy
-   hosts: vps-appserv09.kaztoll.kz
-   become: yes
+- name: kaztoll-enterprise-frontend docker container deploy
+  hosts: vps-appserv09.kaztoll.kz
+  become: yes
 
-   tasks:
-   - name: Get infos on container
-     docker_container_info:
-       name: kaztoll-enterprise-front
-     register: result
-   - name: Does container exist?
-     ansible.builtin.debug:
-       msg: "The container {{ 'exists' if result.exists else 'does not exist' }}"
+  tasks:
+    - name: Get infos on container
+      docker_container_info:
+        name: kaztoll-enterprise-front
+      register: result
+    - name: Does container exist?
+      ansible.builtin.debug:
+        msg: "The container {{ 'exists' if result.exists else 'does not exist' }}"
 
-   - name: Print information about container
-     ansible.builtin.debug:
-       var: result.container
-     when: result.exists
+    - name: Print information about container
+      ansible.builtin.debug:
+        var: result.container
+      when: result.exists
 
-   - name: Stop a container kaztoll-enterprise-front
-     docker_container:
-       name: kaztoll-enterprise-front
-       state: stopped
-     when: result.exists
+    - name: Stop a container kaztoll-enterprise-front
+      docker_container:
+        name: kaztoll-enterprise-front
+        state: stopped
+      when: result.exists
 
-   - name: Remove a container kaztoll-enterprise-front
-     docker_container:
-       name: kaztoll-enterprise-front
-       state: absent
-     when: result.exists
+    - name: Remove a container kaztoll-enterprise-front
+      docker_container:
+        name: kaztoll-enterprise-front
+        state: absent
+      when: result.exists
 
-   - name: Deploy kaztoll-enterprise-front container
-     docker_container:
-       name: kaztoll-enterprise-front
-       image: nc-registry.kaztoll.kz/kaztoll-enterprise-front
-       network_mode: bridge
-       networks:
-         - name: bridge0
-           ipv4_address: 192.168.89.11
-       restart_policy: always
-       state: started
+    - name: Deploy kaztoll-enterprise-front container
+      docker_container:
+        name: kaztoll-enterprise-front
+        image: nexus.kaztoll.kz/kaztoll-enterprise-frontend:0.0.20
+        network_mode: bridge
+        networks:
+          - name: bridge0
+            ipv4_address: 192.168.89.11
+        restart_policy: always
+        state: started

@@ -47,7 +47,12 @@ export class DashboardService {
     return this.http.get<any>(environment.apiUrl + req_url).pipe(map(doc => doc));
   }
 
-  sign(url: string, companyId: string, params: object) {
-    return this.http.post<any>(environment.apiUrl + url, {companyId, params});
+  sign(url: string,companyId: string, documentId: string, params: object) {
+    return this.http.post<any>(environment.apiUrl + url, { companyId, documentId, params});
+  }
+  createDocument(companyId: string) {
+    return this.http.post<any>(environment.apiUrl + '/documents/create', {
+      companyId
+    });
   }
 }

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title" [translate]="'decline_document_full_data_company'">Заполнение данных организаций.</h5>
+  <h5 class="modal-title">Заполнение данных организаций.</h5>
   <button type="button" class="close" data-dismiss="modal" (click)="dialogRef.dismiss()">
     <span>&times;</span>
   </button>
@@ -7,20 +7,20 @@
 <div class="modal-body">
   <form name="editForm">
     <div class="">
-      <p [translate]="'decline_document_question_reject'">Вы действительно хотите отклонить этот документ?</p>
+      <p>Вы действительно хотите отклонить этот документ?</p>
     </div>
     <div class="m-2 p-2">
       <div>
 
         <div class="form-group row">
-          <label class="col-4 col-form-label text-right " style="padding-top: 5px; padding-bottom: 5px;" [translate]="'decline_document_reason'">
+          <label class="col-4 col-form-label text-right " style="padding-top: 5px; padding-bottom: 5px;">
             Причина:
           </label>
           <div class="col-7">
             <ng-select [items]="types"
                        bindLabel="description"
                        bindValue="code"
-                       [placeholder]="'decline_document_choose'"
+                       placeholder="Выберите..."
                        [ngModelOptions]="{standalone: true}"
                        (ngModelChange)="changeReasonType($event)"
                        [(ngModel)]="reasonType">
@@ -28,13 +28,13 @@
           </div>
         </div>
         <div class="form-group row" *ngIf="reasonType === 'OTHERS'">
-          <label class="col-4 col-form-label text-right " style="padding-top: 5px; padding-bottom: 5px;" [translate]="'decline_document_title'">
+          <label class="col-4 col-form-label text-right " style="padding-top: 5px; padding-bottom: 5px;">
             Описание:
           </label>
           <div class="col-7">
             <textarea
               class="form-control" rows="3"
-              [placeholder]="'decline_document_reason'"
+              placeholder="Причина"
               name="reason"
               [(ngModel)]="comment"></textarea>
           </div>
@@ -46,11 +46,11 @@
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary ml-2"
-          (click)="dialogRef.dismiss()" [translate]="'decline_document_close'">Закрыть
+          (click)="dialogRef.dismiss()">Закрыть
   </button>
   <button type="button"
           class="btn btn-danger mr-2"
           [disabled]="loading || !reasonType || (reasonType === 'OTHERS' && !comment)"
-          (click)="confirm()" [translate]="'decline_document_reject'">Отклонить
+          (click)="confirm()">Отклонить
   </button>
 </div>

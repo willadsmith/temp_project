@@ -4,18 +4,17 @@ import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {BackendService} from '@app/_services/backend-service';
 import {ToastrService} from 'ngx-toastr';
-import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-contract-detail-dialog',
-  templateUrl: './contract-detail-dialog.component.html',
-  providers: [TranslatePipe]
+  templateUrl: './contract-detail-dialog.component.html'
 })
 export class ContractDetailDialogComponent implements OnInit {
   public router: Router;
   // Set our default values
   contractData: any;
+  documentId: any;
   hasAssets: boolean;
   assetsName: string;
 
@@ -39,7 +38,6 @@ export class ContractDetailDialogComponent implements OnInit {
               public dialogRef: NgbActiveModal,
               public http: HttpClient,
               private toastr: ToastrService,
-              private translatePipe: TranslatePipe,
               private backendService: BackendService) {}
 
   ngOnInit() {
@@ -95,6 +93,7 @@ export class ContractDetailDialogComponent implements OnInit {
     formData.append('website', this.website !== null && this.website !== '' && this.website !== undefined ? this.website.replace(/</g, '«').replace(/>/g, '»') : null);
     formData.append('phone', this.phone !== null && this.phone !== '' && this.phone !== undefined ? this.phone.replace(/</g, '«').replace(/>/g, '»') : null);
     formData.append('files', this.fileToUpload);
+    formData.append('documentId', this.documentId);
     // console.log(reqBody);
     this.loading = true;
     this.backendService.updateContractDetail(formData).subscribe(
@@ -108,7 +107,7 @@ export class ContractDetailDialogComponent implements OnInit {
       (err: any) => {
         // console.log(err);
         this.loading = false;
-        this.toastr.warning(this.translatePipe.transform('contract_detail_error_update_data'), this.translatePipe.transform('dashboard_error') + '!');
+        this.toastr.warning('Не удалось обновить данные. Проверьте введенные данные, а так же размер файла не более 20мб.', 'Ошибка!');
       }
     );
   }

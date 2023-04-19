@@ -11,10 +11,10 @@
         <ul class="dropdown-list">
           <li class="dropdown-list__item" *ngFor="let notify of notifyList">
             <div class="dropdown-list__link">
-              <p class="dropdown-list__txt1" [translate]="'home_warning'">Уведомления</p>
+              <p class="dropdown-list__txt1">Уведомления</p>
               <!--p class="dropdown-list__txt2">ЗАКРЫТЬ</p-->
               <div class="clear"></div>
-              <p class="dropdown-list__txt3" [translate]="'home_new'">Новые</p>
+              <p class="dropdown-list__txt3">Новые</p>
               <div class="dropdown-list__line"></div>
               <!-- <div *ngIf="notify.transfer">
                 <p class="dropdown-list__txt4">Входящий перевод</p>
@@ -26,24 +26,24 @@
               <div *ngIf="notify.transfer === undefined" class="dropdown-list__txt8">
                 {{notify.content}}
               </div>
-              <div class="dropdown-list__txt10" *ngIf="notify.transfer && notify.transfer.status === -1" [translate]="'home_comment_from_bank'">Комменатрии от Банка</div>
+              <div class="dropdown-list__txt10" *ngIf="notify.transfer && notify.transfer.status === -1">Комменатрии от Банка</div>
               <div class="dropdown-list__txt11" *ngIf="notify.transfer && notify.transfer.status === -1">{{notify.transfer.reason}}</div>
               <div class="sb-button dropdown-list__btn1" (click)="onClickNotice(notify)" *ngIf="notify.transfer === undefined">
-                <button class="btn" [translate]="'home_familiarize'">Ознакомиться</button>
+                <button class="btn">Ознакомиться</button>
               </div>
               <div class="sb-button dropdown-list__btn1" (click)="onClickNotice(notify)" *ngIf="notify.transfer && notify.transfer.status === 0">
-                <button class="btn" [translate]="'home_familiarize'">Ознакомиться</button>
+                <button class="btn">Ознакомиться</button>
               </div>
               <div class="sb-button dropdown-list__btn2" (click)="onClickNoticeReject(notify)" *ngIf="notify.transfer && notify.transfer.status === -1">
-                <button class="btn" [translate]="'home_reject'">Отклонить</button>
+                <button class="btn">Отклонить</button>
               </div>
               <div class="sb-button dropdown-list__btn3" (click)="onClickNotice(notify)" *ngIf="notify.transfer && notify.transfer.status === -1">
-                <button class="btn" [translate]="'home_repeat'">Повторить</button>
+                <button class="btn">Повторить</button>
               </div>
             </div>
           </li>
           <li class="dropdown-list__item last" *ngIf="notifyCount === 0">
-            <p class="dropdown-list__txt9" [translate]="'home_no_new_notify'">Нет новых уведомлений</p>
+            <p class="dropdown-list__txt9" [translate]="'page.main.NO_NEW_NOTICE'">Нет новых уведомлений</p>
           </li>
         </ul>
       </div>

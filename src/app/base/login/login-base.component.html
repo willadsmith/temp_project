@@ -23,16 +23,8 @@
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
-        <div class="selector-field-language">
-          <input type="radio" id='switch-one' name='toggle-switch' (click)="setLang('ru')" value='ru' [checked]="currentLang === 'ru'"/>
-          <label for="switch-one">Русский</label>
-          <input type="radio" id='switch-two' name='toggle-switch' (click)="setLang('kz')" value='kz' [checked]="currentLang === 'kz'" />
-          <label for="switch-two">Қазақша</label>
-<!--          <input type="radio" id='switch-three' name='toggle-switch' (click)="setLang('en')" value='en' [checked]="currentLang === 'en'" />-->
-<!--          <label for="switch-three">English</label>-->
-        </div>
         <div class="card-header bg-transparent pb-3">
-          <div class="text-muted text-center mt-2 mb-3"><strong [translate]="'login_panel_operator'">Панель оператора</strong></div>
+          <div class="text-muted text-center mt-2 mb-3"><strong>Панель оператора</strong></div>
         </div>
         <div class="card-body px-lg-5 py-lg-5">
           <form role="form">
@@ -41,7 +33,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-circle-08"></i></span>
                 </div>
-                <input (keyup)="onLogin($event)" class="form-control" [placeholder]="'login_email'" type="email">
+                <input (keyup)="onLogin($event)" class="form-control" placeholder="Электронная почта" type="email">
               </div>
             </div>
             <div class="form-group">
@@ -49,7 +41,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                 </div>
-                <input (keyup)="onPass($event)" class="form-control" [placeholder]="'login_password'" type="password" (keyup.enter)="onSubmit()">
+                <input (keyup)="onPass($event)" class="form-control" placeholder="Пароль" type="password" (keyup.enter)="onSubmit()">
               </div>
             </div>
             <div class="custom-control custom-control-alternative custom-checkbox">
@@ -59,7 +51,7 @@
               </label> -->
             </div>
             <div class="text-center">
-              <button type="button" (click)="onSubmit()" class="btn btn-success" [translate]="'login_sign_in'">Войти</button>
+              <button type="button" (click)="onSubmit()" class="btn btn-success">Войти</button>
             </div>
           </form>
         </div>

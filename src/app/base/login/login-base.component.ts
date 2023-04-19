@@ -5,13 +5,11 @@ import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '@app/_services';
 import { ToastrService } from 'ngx-toastr';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login-base.component.html',
-  styleUrls: ['./login-base.component.scss'],
-  providers: [TranslatePipe]
+  styleUrls: ['./login-base.component.scss']
 })
 export class LoginBaseComponent implements OnInit, OnDestroy {
     email: string;
@@ -22,22 +20,18 @@ export class LoginBaseComponent implements OnInit, OnDestroy {
     submitted = false;
     returnUrl: string;
     error = '';
-    currentLang;
     // email: string;
 
     constructor(
         private toastr: ToastrService,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
-        private translatePipe: TranslatePipe,
-        private translateService: TranslateService
+        private authenticationService: AuthenticationService
     ) {
-      this.currentLang = this.translateService.currentLang;
-      // redirect to home if already logged in
-      if (this.authenticationService.currentUserValue) {
-          this.router.navigate(['/base/dashboard']);
-      }
+        // redirect to home if already logged in
+        if (this.authenticationService.currentUserValue) {
+            this.router.navigate(['/base/dashboard']);
+        }
     }
 
   ngOnInit() {
@@ -61,13 +55,6 @@ export class LoginBaseComponent implements OnInit, OnDestroy {
     this.password = event.target.value;
   }
 
-  setLang(lang: string) {
-    localStorage.setItem('lang', lang);
-    this.translateService.use(lang);
-
-    this.currentLang = this.translateService.currentLang;
-  }
-
   onSubmit() {
     this.authenticationService.logout();
     this.submitted = true;
@@ -86,7 +73,7 @@ export class LoginBaseComponent implements OnInit, OnDestroy {
             this.router.navigate([this.returnUrl]);
             },
             error => {
-            this.toastr.error(this.translatePipe.transform('login_error_login_password'), this.translatePipe.transform('login_error_auth'));
+            this.toastr.error('Неверно указан логин или пароль', 'Ошибка авторизации');
             this.error = error;
             this.loading = false;
         });

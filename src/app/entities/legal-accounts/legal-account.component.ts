@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BackendService } from '@app/_services/backend-service';
-import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './legal-account.component.html',
-  styleUrls: ['./legal-account.component.scss'],
-  providers: [TranslatePipe]
+  styleUrls: ['./legal-account.component.scss']
 })
 export class LegalAccountComponent implements OnInit {
 
@@ -25,8 +23,7 @@ export class LegalAccountComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private router: Router,
-    private backendService: BackendService,
-    private translatePipe: TranslatePipe
+    private backendService: BackendService
   ) {}
 
   ngOnInit() {
@@ -45,7 +42,7 @@ export class LegalAccountComponent implements OnInit {
       }
     }, err => {
       this.loading = false;
-      this.toastr.error(this.translatePipe.transform('legal_account_error_upload_data'), this.translatePipe.transform('dashboard_error') + '!');
+      this.toastr.error('Не удалось загрузить данные', 'Ошибка!');
     });
   }
 
@@ -66,7 +63,7 @@ export class LegalAccountComponent implements OnInit {
         this.loading = false;
       }, err => {
         this.loading = false;
-        this.toastr.error(this.translatePipe.transform('legal_account_error_upload_data'), this.translatePipe.transform('dashboard_error') + '!');
+        this.toastr.error('Не удалось загрузить данные', 'Ошибка!');
       }
     );
   }
@@ -104,7 +101,7 @@ export class LegalAccountComponent implements OnInit {
         this.router.navigate(['/legal-account/' + data.iban]);
       }, err => {
         // this.loading = false;
-        this.toastr.error(this.translatePipe.transform('legal_account_error_choose_account'), this.translatePipe.transform('dashboard_error') + '!');
+        this.toastr.error('Не удалось выбрать лицевой счет', 'Ошибка!');
       }
     );
   }

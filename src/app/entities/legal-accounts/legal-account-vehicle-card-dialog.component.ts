@@ -4,17 +4,14 @@ import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {ToastrService} from 'ngx-toastr';
 import {BackendService} from '@app/_services/backend-service';
 import {LoadingService} from '@app/_services/loading.service';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
 declare var startConnection: any;
-declare var changeLocaleCall: any;
 
 @Component({
   selector: 'app-legal-account-vehicle-card-dialog',
-  templateUrl: './legal-account-vehicle-card-dialog.component.html',
-  providers: [TranslatePipe]
+  templateUrl: './legal-account-vehicle-card-dialog.component.html'
 })
 export class LegalAccountVehicleCardDialogComponent implements OnInit {
   accountNumber: string;
@@ -31,8 +28,6 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
     public dialogRef: NgbActiveModal,
     private toastr: ToastrService,
     private loadingService: LoadingService,
-    private translatePipe: TranslatePipe,
-    private translate: TranslateService,
     private backendService: BackendService) {}
 
   ngOnInit() {
@@ -57,12 +52,6 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
     // this.startProcessSign('PKSC12', 'html');
   }
 
-  // "legal_account_switch_error_connection_nca_layer":"Не запущен или не установлен NCALayer",
-  // "legal_account_switch_cancel_process_sign":"Процесс подписи прекращен пользователем",
-  // "legal_account_switch_wrong_user_data":"Данные текущего пользователя и сертификата не совпадают!",
-  // "legal_account_switch_error_service":"Ошибка Сервиса",
-  // "legal_account_switch_not_add_card_number":"Не удалось добавить номер карты",
-
   startProcessSign(storage: string, sign: string) {
     this.signTag = sign;
     this.signLoading = true;
@@ -70,11 +59,9 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
     this.loadingService.showLoading();
     EventBus.subscribe('connect', res => {
       if (res === 1) {
-        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz' : this.translate.currentLang);
-
         this.signatureConfirm();
       } else {
-        this.toastr.warning(this.translatePipe.transform('legal_account_switch_error_connection_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
+        this.toastr.warning('Не запущен или не установлен NCALayer', 'Ошибка NCALayer!');
         this.signLoading = false;
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
@@ -89,7 +76,7 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
       console.log('signed start', res);
       if (res['code'] === '500') {
         if (res.message ===  'action.canceled') {
-          this.toastr.warning(this.translatePipe.transform('login_main_sign_process_cancel_user'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
+          this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -153,9 +140,9 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
       (err: any) => {
         // console.log(err);
         if (err && err.error && err.error.message === 'error.server_not_respond') {
-          this.toastr.warning(this.translatePipe.transform('legal_account_switch_wrong_user_data'), 'Ошибка!');
+          this.toastr.warning('Данные текущего пользователя и сертификата не совпадают!', 'Ошибка!');
         } else {
-          this.toastr.warning(this.translatePipe.transform('legal_account_switch_not_add_card_number'), this.translatePipe.transform('legal_account_switch_error_service') + '!');
+          this.toastr.warning('Не удалось добавить номер карты', 'Ошибка Сервиса!');
         }
         this.signLoading = false;
       }

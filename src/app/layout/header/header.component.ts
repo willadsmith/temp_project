@@ -33,8 +33,8 @@ export class HeaderComponent {
 
   public availableLanguages: Array<LanguageInterface> = [
     {code: 'kz', name: 'Қаз'},
-    {code: 'ru', name: 'Рус'}
-    // {code: 'en', name: 'Eng'}
+    {code: 'ru', name: 'Рус'},
+    {code: 'en', name: 'Eng'}
   ];
 
   public isLogged = false;

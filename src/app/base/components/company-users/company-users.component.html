@@ -5,7 +5,7 @@
         <div class="col">
           <div class="row align-items-end">
             <div class="col-5">
-              <h3 class="mb-0" [translate]="'company_users_list_users'">Список подписантов</h3>
+              <h3 class="mb-0">Список подписантов</h3>
             </div>
           </div>
         </div>
@@ -16,17 +16,17 @@
         <div class="load"></div>
       </div>
       <div class="my-2 p-2" *ngIf="(!users || users.length < 1) && !loadingUsers">
-        <div [translate]="'company_users_signers_not_found'">Подписанты не найдены</div>
+        <div>Подписанты не найдены</div>
       </div>
       <div class="table-responsive"  *ngIf="users && users.length > 0 && !loadingUsers">
         <table class="table align-items-center table-flush">
           <thead class="thead-light">
           <tr>
-            <th [translate]="'company_users_fio'">ФИО</th>
-            <th [translate]="'company_users_email'">email</th>
-            <th [translate]="'company_users_position'">Должность</th>
-            <th [translate]="'company_users_doc_boss'">Документ руководителя</th>
-            <th [translate]="'dashboard_actions'" class="text-right">действия</th>
+            <th>ФИО</th>
+            <th>email</th>
+            <th>Должность</th>
+            <th>Документ руководителя</th>
+            <th class="text-right">действия</th>
           </tr>
           </thead>
           <tbody>
@@ -45,18 +45,18 @@
             </td>
             <td class="text-right">
               <span *ngIf="user.isMain === true" class="badge badge-dark mr-1"
-                    style="font-size: 80%; max-width: 300px; white-space: normal;" [translate]="'company_users_main_in_doc'">
+                    style="font-size: 80%; max-width: 300px; white-space: normal;">
                   Основной в договоре
               </span>
               <button *ngIf="user.isMain !== true"
                       type="button" class="btn btn-warning btn-sm mr-1" style="border-radius: 5px;" [disabled]="user.loading"
-                      (click)="editCompany(user)">{{'company_users_pointer' | translate}}</button>
+                      (click)="editCompany(user)">Указать в договоре</button>
 <!--              <a class="action-icon mr-1 text-warning"-->
 <!--                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user)">-->
 <!--                 <span class="d-none d-lg-block"><fa-icon [icon]="'eye'"></fa-icon></span>-->
 <!--              </a>-->
               <a class="action-icon mr-1 text-warning"
-                 placement="top" [ngbTooltip]="'users_edit' | translate" (click)="editCompany(user)">
+                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user)">
                 <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
               </a>
             </td>

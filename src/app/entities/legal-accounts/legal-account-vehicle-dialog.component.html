@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span [translate]="'legal_account_vehicle_dialog_add_ts'">Добавление ТС</span><br/>
-    <span style="font-weight: bold;" [translate]="'legal_account_vehicle_dialog_details'">(Ваше действие нужно подвердить подписью!)</span>
+    <span>Добавление ТС</span><br/>
+    <span style="font-weight: bold;">(Ваше действие нужно подвердить подписью!)</span>
   </h5>
   <button type="button" class="close" data-dismiss="modal" [disabled]="signLoading" (click)="dialogRef.close({result: anyAdded})">
     <span>&times;</span>
@@ -12,7 +12,7 @@
     <form name="editForm" role="form" novalidate #editForm="ngForm">
       <div class="form-group row" style="margin-bottom: 10px !important;" *ngFor="let vehicle of vehicles; let i = index">
         <label class="col-4 col-form-label text-right">
-          <span [translate]="'legal_account_vehicle_dialog_grnz'">ГРНЗ</span>: <span *ngIf="vehicles.length > 1">{{i + 1}}</span>
+          ГРНЗ: <span *ngIf="vehicles.length > 1">{{i + 1}}</span>
         </label>
         <div class="col-6">
           <input class="form-control own-form-control" [ngClass]="vehicle.licencePlate.toUpperCase() === this.invalidLicencePlate ? 'redBorder' : ''"
@@ -31,7 +31,7 @@
         <label class="col-4 col-form-label text-right">
         </label>
         <div class="col-6">
-          <button class="btn btn-sm btn-info" (click)="addNewVehicle()" [disabled]="signLoading"><i class="ni ni-fat-add mr-1"></i> <span [translate]="'legal_account_vehicle_dialog_add_to_ts'">Добавить ещё ТС</span></button>
+          <button class="btn btn-sm btn-info" (click)="addNewVehicle()" [disabled]="signLoading"><i class="ni ni-fat-add mr-1"></i> Добавить ещё ТС</button>
         </div>
       </div>
     </form>
@@ -40,11 +40,11 @@
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary mr-1"
-          (click)="dialogRef.close({result: anyAdded})" [disabled]="signLoading" [translate]="'legal_account_vehicle_dialog_cancel'">Отмена
+          (click)="dialogRef.close({result: anyAdded})" [disabled]="signLoading">Отмена
   </button>
   <button type="button"
           class="btn btn-primary ml-1"
           [disabled]="editForm.form.invalid || signLoading"
-          (click)="save()" [translate]="'legal_account_vehicle_dialog_add'">Добавить
+          (click)="save()">Добавить
   </button>
 </div>

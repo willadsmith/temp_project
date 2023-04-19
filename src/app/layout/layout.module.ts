@@ -18,20 +18,18 @@ import { ConfirmDialogComponent } from './form/confirm-dialog.component';
 import { ConfirmService } from './form/confirm.service';
 import { InfoDialogComponent } from './form/info-dialog.component';
 import { InfoService } from './form/info.service';
-import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule,
-        NgbModule,
-        FontAwesomeModule,
-        TranslateModule,
-        // SharedModule,
-        // BsDropdownModule.forRoot(),
-        // CollapseModule.forRoot(),
-        // AlertModule.forRoot()
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgbModule,
+    FontAwesomeModule
+    // SharedModule,
+    // BsDropdownModule.forRoot(),
+    // CollapseModule.forRoot(),
+    // AlertModule.forRoot()
+  ],
   declarations: [
     HeaderComponent,
     NotifyComponent,

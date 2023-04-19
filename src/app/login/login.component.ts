@@ -11,17 +11,14 @@ declare var startConnection: any;
 declare var getActiveTokens: any;
 declare var selectSignType: any;
 declare var chooseNCAStorage: any;
-declare var changeLocaleCall: any;
 declare let $: any;
 
 import { AuthenticationService } from '@app/_services';
 import { LoadingService } from '@app/_services/loading.service';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   templateUrl: 'login.component.html',
-  styleUrls: ['./login.component.scss'],
-  providers: [TranslatePipe]
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
@@ -48,42 +45,41 @@ export class LoginComponent implements OnInit {
     companyTypes = [];
     companyName: string;
     companyNameType = 'FIO';
-    currentLang = '';
     public xinMask = [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
-        private translate: TranslateService,
         private router: Router,
         private authenticationService: AuthenticationService,
         private loadingService: LoadingService,
-        private toastr: ToastrService,
-        private translatePipe: TranslatePipe
+        private toastr: ToastrService
     ) {
       this.userObject = this.authenticationService.currentUserValue;
         // redirect to home if already logged in
       if (this.authenticationService.currentUserValue) {
         this.router.navigate(['/']);
       }
-      this.changeCompanyTypeLang(this.translate.currentLang);
+      this.companyTypes.push(
+        {description: 'Индивидуальный предприниматель', code: 'ИП'},
+        {description: 'Товарищество с ограниченной ответственностью', code: 'ТОО'},
+        {description: 'Акционерное общество', code: 'АО'},
+        {description: 'Коммунальные государственные учреждения', code: 'КГУ'},
+        {description: 'Государственное учреждение', code: 'ГУ'},
+        {description: 'Государственное коммунальное предприятие на праве хозяйственного ведения', code: 'ГКП на ПХВ'},
+        {description: 'Некоммерческого акционерного общества', code: 'НАО'},
+        {description: 'Республиканское государственное предприятие', code: 'РГП'},
+        {description: 'Республиканского государственного предприятия на праве хозяйственного ведения', code: 'РГП на ПХВ'},
+        {description: 'Республиканское государственное казённое предприятие', code: 'РГКП'});
     }
 
     ngOnInit() {
-      this.currentLang = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'ru';
-      this.loginForm = this.formBuilder.group({
-          username: ['', Validators.required],
-          password: ['', Validators.required]
-      });
+        this.loginForm = this.formBuilder.group({
+            username: ['', Validators.required],
+            password: ['', Validators.required]
+        });
 
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    }
-
-    setLang(lang: string) {
-      localStorage.setItem('lang', lang);
-      this.translate.use(lang);
-
-      this.changeCompanyTypeLang(lang);
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     changeReg() {
@@ -96,55 +92,10 @@ export class LoginComponent implements OnInit {
     }
 
     changeOwnerType(event: any) {
-      console.log(event);
-      if (event === 'ИП' || event === 'ЖК') {
+      if (event === 'ИП') {
         this.bin = '';
         this.companyName = '';
         this.companyNameType = 'FIO';
-      }
-    }
-
-    changeCompanyTypeLang(lang: string) {
-      this.companyTypes = [];
-      switch (lang) {
-        case 'ru':
-          return this.companyTypes.push(
-            {description: 'Индивидуальный предприниматель', code: 'ИП'},
-            {description: 'Товарищество с ограниченной ответственностью', code: 'ТОО'},
-            {description: 'Акционерное общество', code: 'АО'},
-            {description: 'Коммунальные государственные учреждения', code: 'КГУ'},
-            {description: 'Государственное учреждение', code: 'ГУ'},
-            {description: 'Государственное коммунальное предприятие на праве хозяйственного ведения', code: 'ГКП на ПХВ'},
-            {description: 'Некоммерческого акционерного общества', code: 'НАО'},
-            {description: 'Республиканское государственное предприятие', code: 'РГП'},
-            {description: 'Республиканского государственного предприятия на праве хозяйственного ведения', code: 'РГП на ПХВ'},
-            {description: 'Республиканское государственное казённое предприятие', code: 'РГКП'});
-        case 'kz':
-          return this.companyTypes.push(
-            {description: 'Жеке кәсіпкер', code: 'ЖК'},
-            {description: 'Жауапкершілігі шектеулі серіктестік', code: 'ЖШС'},
-            {description: 'Акционерлік қоғам', code: 'АҚ'},
-            {description: 'Коммуналдық мемлекеттік мекемелер', code: 'ҚМУ'},
-            {description: 'Мемлекеттік мекеме', code: 'ММ'},
-            {description: 'Шаруашылық жүргізу құқығындағы мемлекеттік коммуналдық кәсіпорын', code: 'ШЖҚ МКК'},
-            {description: 'Коммерциялық емес акционерлік қоғам', code: 'КЕАҚ'},
-            {description: 'Республикалық мемлекеттік кәсіпорын', code: 'РМК'},
-            {description: 'Шаруашылық жүргізу құқығындағы республикалық мемлекеттік кәсіпорын', code: 'ШЖҚ РМК'},
-            {description: 'Республикалық мемлекеттік қазыналық кәсіпорын', code: 'РМҚК'});
-        // case 'en':
-        //   return this.companyTypes.push(
-        //     {description: 'Индивидуальный предприниматель', code: 'ИП'},
-        //     {description: 'Товарищество с ограниченной ответственностью', code: 'ТОО'},
-        //     {description: 'Акционерное общество', code: 'АО'},
-        //     {description: 'Коммунальные государственные учреждения', code: 'КГУ'},
-        //     {description: 'Государственное учреждение', code: 'ГУ'},
-        //     {description: 'Государственное коммунальное предприятие на праве хозяйственного ведения', code: 'ГКП на ПХВ'},
-        //     {description: 'Некоммерческого акционерного общества', code: 'НАО'},
-        //     {description: 'Республиканское государственное предприятие', code: 'РГП'},
-        //     {description: 'Республиканского государственного предприятия на праве хозяйственного ведения', code: 'РГП на ПХВ'},
-        //     {description: 'Республиканское государственное казённое предприятие', code: 'РГКП'});
-        default:
-          break;
       }
     }
 
@@ -157,13 +108,12 @@ export class LoginComponent implements OnInit {
       this.loadingService.showLoading();
       EventBus.subscribe('connect', res => {
         if (res === 1) {
-        changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz' : this.translate.currentLang);
-        this.loading = true;
+          this.loading = true;
 
-        selectSignType('LOGIN');
-        this.authSubmit();
+          selectSignType('LOGIN');
+          this.authSubmit();
         } else {
-          this.toastr.error(this.translatePipe.transform('login_main_connection_error_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer'));
+          this.toastr.error('Не запущен или не установлен NCALayer', 'Ошибка NCALayer');
           this.loadingService.hideLoading();
           EventBus.unsubscribe('connect');
           this.loading = false;
@@ -177,13 +127,12 @@ export class LoginComponent implements OnInit {
       this.loadingService.showLoading();
       EventBus.subscribe('connect', res => {
         if (res === 1) {
-            changeLocaleCall(this.translate.currentLang === 'kz' ? 'kz': this.translate.currentLang);
-            this.loading = true;
+          this.loading = true;
 
-            selectSignType('LOGIN');
-            this.regSubmit();
+          selectSignType('LOGIN');
+          this.regSubmit();
         } else {
-          this.toastr.warning(this.translatePipe.transform('login_main_connection_error_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer'));
+          this.toastr.warning('Не запущен или не установлен NCALayer', 'Ошибка NCALayer');
           this.loadingService.hideLoading();
           EventBus.unsubscribe('connect');
           this.loading = false;
@@ -197,7 +146,7 @@ export class LoginComponent implements OnInit {
 
         if (res['code'] === '500') {
           if (res.message ===  'action.canceled') {
-            this.toastr.warning(this.translatePipe.transform('login_main_sign_process_cancel_user'), this.translatePipe.transform('login_main_error_nca_layer'));
+            this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
           }
           this.loading = false;
           this.loadingService.hideLoading();
@@ -230,7 +179,7 @@ export class LoginComponent implements OnInit {
       EventBus.subscribe('signConnectResult', res => {
         if (res['code'] === '500') {
           if (res.message ===  'action.canceled') {
-            this.toastr.warning(this.translatePipe.transform('login_main_sign_process_cancel_user'), this.translatePipe.transform('login_main_error_nca_layer'));
+            this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
           }
           this.loading = false;
           this.loadingService.hideLoading();
@@ -293,7 +242,7 @@ export class LoginComponent implements OnInit {
                     this.error = error.error.message;
                   }
                   this.loading = false;
-                  this.toastr.error(this.error, this.translatePipe.transform('dashboard_error'));
+                  this.toastr.error(this.error, 'Ошибка');
                   EventBus.unsubscribe('connect');
                   EventBus.unsubscribe('auth_token');
                   endConnection();

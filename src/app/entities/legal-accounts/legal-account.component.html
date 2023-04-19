@@ -2,7 +2,7 @@
     <!-- <button (click)="getItems()">Получить список документов</button> -->
     <table>
       <tbody>
-        <tr><strong [translate]="'legal_account_personal_accounts'">Лицевые счета</strong></tr>
+        <tr><strong>Лицевые счета</strong></tr>
       </tbody>
     </table>
   <div class="card legal-accounts">
@@ -11,17 +11,17 @@
         <div class="load"></div>
       </div>
       <div *ngIf="(!legalAccounts || legalAccounts.length < 1) && !loading">
-        <div [innerHTML]="'legal_account_personal_account_not_found' | translate">Лицевых счетов не найдено (<b>Нужно заключить договор!</b>)</div>
+        <div>Лицевых счетов не найдено (<b>Нужно заключить договор!</b>)</div>
       </div>
       <table class="table table-sm table-hover" *ngIf="legalAccounts && legalAccounts.length > 0 && !loading">
         <thead>
         <tr>
-          <th><div [translate]="'legal_account_account_number'">Номер счета</div></th>
-          <th><div [translate]="'legal_account_iin_bin_founder'">ИИН/БИН владельца</div></th>
-          <th><div [translate]="'legal_account_name_fio'">Наименование/ФИО</div></th>
-          <th><div [translate]="'legal_account_data_start_register'">Дата регистрации счета</div></th>
-          <th><div [translate]="'legal_account_number_contract'">Номер договора</div></th>
-          <th><div [translate]="'legal_account_balance'">Баланс</div></th>
+          <th><div>Номер счета</div></th>
+          <th><div>ИИН/БИН владельца</div></th>
+          <th><div>Наименование/ФИО</div></th>
+          <th><div>Дата регистрации счета</div></th>
+          <th><div>Номер договора</div></th>
+          <th><div>Баланс</div></th>
           <th class="min-width-230"></th>
         </tr>
         </thead>
@@ -50,7 +50,7 @@
               <button type="button"
                       class="btn btn-sm btn-warning"
                       (click)="setMain(legalAccount)">
-                <span [translate]="'legal_account_choose_account'">Выбрать Лицевой счет</span>
+                <span>Выбрать Лицевой счет</span>
               </button>
             </div>
           </td>
