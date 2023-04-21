@@ -7,19 +7,39 @@ export class LoadingService {
   private isPageReload = true;
   private animationType = 'wave';
   private backgroundColor = 'black';
+  private currentLang = localStorage.getItem('lang');
+  private textLoading = '';
 
   constructor() {}
+
+  getCurrentLang() {
+    if (this.currentLang === undefined || '') {
+      this.textLoading = 'Подождите, идет загрузка...';
+    }
+
+    switch (this.currentLang){
+      case 'ru':
+        return this.textLoading = 'Подождите, идет загрузка...';
+      case 'kz':
+        return this.textLoading = 'Күте тұрыңыз, жүктеу жүріп жатыр...';
+      case 'en':
+        return this.textLoading = 'Подождите, идет загрузка...';
+      default:
+        break;
+    }
+  }
 
   getLoadingStatus(): boolean {
     return this.isLoading;
   }
 
   showLoading(): void {
+    this.getCurrentLang();
     // if(!this.isPageReload){
     //     this.backgroundColor = 'b';
     // }
     $('body').loadingModal({
-      text: 'Подождите, идет загрузка...',
+      text: this.textLoading,
       animation: this.animationType,
       backgroundColor: this.backgroundColor
     });

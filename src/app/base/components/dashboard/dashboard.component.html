@@ -5,29 +5,29 @@
         <div class="col">
           <div class="row align-items-end">
             <div class="col-5">
-              <h3 class="mb-0">Список компаний</h3>
+              <h3 class="mb-0" [translate]="'dashboard_list_companies'">Список компаний</h3>
             </div>
             <div class="col ml-auto text-right">
               <div class="d-flex justify-content-end align-items-end">
                 <div class="mr-2 text-left">
-                  <small>Статус:</small>
+                  <small [translate]="'dashboard_status'">Статус:</small>
                   <select class="form-control form-control-sm" [(ngModel)]="currentStatus">
-                    <option value="">Все</option>
-                    <option value="CHECKING">Требует проверки оператора</option>
-                    <option value="PASSED">Требует подписи оператора</option>
-                    <option value="APPROVED">Требует подписи клиента</option>
-                    <option value="PENDING">Требует заполнения данных</option>
-                    <option value="SIGNED">Подписан</option>
-                    <option value="DECLINE">Отменен</option>
+                    <option value="" [translate]="'dashboard_all'">Все</option>
+                    <option value="CHECKING" [translate]="'dashboard_need_check_operator'">Требует проверки оператора</option>
+                    <option value="PASSED" [translate]="'dashboard_need_sign_operator'">Требует подписи оператора</option>
+                    <option value="APPROVED" [translate]="'dashboard_need_sign_client'">Требует подписи клиента</option>
+                    <option value="PENDING" [translate]="'dashboard_need_full_data'">Требует заполнения данных</option>
+                    <option value="SIGNED" [translate]="'dashboard_signed'">Подписан</option>
+                    <option value="DECLINE" [translate]="'dashboard_canceled'">Отменен</option>
                   </select>
                 </div>
                 <div class="mr-2 text-left">
-                  <small>Наименование:</small>
+                  <small [translate]="'dashboard_name'">Наименование:</small>
                   <input class="form-control form-control-sm" [(ngModel)]="companyName" name="ownerXinQuery"
                          autocomplete="off" (keyup.enter)="loadDocuments(true)">
                 </div>
                 <div class="mr-2 text-left">
-                  <small>БИН:</small>
+                  <small [translate]="'dashboard_bin'">БИН:</small>
                   <input class="form-control form-control-sm" [(ngModel)]="bin" name="ownerXinQuery"
                          autocomplete="off" (keyup.enter)="loadDocuments(true)">
                 </div>
@@ -52,70 +52,68 @@
         <div class="load"></div>
       </div>
       <div class="my-2 p-2" *ngIf="(!docsCompany || docsCompany.length < 1) && !loadingDocuments">
-        <div>Компаний не найдено</div>
+        <div [translate]="'dashboard_companies_not_found'">Компаний не найдено</div>
       </div>
       <div class="table-responsive"  *ngIf="docsCompany && docsCompany.length > 0 && !loadingDocuments">
         <table class="table align-items-center table-flush">
           <thead class="thead-light">
           <tr>
-            <th>Наименование компании</th>
-            <th>БИН компании</th>
+            <th [translate]="'dashboard_name_company'">Наименование компании</th>
+            <th [translate]="'dashboard_companies_bin'">БИН компании</th>
 <!--                <th>Документ</th>-->
-            <th>Статус</th>
-            <th>Данные Договора
+            <th [translate]="'dashboard_status'">Статус</th>
+            <th [translate]="'dashboard_doc_data'">Данные Договора
               <fa-icon class="filterIcon" [icon]="filterIcon" (click)="changeFilter()" [disabled]="loadingDocuments"></fa-icon>
             </th>
-            <th>Документы и Файлы</th>
-            <th class="text-right">Действия</th>
+            <th [translate]="'dashboard_docs_and_files'">Документы и Файлы</th>
+            <th class="text-right" [translate]="'dashboard_actions'">Действия</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let docComp of docsCompany; let i = index" >
             <td style="max-width: 250px; white-space: normal;">
-              {{docComp.company.name}}
-              <span *ngIf="docComp.company.info" class="badge badge-success badge-90">{{docComp.company.info}}</span>
+              {{docComp.name}}
+              <span *ngIf="docComp.info" class="badge badge-success badge-90">{{docComp.info}}</span>
             </td>
             <td>
-              {{docComp.company.bin}}
+              {{docComp.bin}}
             </td>
 <!--                <td>-->
-<!--                  <strong>{{docComp.name}}</strong>-->
+<!--                  <strong>{{docComp.documents[0].name}}</strong>-->
 <!--                </td>-->
             <td>
-              <span *ngIf="docComp.status === 'PENDING'" class="text-warning">Требует заполнения данных</span>
-              <span *ngIf="docComp.status === 'CHECKING'" class="text-warning">Требует проверки оператора</span>
-              <span *ngIf="docComp.status === 'PASSED'" class="text-warning">Требует подписи оператора</span>
-              <span *ngIf="docComp.status === 'APPROVED'" class="text-success">Требует подписи клиента</span>
-              <span *ngIf="docComp.status === 'DECLINE'" class="text-danger">Отклонен</span>
-              <span *ngIf="docComp.status === 'SIGNED'" class="text-success">Подписан</span>
+              <span *ngIf="docComp.documents[0].status === 'PENDING'" class="text-warning" [translate]="'dashboard_need_full_data'">Требует заполнения данных</span>
+              <span *ngIf="docComp.documents[0].status === 'CHECKING'" class="text-warning" [translate]="'dashboard_need_check_operator'">Требует проверки оператора</span>
+              <span *ngIf="docComp.documents[0].status === 'PASSED'" class="text-warning" [translate]="'dashboard_need_sign_operator'">Требует подписи оператора</span>
+              <span *ngIf="docComp.documents[0].status === 'APPROVED'" class="text-success" [translate]="'dashboard_need_sign_client'">Требует подписи клиента</span>
+              <span *ngIf="docComp.documents[0].status === 'DECLINE'" class="text-danger" [translate]="'dashboard_declined'">Отклонен</span>
+              <span *ngIf="docComp.documents[0].status === 'SIGNED'" class="text-success" [translate]="'dashboard_signed'">Подписан</span>
             </td>
             <td>
-              <strong *ngIf="docComp.dateSign">Дата: {{docComp.dateSign | date: 'dd.MM.yyyy HH:mm:ss'}}</strong><br>
-              <strong *ngIf="docComp.contractNumber">Номер: {{docComp.contractNumber}}</strong>
+              <strong *ngIf="docComp.documents[0].dateSign">Дата: {{docComp.documents[0].dateSign | date: 'dd.MM.yyyy HH:mm:ss'}}</strong><br>
+              <strong *ngIf="docComp.documents[0].contractNumber">Номер: {{docComp.documents[0].contractNumber}}</strong>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-warning" type="button" (click)="createDocument(docComp.company.id)">Добавить документ</button>
-              
-              <button *ngIf="docComp.asset" class="btn btn-sm btn-info" type="button" (click)="downloadDocument(docComp.company.bin, docComp.id, docComp.company.id)">Скачать документ</button>
-              <button *ngIf="docComp.assets && docComp.assets.length > 0" class="btn btn-sm btn-dark" type="button" (click)="downloadAsset(docComp.assets[0])">Скачать Архив</button>
+              <button *ngIf="docComp.documents[0].asset" class="btn btn-sm btn-info" type="button" (click)="downloadDocument(docComp.bin, docComp.id)">Скачать документ</button>
+              <button *ngIf="docComp.documents[0].assets && docComp.documents[0].assets.length > 0" class="btn btn-sm btn-dark" type="button" (click)="downloadAsset(docComp.documents[0].assets[0])">Скачать Архив</button>
             </td>
             <td class="text-right">
-              <span *ngIf="docComp.status === 'DECLINE'" class="badge badge-danger"
+              <span *ngIf="docComp.documents[0].status === 'DECLINE'" class="badge badge-danger"
                     style="font-size: 80%; max-width: 300px; white-space: normal;">
-                Причина: {{docComp.comments}}
+                <span [translate]="'dashboard_reason'">Причина</span>: {{docComp.documents[0].comments}}
               </span>
-              <button *ngIf="docComp.status === 'CHECKING'" type="button" class="btn btn-primary"
-                      (click)="approveDocument(docComp.id)">Подтвердить</button>
-              <button *ngIf="docComp.status === 'PASSED'" type="button" class="btn btn-success"
-                      [disabled]="docComp.loading" (click)="startProcessSign('PKSC12', docComp.body, docComp.company.id, docComp)">
-                Подписать <fa-icon icon="spinner" spin="true" *ngIf="docComp.loading"></fa-icon>
+              <button *ngIf="docComp.documents[0].status === 'CHECKING'" type="button" class="btn btn-primary"
+                      (click)="approveDocument(docComp.id)" [translate]="'dashboard_confirm'">Подтвердить</button>
+              <button *ngIf="docComp.documents[0].status === 'PASSED'" type="button" class="btn btn-success"
+                      [disabled]="docComp.loading" (click)="startProcessSign('PKSC12', docComp.documents[0].body, docComp.id, docComp)">
+                <span [translate]="'dashboard_sign'">Подписать</span> <fa-icon icon="spinner" spin="true" *ngIf="docComp.loading"></fa-icon>
               </button>
-              <button *ngIf="docComp.status === 'CHECKING' || docComp.status === 'PASSED'"
+              <button *ngIf="docComp.documents[0].status === 'CHECKING' || docComp.documents[0].status === 'PASSED'"
                       type="button" class="btn btn-danger" [disabled]="docComp.loading"
-                      (click)="declineDocument(docComp.id, docComp.company.id, docComp.status)">Отклонить</button>
-              <button *ngIf="docComp.status === 'APPROVED'"
+                      (click)="declineDocument(docComp.id, docComp.documents[0].status)" [translate]="'dashboard_reject'">Отклонить</button>
+              <button *ngIf="docComp.documents[0].status === 'APPROVED'"
                       type="button" class="btn btn-warning btn-sm" style="border-radius: 5px;" [disabled]="docComp.loading"
-                      (click)="declineDocument(docComp.id,docComp.company.id, 'APPROVED')">Отменить Подпись</button>
+                      (click)="declineDocument(docComp.id, 'APPROVED')" [translate]="'dashboard_cancel_sign'">Отменить Подпись</button>
             </td>
           </tr>
           </tbody>

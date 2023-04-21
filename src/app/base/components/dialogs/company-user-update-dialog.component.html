@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Редактировать подписанта</span><br/>
+    <span [translate]="'dialogs_company_edit_signer'">Редактировать подписанта</span><br/>
   </h5>
   <button type="button" class="close" data-dismiss="modal" [disabled]="loading" (click)="dialogRef.close()">
     <span>&times;</span>
@@ -16,27 +16,27 @@
           </form-value>
         </app-form-control>
         <div class="form-group row" style="margin-bottom: 13px;">
-          <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;">
+          <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;" [translate]="'dialogs_company_fio'">
             ФИО:
           </label>
           <div class="col-4">
-            <input type="text" class="form-control own-form-control" name="lastName" [(ngModel)]="companyUser.lastName" required autocomplete="off" placeholder="Фамилие">
+            <input type="text" class="form-control own-form-control" name="lastName" [(ngModel)]="companyUser.lastName" required autocomplete="off" [placeholder]="'dialogs_company_f' | translate">
           </div>
           <div class="col-2">
-            <input type="text" class="form-control own-form-control" name="firstName" [(ngModel)]="companyUser.firstName" required autocomplete="off" placeholder="Имя">
+            <input type="text" class="form-control own-form-control" name="firstName" [(ngModel)]="companyUser.firstName" required autocomplete="off" [placeholder]="'dialogs_company_i' | translate">
           </div>
           <div class="col-2">
-            <input type="text" class="form-control own-form-control" name="middleName" [(ngModel)]="companyUser.middleName" required autocomplete="off" placeholder="Отчество">
+            <input type="text" class="form-control own-form-control" name="middleName" [(ngModel)]="companyUser.middleName" required autocomplete="off" [placeholder]="'dialogs_company_o' | translate">
           </div>
         </div>
         <app-form-control labelClass="col-4" valueClass="col-6">
-          <form-label>Долженность:</form-label>
+          <form-label>{{ 'dialogs_company_position' | translate }}:</form-label>
           <form-value>
             <input type="text" class="form-control own-form-control" name="position" [(ngModel)]="companyUser.position" required autocomplete="off">
           </form-value>
         </app-form-control>
         <app-form-control valueClass="col-6">
-          <form-label>Документ руководителя:</form-label>
+          <form-label>{{ 'dialogs_company_doc_boss' | translate }}:</form-label>
           <form-value>
             <input type="text" class="form-control own-form-control" name="operatorDoc" [(ngModel)]="companyUser.operatorDoc" required autocomplete="off">
           </form-value>
@@ -47,9 +47,9 @@
   <hr style="margin-top: 1rem; margin-bottom: 1rem;">
   <div class="preview">
     <div class="title text-center font-weight-bold">
-      Договор №####
+      {{ 'dialogs_company_contract_number' | translate }} ####
     </div>
-    <div class="contract-p">
+    <div class="contract-p" [innerHTML]="'dialogs_company_main_title_contract' | translate">
       Настоящий Публичный договор (далее – Договор) определяет условия проезда по платным автомобильным дорогам (участкам)
       общего пользования республиканского значения и иных связанных с ним услуг, оказываемых
       Акционерным обществом «Национальная компания «ҚазАвтоЖол» в качестве доверительного управляющего по Договору от 30.05.2013г. №2/7, от имени которого действует Филиал «Дирекция платных
@@ -57,7 +57,7 @@
       {{' '}}<b>{{companyUser.lastName + ' ' + companyUser.firstName + ' ' + companyUser.middleName}}</b>,
       действующего на основании <b>{{companyUser.operatorDoc}}</b> с одной стороны, и
     </div>
-    <div class="contract-p">
+    <div class="contract-p" [innerHTML]="'dialogs_company_main_title_contract1' | translate">
       <b>[Наименование организаций]</b>, именуемое в дальнейшем «Пользователь», в лице <b>[должность руководителя Пользователя]</b>
       <b>[ФИО руководителя Пользователя]</b> действующего на основании <b>[действующего на основании Документ Пользователя]</b> с другой стороны, заключили
       настоящий Договор и пришли к соглашению о нижеследующем:
@@ -69,10 +69,10 @@
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary mr-1"
-          (click)="dialogRef.close()" [disabled]="loading">Закрыть
+          (click)="dialogRef.close()" [disabled]="loading" [translate]="'dialogs_company_close'">Закрыть
   </button>
   <button type="button"
           class="btn btn-primary mr-1"
-          (click)="updateCompanyUser()" [disabled]="loading || editForm.invalid">Сохранить
+          (click)="updateCompanyUser()" [disabled]="loading || editForm.invalid" [translate]="'dialogs_company_save'">Сохранить
   </button>
 </div>

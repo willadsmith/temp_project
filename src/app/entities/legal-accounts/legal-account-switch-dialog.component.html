@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Выбор другого ЛС</span><br/>
+    <span [translate]="'legal_account_switch_choose_another_account'">Выбор другого ЛС</span><br/>
   </h5>
   <button type="button" class="close" data-dismiss="modal" [disabled]="selectLoading" (click)="dialogRef.close()">
     <span>&times;</span>
@@ -13,15 +13,15 @@
         <div class="load"></div>
       </div>
       <div *ngIf="(!legalAccounts || legalAccounts.length < 1) && !loading">
-        <div>Лицевых счетов не найдено (<b>Нужно заключить договор!</b>)</div>
+        <div [innerHTML]="'legal_account_switch_accounts_not_found' | translate">Лицевых счетов не найдено (<b>Нужно заключить договор!</b>)</div>
       </div>
       <table class="table table-sm table-hover" *ngIf="legalAccounts && legalAccounts.length > 0 && !loading">
         <thead>
         <tr>
-          <th><span>Номер счета</span></th>
-          <th><span>Дата регистрации счета</span></th>
-          <th><span>Номер договора</span></th>
-          <th><span>Баланс</span></th>
+          <th><span [translate]="'legal_account_switch_number_account'">Номер счета</span></th>
+          <th><span [translate]="'legal_account_switch_data_create_account'">Дата регистрации счета</span></th>
+          <th><span [translate]="'legal_account_switch_number_contract'">Номер договора</span></th>
+          <th><span [translate]="'legal_account_switch_balance'">Баланс</span></th>
           <th class="min-width-230"></th>
         </tr>
         </thead>
@@ -37,7 +37,7 @@
               <button type="button"
                       class="btn btn-sm btn-warning"
                       (click)="setMain(legalAccount)">
-                <span>Выбрать ЛС</span>
+                <span [translate]="'legal_account_switch_choose_ls'">Выбрать ЛС</span>
               </button>
             </div>
           </td>
@@ -50,6 +50,6 @@
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary mr-1"
-          (click)="dialogRef.close()" [disabled]="selectLoading">Отмена
+          (click)="dialogRef.close()" [disabled]="selectLoading" [translate]="'legal_account_switch_cancel'">Отмена
   </button>
 </div>
