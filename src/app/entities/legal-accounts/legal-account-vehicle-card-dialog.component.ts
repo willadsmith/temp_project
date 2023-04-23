@@ -4,6 +4,7 @@ import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {ToastrService} from 'ngx-toastr';
 import {BackendService} from '@app/_services/backend-service';
 import {LoadingService} from '@app/_services/loading.service';
+import {TranslatePipe} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
@@ -11,7 +12,8 @@ declare var startConnection: any;
 
 @Component({
   selector: 'app-legal-account-vehicle-card-dialog',
-  templateUrl: './legal-account-vehicle-card-dialog.component.html'
+  templateUrl: './legal-account-vehicle-card-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class LegalAccountVehicleCardDialogComponent implements OnInit {
   accountNumber: string;
@@ -25,10 +27,11 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
   invalidLicencePlate = '-';
 
   constructor(
-    public dialogRef: NgbActiveModal,
-    private toastr: ToastrService,
-    private loadingService: LoadingService,
-    private backendService: BackendService) {}
+      public dialogRef: NgbActiveModal,
+      private toastr: ToastrService,
+      private loadingService: LoadingService,
+      private translatePipe: TranslatePipe,
+      private backendService: BackendService) {}
 
   ngOnInit() {
     this.isSaving = false;
@@ -61,7 +64,7 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
       if (res === 1) {
         this.signatureConfirm();
       } else {
-        this.toastr.warning('Не запущен или не установлен NCALayer', 'Ошибка NCALayer!');
+        this.toastr.warning(this.translatePipe.transform('legal_account_switch_error_connection_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
         this.signLoading = false;
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
@@ -76,7 +79,7 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
       console.log('signed start', res);
       if (res['code'] === '500') {
         if (res.message ===  'action.canceled') {
-          this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
+          this.toastr.warning(this.translatePipe.transform('login_main_sign_process_cancel_user'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -132,20 +135,20 @@ export class LegalAccountVehicleCardDialogComponent implements OnInit {
         params
       }
     }).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.signLoading = false;
-        this.dialogRef.close({result: true});
-      },
-      (err: any) => {
-        // console.log(err);
-        if (err && err.error && err.error.message === 'error.server_not_respond') {
-          this.toastr.warning('Данные текущего пользователя и сертификата не совпадают!', 'Ошибка!');
-        } else {
-          this.toastr.warning('Не удалось добавить номер карты', 'Ошибка Сервиса!');
+        (response: any) => {
+          console.log(response);
+          this.signLoading = false;
+          this.dialogRef.close({result: true});
+        },
+        (err: any) => {
+          // console.log(err);
+          if (err && err.error && err.error.message === 'error.server_not_respond') {
+            this.toastr.warning(this.translatePipe.transform('legal_account_switch_wrong_user_data'), 'Ошибка!');
+          } else {
+            this.toastr.warning(this.translatePipe.transform('legal_account_switch_not_add_card_number'), this.translatePipe.transform('legal_account_switch_error_service') + '!');
+          }
+          this.signLoading = false;
         }
-        this.signLoading = false;
-      }
     );
   }
 

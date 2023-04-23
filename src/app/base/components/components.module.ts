@@ -15,6 +15,7 @@ import { CompanyUserUpdateDialogComponent } from './dialogs/company-user-update-
 import { LayoutModule } from '@app/layout/layout.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         NgbModule,
         LayoutModule,
         FormsModule,
-        NgSelectModule
+        NgSelectModule,
+        TranslateModule
     ],
   declarations: [
     BaseFooterComponent,

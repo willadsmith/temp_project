@@ -4,10 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { BackendService } from '@app/_services/backend-service';
 import { LoadingService } from '@app/_services/loading.service';
 import { Router } from '@angular/router';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-company-user-update-dialog',
-  templateUrl: './company-user-update-dialog.component.html'
+  templateUrl: './company-user-update-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class CompanyUserUpdateDialogComponent implements OnInit {
   public companies = [];
@@ -21,6 +23,7 @@ export class CompanyUserUpdateDialogComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private loadingService: LoadingService,
+    private translatePipe: TranslatePipe,
     private backendService: BackendService) {}
 
   ngOnInit() {
@@ -38,7 +41,7 @@ export class CompanyUserUpdateDialogComponent implements OnInit {
         this.dialogRef.close({ result: true });
       }, err => {
         this.loading = false;
-        this.toastr.error('Не удалось обновить подсписанта', 'Ошибка!');
+          this.toastr.error(this.translatePipe.transform('dialogs_company_not_update_signer'), this.translatePipe.transform('dashboard_error'));
       }
     );
   }

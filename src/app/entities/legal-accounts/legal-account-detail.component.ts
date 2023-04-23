@@ -11,6 +11,7 @@ import { LegalAccountSwitchDialogComponent } from './legal-account-switch-dialog
 import {Vehicle} from '@app/entities/legal-accounts/vehicle.model';
 import {LoadingService} from '@app/_services/loading.service';
 import {LegalAccountVehicleCardDialogComponent} from '@app/entities/legal-accounts/legal-account-vehicle-card-dialog.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
@@ -20,7 +21,8 @@ declare var startConnection: any;
 @Component({
   selector: 'app-legal-account-detail',
   templateUrl: './legal-account-detail.component.html',
-  styleUrls: ['./legal-account-detail.component.scss']
+  styleUrls: ['./legal-account-detail.component.scss'],
+  providers: [TranslatePipe]
 })
 export class LegalAccountDetailComponent implements OnInit, OnDestroy {
   legalAccount: any;
@@ -56,14 +58,15 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
   public enableCardNumbers = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient,
-    private toastr: ToastrService,
-    public dialog: NgbModal,
-    private router: Router,
-    private loadingService: LoadingService,
-    private confirmService: ConfirmService,
-    private backendService: BackendService
+      private route: ActivatedRoute,
+      private http: HttpClient,
+      private toastr: ToastrService,
+      public dialog: NgbModal,
+      private router: Router,
+      private loadingService: LoadingService,
+      private confirmService: ConfirmService,
+      private backendService: BackendService,
+      private translatePipe: TranslatePipe
   ) {
     this.itemsPerPage = 20;
     this.vehiclesPage = 1;
@@ -113,14 +116,14 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
         // sort: this.sort()
       });
       $request.subscribe(
-        (data: any) => {
-          if (data) {
-            this.vehiclesTotalItems = data.totalElements;
-            this.vehicles = data.content;
-          }
-          this.loadingVehicles = false;
-        },
-        (res: Response) => this.onError(res, 'loadVehicles')
+          (data: any) => {
+            if (data) {
+              this.vehiclesTotalItems = data.totalElements;
+              this.vehicles = data.content;
+            }
+            this.loadingVehicles = false;
+          },
+          (res: Response) => this.onError(res, 'loadVehicles')
       );
     } else {
       console.log('legal-account Code not found');
@@ -143,14 +146,14 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
         // sort: this.sort()
       });
       $request.subscribe(
-        (data: any) => {
-          if (data) {
-            this.depositsTotalItems = data.totalElements;
-            this.deposits = data.content;
-          }
-          this.loadingDeposits = false;
-        },
-        (res: Response) => this.onError(res, 'loadDeposits')
+          (data: any) => {
+            if (data) {
+              this.depositsTotalItems = data.totalElements;
+              this.deposits = data.content;
+            }
+            this.loadingDeposits = false;
+          },
+          (res: Response) => this.onError(res, 'loadDeposits')
       );
     } else {
       console.log('legal-account Code not found');
@@ -198,7 +201,7 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
       if (res === 1) {
         this.signatureConfirm(method, vehicles);
       } else {
-        this.toastr.warning('Не запущен или не установлен NCALayer', 'Ошибка NCALayer!');
+        this.toastr.warning(this.translatePipe.transform('legal_account_detail_disconnected_nca_layer'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
         EventBus.unsubscribe('token');
@@ -212,7 +215,7 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
       console.log('signed start', res);
       if (res['code'] === '500') {
         if (res.message ===  'action.canceled') {
-          this.toastr.warning('Процесс подписи прекращен пользователем', 'Ошибка NCALayer!');
+          this.toastr.warning(this.translatePipe.transform('login_main_sign_process_cancel_user'), this.translatePipe.transform('login_main_error_nca_layer') + '!');
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -246,16 +249,16 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
                 params
               }
             }).subscribe(
-              (data: any) => {
-                this.loadVehicles(true);
-              },
-              (err: any) => {
-                if (err && err.error && err.error.message === 'error.server_not_respond') {
-                  this.toastr.warning('Данные текущего пользователя и сертификата не совпадают!', 'Ошибка!');
-                } else {
-                  this.toastr.warning('Не удалось добавить ТС', 'Ошибка Сервиса!');
+                (data: any) => {
+                  this.loadVehicles(true);
+                },
+                (err: any) => {
+                  if (err && err.error && err.error.message === 'error.server_not_respond') {
+                    this.toastr.warning(this.translatePipe.transform('legal_account_detail_data_current_user_invalid'), this.translatePipe.transform('dashboard_error') + '!');
+                  } else {
+                    this.toastr.warning(this.translatePipe.transform('legal_account_detail_error_add_ts'), this.translatePipe.transform('legal_account_switch_error_service'));
+                  }
                 }
-              }
             );
           } else {
             this.backendService.removeVehicleToLegalAccount({
@@ -264,16 +267,16 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
                 params
               }
             }).subscribe(
-              (data: any) => {
-                this.loadVehicles(true);
-              },
-              (err: any) => {
-                if (err && err.error && err.error.message === 'error.server_not_respond') {
-                  this.toastr.warning('Данные текущего пользователя и сертификата не совпадают!', 'Ошибка!');
-                } else {
-                  this.toastr.warning('Не удалось удалить ТС из списка', 'Ошибка Сервиса!');
+                (data: any) => {
+                  this.loadVehicles(true);
+                },
+                (err: any) => {
+                  if (err && err.error && err.error.message === 'error.server_not_respond') {
+                    this.toastr.warning(this.translatePipe.transform('legal_account_switch_wrong_user_data'), this.translatePipe.transform('dashboard_error') + '!');
+                  } else {
+                    this.toastr.warning(this.translatePipe.transform('legal_account_detail_error_delete_ts'), this.translatePipe.transform('decline_document_attention'));
+                  }
                 }
-              }
             );
           }
 
@@ -303,15 +306,15 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
     this.vehicleAddDialogRef.componentInstance.accountNumber = this.accountNumber;
 
     this.vehicleAddDialogRef.result
-      .then(response => {
-        // console.log(response);
-        this.vehicleAddDialogRef = null;
-        if (response && response.result === true) {
+        .then(response => {
           // console.log(response);
-          this.loadVehicles(true);
-        }
-      })
-      .catch(res => {});
+          this.vehicleAddDialogRef = null;
+          if (response && response.result === true) {
+            // console.log(response);
+            this.loadVehicles(true);
+          }
+        })
+        .catch(res => {});
   }
 
   openUpdateCardNumberDialog(licencePlate: any, cardNumber: any){
@@ -324,30 +327,31 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
     this.vehicleAddDialogRef.componentInstance.licencePlate = licencePlate;
 
     this.vehicleAddDialogRef.result
-      .then(response => {
-        // console.log(response);
-        this.vehicleAddDialogRef = null;
-        if (response && response.result === true) {
+        .then(response => {
           // console.log(response);
-          this.loadVehicles(true);
-        }
-      })
-      .catch(res => {});
+          this.vehicleAddDialogRef = null;
+          if (response && response.result === true) {
+            // console.log(response);
+            this.loadVehicles(true);
+          }
+        })
+        .catch(res => {});
   }
 
   openRemoveVehicleDialog(vehicleLicencePlate) {
-    this.confirmDialogRef = this.confirmService.openModal('Вы действительно хотите удалить ТС <b>' + vehicleLicencePlate +
-      '</b> из лицевого счета <b>' + this.accountNumber + '</b>? <br/>Ваше действие нужно подвердить подписью!!!');
+    this.confirmDialogRef = this.confirmService.openModal(this.translatePipe.transform('legal_account_detail_delete_ts_question') +
+        '<b>' + vehicleLicencePlate + '</b>' + this.translatePipe.transform('legal_account_detail_delete_ts_question1') +
+        '<b>' + this.accountNumber + '</b>? <br/>' + this.translatePipe.transform('legal_account_detail_delete_ts_question2'));
     this.confirmDialogRef.result
-      .then(result => {
-        // console.log('result: ' + result);
-        this.confirmDialogRef = null;
-        if (result) {
-          const vehicles = [{licencePlate: vehicleLicencePlate, isAdded: false, cardNumber: null}];
-          this.startProcessSign('PKSC12', 'html', 'REMOVE', vehicles);
-        }
-      })
-      .catch(res => {});
+        .then(result => {
+          // console.log('result: ' + result);
+          this.confirmDialogRef = null;
+          if (result) {
+            const vehicles = [{licencePlate: vehicleLicencePlate, isAdded: false, cardNumber: null}];
+            this.startProcessSign('PKSC12', 'html', 'REMOVE', vehicles);
+          }
+        })
+        .catch(res => {});
   }
 
   openSwitchLegalAccountDialog() {
@@ -358,15 +362,15 @@ export class LegalAccountDetailComponent implements OnInit, OnDestroy {
     this.switchLegalAccountDialogRef.componentInstance.accountNumber = this.accountNumber;
 
     this.switchLegalAccountDialogRef.result
-      .then(response => {
-        // console.log(response);
-        this.vehicleAddDialogRef = null;
-        if (response && response.result === true) {
+        .then(response => {
           // console.log(response);
-          this.loadVehicles(true);
-        }
-      })
-      .catch(res => {});
+          this.vehicleAddDialogRef = null;
+          if (response && response.result === true) {
+            // console.log(response);
+            this.loadVehicles(true);
+          }
+        })
+        .catch(res => {});
   }
 
   openVehicleDetails(vehicleLicencePlate) {

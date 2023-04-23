@@ -14,15 +14,17 @@ import { RenameCompanyDialogComponent } from './cabinet/rename-company-dialog.co
 import { LegalAccountSwitchDialogComponent } from './legal-accounts//legal-account-switch-dialog.component';
 import { VehicleItemComponent } from './vehicle/vehicle-item.component';
 import { PaymentEntriesDialogComponent } from './vehicle/payment-entries-dialog.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    NgbModule,
-    LayoutModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        NgbModule,
+        LayoutModule,
+        TranslateModule
+    ],
   declarations: [
     CabinetComponent,
     LegalAccountComponent,

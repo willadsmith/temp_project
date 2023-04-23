@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Указать другую компанию</span><br/>
+    <span [translate]="'users_switch_set_another_company'">Указать другую компанию</span><br/>
   </h5>
   <button type="button" class="close" data-dismiss="modal" [disabled]="selectLoading" (click)="dialogRef.close()">
     <span>&times;</span>
@@ -8,76 +8,76 @@
 </div>
 <div class="modal-body">
   <!--<div class="card">-->
-    <!--<div class="card-body position-relative">-->
+  <!--<div class="card-body position-relative">-->
   <div *ngIf="!companyOpened">
-      <div *ngIf="loading">
-        <div class="load"></div>
-      </div>
-      <div *ngIf="(!companies || companies.length < 1) && !loading">
-        <div>Компаний не найдено</div>
-      </div>
-      <table class="table table-sm table-hover" *ngIf="companies && companies.length > 0 && !loading">
-        <thead>
-        <tr>
-          <th><span>Наименование</span></th>
-          <th><span>Бин</span></th>
-          <th><span>Филиал</span></th>
-          <th class="min-width-230"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          *ngFor="let company of companies;">
-          <td style="white-space: normal;">{{company.name}}</td>
-          <td>{{company.bin}}</td>
-          <td>{{company.info}}</td>
-          <td>
-            <div class="text-right">
-              <button type="button" style="display: inline-block"
-                      class="btn btn-sm btn-warning"
-                      *ngIf="companyId !== company.id"
-                      (click)="setMain(company.id)">
-                <span>Выбрать</span>
-              </button>
-              <span class="badge-90 badge-success badge mr-2" style="display: inline-block"
-                    *ngIf="companyId === company.id">
+    <div *ngIf="loading">
+      <div class="load"></div>
+    </div>
+    <div *ngIf="(!companies || companies.length < 1) && !loading">
+      <div [translate]="'users_switch_companies_not_found'">Компаний не найдено</div>
+    </div>
+    <table class="table table-sm table-hover" *ngIf="companies && companies.length > 0 && !loading">
+      <thead>
+      <tr>
+        <th><span [translate]="'users_switch_name'">Наименование</span></th>
+        <th><span [translate]="'users_switch_bin'">Бин</span></th>
+        <th><span [translate]="'users_switch_branch'">Филиал</span></th>
+        <th class="min-width-230"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+              *ngFor="let company of companies;">
+        <td style="white-space: normal;">{{company.name}}</td>
+        <td>{{company.bin}}</td>
+        <td>{{company.info}}</td>
+        <td>
+          <div class="text-right">
+            <button type="button" style="display: inline-block"
+                    class="btn btn-sm btn-warning"
+                    *ngIf="companyId !== company.id"
+                    (click)="setMain(company.id)">
+              <span [translate]="'users_switch_choose'">Выбрать</span>
+            </button>
+            <span class="badge-90 badge-success badge mr-2" style="display: inline-block"
+                  *ngIf="companyId === company.id" [translate]="'users_switch_choose_done'">
                 Выбран
               </span>
-              <a class="action-icon ml-2 text-warning"
-                 style="display: inline-block; color: #98a6ad !important;"
-                 placement="top" ngbTooltip="Изменить" (click)="openUpdateCompany(company.id, company.info)">
-                <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
-              </a>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="text-right fw-width-100">
-        <button type="button"
-                class="btn btn-sm btn-primary"
-                (click)="openNewCompany()">
-          <span>Указать новый филиал</span> <fa-icon class="ml-1" [icon]="'plus-circle'" ></fa-icon>
-        </button>
-      </div>
+            <a class="action-icon ml-2 text-warning"
+               style="display: inline-block; color: #98a6ad !important;"
+               placement="top" [ngbTooltip]="'users_switch_edit' | translate" (click)="openUpdateCompany(company.id, company.info)">
+              <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="text-right fw-width-100">
+      <button type="button"
+              class="btn btn-sm btn-primary"
+              (click)="openNewCompany()">
+        <span [translate]="'users_switch_put_new_branch'">Указать новый филиал</span> <fa-icon class="ml-1" [icon]="'plus-circle'" ></fa-icon>
+      </button>
+    </div>
   </div>
   <form name="editForm" novalidate #editForm="ngForm" *ngIf="companyOpened">
     <div class="m-2 p-2">
       <div>
         <app-form-control labelClass="col-4" valueClass="col-6">
-          <form-label>БИН:</form-label>
+          <form-label>{{ 'users_switch_bin' | translate }}:</form-label>
           <form-value>
             <input type="text" class="form-control own-form-control" name="srtsSerialNumber" [value]="bin" disabled>
           </form-value>
         </app-form-control>
         <app-form-control labelClass="col-4" valueClass="col-6">
-          <form-label>Наименование:</form-label>
+          <form-label>{{ 'users_switch_name' | translate }}:</form-label>
           <form-value>
             <textarea class="form-control" name="srtsSerialNumber" [value]="companyName" disabled rows="5"></textarea>
           </form-value>
         </app-form-control>
         <app-form-control valueClass="col-6">
-          <form-label>Филиал:</form-label>
+          <form-label>{{ 'users_switch_branch' | translate }}:</form-label>
           <form-value>
             <input type="text" class="form-control own-form-control" name="phone" [(ngModel)]="infoNew" required autocomplete="off">
           </form-value>
@@ -85,16 +85,16 @@
       </div>
     </div>
   </form>
-    <!--</div>-->
+  <!--</div>-->
   <!--</div>-->
 </div>
 <div class="modal-footer">
   <button type="button"
           class="btn btn-secondary mr-1"
-          (click)="dialogRef.close()" [disabled]="selectLoading">Закрыть
+          (click)="dialogRef.close()" [disabled]="selectLoading" [translate]="'users_switch_close'">Закрыть
   </button>
   <button type="button"
           class="btn btn-primary mr-1"
-          (click)="createOrUpdateCompany()" [disabled]="selectLoading || !infoNew" *ngIf="companyOpened">Сохранить
+          (click)="createOrUpdateCompany()" [disabled]="selectLoading || !infoNew" *ngIf="companyOpened" [translate]="'users_switch_save'">Сохранить
   </button>
 </div>

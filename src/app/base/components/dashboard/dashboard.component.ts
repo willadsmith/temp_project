@@ -9,6 +9,7 @@ import { BackendService } from '@app/_services/backend-service';
 import * as FileSaver from 'file-saver';
 import * as lodash from 'lodash';
 import { LoadingService } from '@app/_services/loading.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
@@ -21,7 +22,8 @@ declare var chooseNCAStorage: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [TranslatePipe]
 })
 export class BaseDashboardComponent implements OnInit {
 
@@ -33,7 +35,8 @@ export class BaseDashboardComponent implements OnInit {
     public dialog: NgbModal,
     private toastr: ToastrService,
     private loadingService: LoadingService,
-    private backendService: BackendService
+    private backendService: BackendService,
+    private translatePipe: TranslatePipe
   ) { }
 
   public clicked = true;
@@ -106,7 +109,7 @@ export class BaseDashboardComponent implements OnInit {
 
         this.signatureDocsConfirm(docComp);
       } else {
-        this.toastr.error('Не запущен или не установлен NCALayer', 'Ошибка');
+        this.toastr.error(this.translatePipe.transform('dashboard_error_nca_layer') + ':' + res.message, this.translatePipe.transform('dashboard_error'));
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
         EventBus.unsubscribe('token');
@@ -119,19 +122,21 @@ export class BaseDashboardComponent implements OnInit {
     this.loadingDocuments = true;
     this.dashboardService.createDocument(companyId).subscribe(response => {
       this.loadingDocuments = false;
-      this.toastr.success('Документ успешно создан', 'Успешно');
+      this.toastr.success(this.translatePipe.transform('dashboard_doc_sign_completed'),
+          this.translatePipe.transform('dashboard_well_done'));
       this.loadDocuments(false);
     }, error => {
       this.loadDocuments(false);
-      this.toastr.error('Не удалось создать документ', 'Ошибка!');
+      this.toastr.error(this.translatePipe.transform('dashboard_doc_no_created'), this.translatePipe.transform('dashboard_error') + '!');
     });
   }
+
   signatureDocsConfirm(docComp: any) {
     this.signXmlCall();
     EventBus.subscribe('signed', async (res) => {
       if (res['code'] === '500') {
         if (res.message !== 'action.canceled') {
-          this.toastr.error(`Ошибка NCALayer: ${res.message}`, 'Ошибка');
+          this.toastr.error(this.translatePipe.transform('dashboard_error_nca_layer') + ':' + res.message, this.translatePipe.transform('dashboard_error'));
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -150,13 +155,13 @@ export class BaseDashboardComponent implements OnInit {
             subscribe(response => {
               // console.log(response);
               docComp.loading = false;
-              this.toastr.success('Документ успешно подписан', 'Подписано');
+              this.toastr.success(this.translatePipe.transform('dashboard_document_signed'), this.translatePipe.transform('dashboard_signed_to'));
               this.loadDocuments(false);
             }, error => {
               if (error && error.error && error.error.message === 'Пожалуйста используйте верную подпись') {
-                this.toastr.error(error.error.message, 'Ошибка!');
+                this.toastr.error(error.error.message, this.translatePipe.transform('dashboard_error') + '!');
               } else {
-                this.toastr.error('Не удалось подписать документ', 'Ошибка!');
+                this.toastr.error(this.translatePipe.transform('dashboard_not_signed'), this.translatePipe.transform('dashboard_error') + '!');
               }
               docComp.loading = false;
             });
@@ -223,7 +228,7 @@ export class BaseDashboardComponent implements OnInit {
       .subscribe(response =>
         this.saveToFileSystem(response, 'Договор-' + bin + '.pdf', 'application/pdf'),
         error => {
-          this.toastr.warning('Не удалось скачать файл', 'Ошибка');
+          this.toastr.warning(this.translatePipe.transform('dashboard_not_download'), this.translatePipe.transform('dashboard_error'));
         });
   }
 
@@ -233,7 +238,7 @@ export class BaseDashboardComponent implements OnInit {
     // name: "M02Z01R1P01L01-2021-7b638efe-45e2-11ec-ab60-20677cf2af78.jpg"
     this.backendService.downloadAssetRemote(asset.id)
       .subscribe(response => this.saveToFileSystem(response, asset.name, asset.mimeType), error => {
-        this.toastr.warning('Не удалось скачать файл', 'Ошибка');
+        this.toastr.warning(this.translatePipe.transform('dashboard_not_download'), this.translatePipe.transform('dashboard_error'));
       });
   }
 

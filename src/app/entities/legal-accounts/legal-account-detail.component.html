@@ -5,15 +5,15 @@
         <h5>
           <table>
             <tr>
-              <td><span>{{'Лицевой Счет:'}}</span></td>
+              <td><span>{{ 'legal_account_detail_personal_account' | translate }}:</span></td>
               <td><span class="badge badge-own1 badge-info ml-2 mr-2">{{accountNumber}}</span></td>
             </tr>
             <tr>
-              <td><span *ngIf="legalAccount && legalAccount.contractNumber">{{'Номер договора:'}}</span></td>
+              <td><span *ngIf="legalAccount && legalAccount.contractNumber">{{ 'legal_account_detail_number_contract' | translate }}:</span></td>
               <td><span class="badge badge-own2 badge-info ml-2 mr-2" *ngIf="legalAccount && legalAccount.contractNumber">{{legalAccount.contractNumber}}</span></td>
             </tr>
             <tr>
-              <td><span *ngIf="legalAccount && legalAccount.balance">{{'Баланс:'}}</span></td>
+              <td><span *ngIf="legalAccount && legalAccount.balance">{{'legal_account_detail_balance' | translate}}:</span></td>
               <td><span class="badge badge-own3 badge-info ml-2 mr-2" *ngIf="legalAccount && legalAccount.balance">{{legalAccount.balance}} т.</span></td>
             </tr>
           </table>
@@ -21,21 +21,21 @@
       </div>
       <div class="col ml-auto text-right">
         <button
-          type="button" class="btn btn-outline-warning"
-          (click)="openSwitchLegalAccountDialog()">
-          <span>Выбрать другой Лицевой Счет</span>
+                type="button" class="btn btn-outline-warning"
+                (click)="openSwitchLegalAccountDialog()">
+          <span [translate]="'legal_account_detail_choose_another_personal_account'">Выбрать другой Лицевой Счет</span>
         </button>
         <button
-          type="button" class="btn btn-primary"
-          (click)="openAddVehicleDialog()">
-          <span>Добавить ТС</span>
+                type="button" class="btn btn-primary"
+                (click)="openAddVehicleDialog()">
+          <span [translate]="'legal_account_detail_add_ts'">Добавить ТС</span>
         </button>
       </div>
     </div>
   </div>
   <div class="card-body position-relative">
     <ngb-tabset type="pills" justify="start">
-      <ngb-tab title="Транспортные средства">
+      <ngb-tab [title]="'legal_account_detail_tss' | translate">
         <ng-template ngbTabContent>
           <div class="p-3">
             <div class="bg-light text-gray-dark rounded my-2 p-2" *ngIf="loadingVehicles">
@@ -46,37 +46,37 @@
               <thead>
               <tr>
                 <td style="width: 300px;">
-                    <div class="ml-auto text-right">
-                        <div class="d-flex justify-content-start align-items-start">
-                            <div class="mr-4 text-left">
-                                ГРНЗ:
-                            </div>
-                            <!--<div class="mr-2 text-left">-->
-                                <!--&lt;!&ndash;<small>ГРНЗ:</small>&ndash;&gt;-->
-                                <!--<input class="form-control form-control-sm" [(ngModel)]="licencePlate"-->
-                                       <!--name="licencePlateQuery" placeholder="ГРНЗ..." autocomplete="off"-->
-                                       <!--(keyup.enter)="loadVehicles(true)">-->
-                            <!--</div>-->
-                            <!--<div class="ml-1">-->
-                                <!--<button class="btn btn-sm btn-success lh-0-75" type="button" (click)="loadVehicles(true)">-->
-                                    <!--<i class="material-icons">search</i>-->
-                                <!--</button>-->
-                            <!--</div>-->
-                            <!--<div class="ml-1">-->
-                                <!--<button class="btn btn-sm btn-secondary lh-0-75" type="button" (click)="clearQueries()">-->
-                                    <!--<i class="material-icons">clear</i>-->
-                                <!--</button>-->
-                            <!--</div>-->
-                        </div>
+                  <div class="ml-auto text-right">
+                    <div class="d-flex justify-content-start align-items-start">
+                      <div class="mr-4 text-left" [translate]="'legal_account_detail_grnz'">
+                        ГРНЗ:
+                      </div>
+                      <!--<div class="mr-2 text-left">-->
+                      <!--&lt;!&ndash;<small>ГРНЗ:</small>&ndash;&gt;-->
+                      <!--<input class="form-control form-control-sm" [(ngModel)]="licencePlate"-->
+                      <!--name="licencePlateQuery" placeholder="ГРНЗ..." autocomplete="off"-->
+                      <!--(keyup.enter)="loadVehicles(true)">-->
+                      <!--</div>-->
+                      <!--<div class="ml-1">-->
+                      <!--<button class="btn btn-sm btn-success lh-0-75" type="button" (click)="loadVehicles(true)">-->
+                      <!--<i class="material-icons">search</i>-->
+                      <!--</button>-->
+                      <!--</div>-->
+                      <!--<div class="ml-1">-->
+                      <!--<button class="btn btn-sm btn-secondary lh-0-75" type="button" (click)="clearQueries()">-->
+                      <!--<i class="material-icons">clear</i>-->
+                      <!--</button>-->
+                      <!--</div>-->
                     </div>
+                  </div>
                 </td>
-                <td>
-                    Класс
+                <td [translate]="'legal_account_detail_class'">
+                  Класс
                 </td>
-                <td>
-                    Долг
+                <td [translate]="'legal_account_detail_dept'">
+                  Долг
                 </td>
-                <td *ngIf="enableCardNumbers">
+                <td *ngIf="enableCardNumbers" [translate]="'legal_account_detail_number_card'">
                   Номер карты
                 </td>
                 <td>
@@ -84,87 +84,87 @@
               </tr>
               </thead>
               <tbody *ngIf="vehicles && vehicles.length > 0" >
-                  <tr *ngFor="let item of vehicles">
-                    <td>
+              <tr *ngFor="let item of vehicles">
+                <td>
                         <span class="badge btn-outline-primary licence-plate cursorPointer" style="font-size: 90%;"
-                            (click)="openVehicleDetails(item.licencePlate)">
+                              (click)="openVehicleDetails(item.licencePlate)">
                             {{item.licencePlate}}
                         </span>
-                    </td>
-                    <td>
+                </td>
+                <td>
                         <span class="badge" style="font-size: 90%;">
                             {{item.classCode}}
                         </span>
-                    </td>
-                    <td>
+                </td>
+                <td>
                         <span class="badge badge-primary" style="font-size: 90%;">
                             {{item.totalAmount}}
                         </span>
-                    </td>
-                    <td *ngIf="enableCardNumbers">
+                </td>
+                <td *ngIf="enableCardNumbers">
                       <span class="badge badge-success" style="font-size: 90%;">
                         {{item.cardNumber ? item.cardNumber : '--'}}
                       </span>
 
-                      <a class="action-icon ml-2 text-warning"
-                         style="display: inline-block;"
-                         *ngIf="item.cardNumber"
-                         placement="top" ngbTooltip="'Редактировать номер карты'" (click)="openUpdateCardNumberDialog(item.licencePlate, item.cardNumber)">
-                        <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
-                      </a>
-                      <a class="action-icon ml-2 text-success"
-                         style="display: inline-block;"
-                         *ngIf="!item.cardNumber"
-                         placement="top" ngbTooltip="'Указать номер карты'" (click)="openUpdateCardNumberDialog(item.licencePlate, item.cardNumber)">
-                        <span class="d-none d-lg-block"><fa-icon [icon]="'plus-circle'"></fa-icon></span>
-                      </a>
-                    </td>
-                    <td class="text-right">
-                      <button
-                        type="button" class="btn btn-sm btn-danger mr-2"
-                        (click)="openRemoveVehicleDialog(item.licencePlate)">
-                        <span>Удалить</span>
-                      </button>
-                      <button
-                        type="button" class="btn btn-sm btn-primary"
-                        (click)="openVehicleDetails(item.licencePlate)">
-                        <span>детализация</span>
-                      </button>
-                    </td>
-                  </tr>
+                  <a class="action-icon ml-2 text-warning"
+                     style="display: inline-block;"
+                     *ngIf="item.cardNumber"
+                     placement="top" [ngbTooltip]="'legal_account_detail_edit_number_card' | translate" (click)="openUpdateCardNumberDialog(item.licencePlate, item.cardNumber)">
+                    <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
+                  </a>
+                  <a class="action-icon ml-2 text-success"
+                     style="display: inline-block;"
+                     *ngIf="!item.cardNumber"
+                     placement="top" [ngbTooltip]="'legal_account_detail_indicate_number_card'" (click)="openUpdateCardNumberDialog(item.licencePlate, item.cardNumber)">
+                    <span class="d-none d-lg-block"><fa-icon [icon]="'plus-circle'"></fa-icon></span>
+                  </a>
+                </td>
+                <td class="text-right">
+                  <button
+                          type="button" class="btn btn-sm btn-danger mr-2"
+                          (click)="openRemoveVehicleDialog(item.licencePlate)">
+                    <span [translate]="'legal_account_detail_delete'">Удалить</span>
+                  </button>
+                  <button
+                          type="button" class="btn btn-sm btn-primary"
+                          (click)="openVehicleDetails(item.licencePlate)">
+                    <span [translate]="'legal_account_detail_detail'">детализация</span>
+                  </button>
+                </td>
+              </tr>
               </tbody>
               <tr *ngIf="!vehicles || vehicles.length < 1">
-                  <td [colSpan]="4">
-                    <div class="bg-light text-gray-dark rounded my-2 p-2">
-                        Нет транспортных средств
-                    </div>
-                  </td>
+                <td [colSpan]="4">
+                  <div class="bg-light text-gray-dark rounded my-2 p-2" [translate]="'legal_account_detail_not_found_ts'">
+                    Нет транспортных средств
+                  </div>
+                </td>
               </tr>
             </table>
             <app-pagination-template
-              *ngIf="vehicles && vehicles.length > 0"
-              [page]="vehiclesPage" [totalItems]="vehiclesTotalItems" [itemsPerPage]="itemsPerPage"
-              (onPageChanged)="vehiclesPageChanged($event)"></app-pagination-template>
+                    *ngIf="vehicles && vehicles.length > 0"
+                    [page]="vehiclesPage" [totalItems]="vehiclesTotalItems" [itemsPerPage]="itemsPerPage"
+                    (onPageChanged)="vehiclesPageChanged($event)"></app-pagination-template>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="Поступления на лицевой счет">
+      <ngb-tab [title]="'legal_account_detail_receipt'">
         <ng-template ngbTabContent>
           <div class="p-3">
             <div class="bg-light text-gray-dark rounded my-2 p-2" *ngIf="loadingDeposits">
               <div class="load"></div>
             </div>
             <div class="bg-light text-gray-dark rounded my-2 p-2"
-                 *ngIf="(!deposits || deposits.length < 1) && !loadingDeposits">
+                 *ngIf="(!deposits || deposits.length < 1) && !loadingDeposits" [translate]="'legal_account_detail_not_receipt'">
               Нет пополнений
             </div>
             <table class="table table-sm table-hover"
                    *ngIf="deposits && deposits.length > 0 && !loadingDeposits">
               <thead>
               <tr>
-                <td>Дата платежа</td>
-                <td>Сумма</td>
-                <td>Источник</td>
+                <td [translate]="'legal_account_detail_data_payment'">Дата платежа</td>
+                <td [translate]="'legal_account_detail_sum'">Сумма</td>
+                <td [translate]="'legal_account_detail_source'">Источник</td>
                 <td></td>
               </tr>
               </thead>
@@ -178,18 +178,18 @@
               </tbody>
             </table>
             <app-pagination-template
-              *ngIf="deposits && deposits.length > 0"
-              [page]="depositsPage" [totalItems]="depositsTotalItems" [itemsPerPage]="itemsPerPage"
-              (onPageChanged)="depositsPageChanged($event)"></app-pagination-template>
+                    *ngIf="deposits && deposits.length > 0"
+                    [page]="depositsPage" [totalItems]="depositsTotalItems" [itemsPerPage]="itemsPerPage"
+                    (onPageChanged)="depositsPageChanged($event)"></app-pagination-template>
           </div>
         </ng-template>
       </ngb-tab>
       <!--<ngb-tab title="История привязки ГРНЗ">-->
-        <!--<ng-template ngbTabContent>-->
-          <!--<div class="p-3">-->
+      <!--<ng-template ngbTabContent>-->
+      <!--<div class="p-3">-->
 
-          <!--</div>-->
-        <!--</ng-template>-->
+      <!--</div>-->
+      <!--</ng-template>-->
       <!--</ngb-tab>-->
     </ngb-tabset>
   </div>

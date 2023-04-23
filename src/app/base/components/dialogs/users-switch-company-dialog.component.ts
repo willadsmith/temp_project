@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {DashboardService} from "@app/_services";
 import * as lodash from "lodash";
 import {Company, CompanyEntity} from "@app/_models";
+import {TranslatePipe} from '@ngx-translate/core';
 declare var signXml: any;
 declare var EventBus: any;
 declare var endConnection: any;
@@ -15,7 +16,8 @@ declare var startConnection: any;
 
 @Component({
   selector: 'app-user-switch-company-dialog',
-  templateUrl: './users-switch-company-dialog.component.html'
+  templateUrl: './users-switch-company-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class UsersSwitchCompanyDialogComponent implements OnInit {
   accountNumber: string;
@@ -37,12 +39,13 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
   public currentStatus = 'CREATE';
 
   constructor(
-    public dialogRef: NgbActiveModal,
-    private toastr: ToastrService,
-    private router: Router,
-    private loadingService: LoadingService,
-    private backendService: BackendService,
-    private dashboardService: DashboardService) {}
+      public dialogRef: NgbActiveModal,
+      private toastr: ToastrService,
+      private router: Router,
+      private loadingService: LoadingService,
+      private backendService: BackendService,
+      private translatePipe: TranslatePipe,
+      private dashboardService: DashboardService) {}
 
   ngOnInit() {
     this.loadCompanies();
@@ -64,20 +67,20 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
   loadCompanies() {
     this.loading = true;
     this.dashboardService.getCompaniesByBin('/company/findall', this.bin)
-      .subscribe((res: any) => {
-        this.companies = res[0];
-        for (let i = 0; i < this.companies.length; i++) {
-          this.companies[i].name = lodash.unescape(this.companies[i].name);
-        }
-        if (this.companies.length > 1) {
-          this.sortByCompaniesDate();
-        }
-        this.loading = false;
-    }, err => {
-      // console.log(err);
-      this.loading = false;
-      this.toastr.error('Не удалось загрузить данные', 'Ошибка!');
-    });
+        .subscribe((res: any) => {
+          this.companies = res[0];
+          for (let i = 0; i < this.companies.length; i++) {
+            this.companies[i].name = lodash.unescape(this.companies[i].name);
+          }
+          if (this.companies.length > 1) {
+            this.sortByCompaniesDate();
+          }
+          this.loading = false;
+        }, err => {
+          // console.log(err);
+          this.loading = false;
+          this.toastr.error(this.translatePipe.transform('users_switch_download_error_data'), this.translatePipe.transform('users_switch_error'));
+        });
   }
 
   openNewCompany() {
@@ -108,13 +111,13 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
     };
     this.selectLoading = true;
     this.backendService.setMainCompanyToAccount(reqBody).subscribe(
-      data => {
-        // console.log(data);
-        this.dialogRef.close({ result: true });
-      }, err => {
-        this.selectLoading = false;
-        this.toastr.error('Не удалось выбрать компанию', 'Ошибка!');
-      }
+        data => {
+          // console.log(data);
+          this.dialogRef.close({ result: true });
+        }, err => {
+          this.selectLoading = false;
+          this.toastr.error(this.translatePipe.transform('users_switch_update_invalid_company'), this.translatePipe.transform('users_switch_error'));
+        }
     );
   }
 
@@ -135,13 +138,13 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
     };
     this.selectLoading = true;
     this.backendService.createNewCompany(reqBody).subscribe(
-      data => {
-        // console.log(data);
-        this.setMain(data.id);
-      }, err => {
-        this.selectLoading = false;
-        this.toastr.error('Не удалось создать новый филиал', 'Ошибка!');
-      }
+        data => {
+          // console.log(data);
+          this.setMain(data.id);
+        }, err => {
+          this.selectLoading = false;
+          this.toastr.error(this.translatePipe.transform('users_switch_not_create_new_branch'), this.translatePipe.transform('users_switch_error'));
+        }
     );
   }
 
@@ -152,13 +155,13 @@ export class UsersSwitchCompanyDialogComponent implements OnInit {
     };
     this.selectLoading = true;
     this.backendService.updateCompany(reqBody).subscribe(
-      data => {
-        this.selectLoading = false;
-        this.closeUpdateCompany();
-      }, err => {
-        this.selectLoading = false;
-        this.toastr.error('Не удалось обновить компанию', 'Ошибка!');
-      }
+        data => {
+          this.selectLoading = false;
+          this.closeUpdateCompany();
+        }, err => {
+          this.selectLoading = false;
+          this.toastr.error(this.translatePipe.transform('users_switch_update_invalid_company'), this.translatePipe.transform('users_switch_error'));
+        }
     );
   }
   private getTime(date?: string) {

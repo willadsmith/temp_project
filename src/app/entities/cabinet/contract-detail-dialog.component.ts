@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {BackendService} from '@app/_services/backend-service';
 import {ToastrService} from 'ngx-toastr';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-contract-detail-dialog',
-  templateUrl: './contract-detail-dialog.component.html'
+  templateUrl: './contract-detail-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class ContractDetailDialogComponent implements OnInit {
   public router: Router;
@@ -38,6 +40,7 @@ export class ContractDetailDialogComponent implements OnInit {
               public dialogRef: NgbActiveModal,
               public http: HttpClient,
               private toastr: ToastrService,
+              private translatePipe: TranslatePipe,
               private backendService: BackendService) {}
 
   ngOnInit() {
@@ -107,7 +110,7 @@ export class ContractDetailDialogComponent implements OnInit {
       (err: any) => {
         // console.log(err);
         this.loading = false;
-        this.toastr.warning('Не удалось обновить данные. Проверьте введенные данные, а так же размер файла не более 20мб.', 'Ошибка!');
+        this.toastr.warning(this.translatePipe.transform('contract_detail_error_update_data'), this.translatePipe.transform('dashboard_error') + '!');
       }
     );
   }

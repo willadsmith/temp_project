@@ -5,17 +5,17 @@
         <div class="col">
           <div class="row align-items-end">
             <div class="col-5">
-              <h3 class="mb-0">Список пользователей</h3>
+              <h3 class="mb-0" [translate]="'users_list_users'">Список пользователей</h3>
             </div>
             <div class="col ml-auto text-right">
               <div class="d-flex justify-content-end align-items-end">
                 <div class="mr-2 text-left">
-                  <small>ИИН пользователя:</small>
+                  <small>{{ 'users_iin_user' | translate }}:</small>
                   <input class="form-control form-control-sm" [(ngModel)]="iin" name="iinQuery"
                          autocomplete="off" (keyup.enter)="loadUsers(true)">
                 </div>
                 <div class="mr-2 text-left">
-                  <small>БИН компании:</small>
+                  <small>{{ 'users_bin_company' | translate }}:</small>
                   <input class="form-control form-control-sm" [(ngModel)]="bin" name="binQuery"
                          autocomplete="off" (keyup.enter)="loadUsers(true)">
                 </div>
@@ -40,19 +40,19 @@
         <div class="load"></div>
       </div>
       <div class="my-2 p-2" *ngIf="(!users || users.length < 1) && !loadingUsers">
-        <div>Пользователей не найдено</div>
+        <div [translate]="'users_not_found_users'">Пользователей не найдено</div>
       </div>
       <div class="table-responsive"  *ngIf="users && users.length > 0 && !loadingUsers">
         <table class="table align-items-center table-flush">
           <thead class="thead-light">
           <tr>
-            <th>ФИО</th>
-            <th>ИИН</th>
+            <th [translate]="'users_fio'">ФИО</th>
+            <th [translate]="'users_iin'">ИИН</th>
             <!--                <th>Документ</th>-->
-            <th>ТИП</th>
-            <th>Дата регистраций</th>
-            <th class="text-right">Компания : БИН</th>
-            <th class="text-right">Действия</th>
+            <th [translate]="'users_type'">ТИП</th>
+            <th [translate]="'users_data_register'">Дата регистраций</th>
+            <th class="text-right" [translate]="'users_company_bin'">Компания : БИН</th>
+            <th class="text-right" [translate]="'dashboard_actions'">Действия</th>
           </tr>
           </thead>
           <tbody>
@@ -64,8 +64,8 @@
               {{user.idn}}
             </td>
             <td>
-              <span *ngIf="user.role === 'USER'" class="text-success">Пользователь</span>
-              <span *ngIf="user.role === 'ADMIN'" class="text-danger">Администратор</span>
+              <span *ngIf="user.role === 'USER'" class="text-success" [translate]="'users_user'">Пользователь</span>
+              <span *ngIf="user.role === 'ADMIN'" class="text-danger" [translate]="'users_admin'">Администратор</span>
             </td>
             <td>
               <span *ngIf="user.createdAt" class="badge badge-dark badge-85">{{user.createdAt | date: 'dd.MM.yyyy HH:mm:ss'}}</span><br>
@@ -81,7 +81,7 @@
             </td>
             <td class="text-right">
               <a *ngIf="user.role !== 'ADMIN' && user.company && user.company.bin"  class="action-icon mr-1 text-warning"
-                 placement="top" ngbTooltip="Редактировать" (click)="editCompany(user.company, user.id)">
+                 placement="top" [ngbTooltip]="'users_edit' | translate" (click)="editCompany(user.company, user.id)">
                 <span class="d-none d-lg-block"><fa-icon [icon]="'pencil-alt'"></fa-icon></span>
               </a>
             </td>

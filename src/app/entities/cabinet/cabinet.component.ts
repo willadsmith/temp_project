@@ -11,6 +11,7 @@ import { ConfirmService } from '@app/layout/form/confirm.service';
 import { LoadingService } from '@app/_services/loading.service';
 import { RenameCompanyDialogComponent } from "@app/entities/cabinet/rename-company-dialog.component";
 import { CompanyDetailService } from "@app/_services/company-detail.service";
+import {TranslatePipe} from '@ngx-translate/core';
 
 declare var signXml: any;
 declare var EventBus: any;
@@ -20,7 +21,8 @@ declare var startConnection: any;
 @Component({
   selector: 'app-layout',
   templateUrl: './cabinet.component.html',
-  styleUrls: ['./cabinet.component.scss']
+  styleUrls: ['./cabinet.component.scss'],
+  providers: [TranslatePipe]
 })
 export class CabinetComponent implements OnInit {
 
@@ -43,6 +45,7 @@ export class CabinetComponent implements OnInit {
     private loadingService: LoadingService,
     private confirmService: ConfirmService,
     private backendService: BackendService,
+    private translatePipe: TranslatePipe,
     private companyDetailService: CompanyDetailService
   ) {
     router.events.subscribe((url: any) => this.currentUrl = router.url);
@@ -63,11 +66,11 @@ export class CabinetComponent implements OnInit {
   singDocument(doc: any, assetsExist: boolean, sign: any, isResign: boolean) {
     if (!assetsExist) {
       // this.infoService.openModal('', '');
-      this.toastr.warning('Заполните данные перед пописанием документа', 'Уведомление');
+      this.toastr.warning(this.translatePipe.transform('cabinet_full_data_before_sign'), this.translatePipe.transform('cabinet_info'));
       return;
     }
 
-    this.confirmDialogRef = this.confirmService.openModal('Вы уверены в правильности заполненных данных договора?');
+    this.confirmDialogRef = this.confirmService.openModal(this.translatePipe.transform('cabinet_question_full_doc'));
     this.confirmDialogRef.result
       .then(result => {
         // console.log('result: ' + result);
@@ -81,7 +84,7 @@ export class CabinetComponent implements OnInit {
 
   reSingDocument(doc: any, sign: any, isResign: boolean) {
 
-    this.confirmDialogRef = this.confirmService.openModal('Вы уверены?');
+    this.confirmDialogRef = this.confirmService.openModal(this.translatePipe.transform('cabinet_are_you_sure'));
     this.confirmDialogRef.result
       .then(result => {
         // console.log('result: ' + result);
@@ -104,7 +107,7 @@ export class CabinetComponent implements OnInit {
 
         this.signatureDocsConfirm(doc, isResign);
       } else {
-        this.toastr.warning('Не запущен или не установлен NCALayer', 'Уведомление');
+        this.toastr.warning(this.translatePipe.transform('cabinet_error_connection_nca_layer'), this.translatePipe.transform('cabinet_error_nca_layer'));
         this.signLoading = false;
         this.loadingService.hideLoading();
         EventBus.unsubscribe('connect');
@@ -119,7 +122,7 @@ export class CabinetComponent implements OnInit {
       console.log('signed start', res);
       if (res['code'] === '500') {
         if (res.message !== 'action.canceled') {
-          this.toastr.error(`Ошибка NCALayer: ${res.message}`, 'Ошибка подписи');
+          this.toastr.error(this.translatePipe.transform('cabinet_error_nca_layer') + res.message , this.translatePipe.transform('cabinet_error_sign'));
         }
         this.loadingService.hideLoading();
         EventBus.unsubscribe('signed');
@@ -144,9 +147,9 @@ export class CabinetComponent implements OnInit {
           }
           this.backendService.sign(url, { params, documentId: doc.id }).subscribe(response => {
             if (response.statusCode === 416) {
-              this.toastr.error(response.message, 'Ошибка подписи');
+              this.toastr.error(response.message, this.translatePipe.transform('cabinet_error_sign'));
             } else {
-              this.toastr.success('Документ успешно подписан', 'Подписано');
+              this.toastr.success(this.translatePipe.transform('cabinet_sign_completed'), this.translatePipe.transform('cabinet_signed'));
 
               this.backendService.getDocuments().subscribe(
                 result => {
@@ -158,9 +161,9 @@ export class CabinetComponent implements OnInit {
           }, err => {
             // console.log(err);
             if (err && err.error && err.error.message === 'Пожалуйста используйте верную подпись') {
-              this.toastr.error(err, 'Ошибка подписи');
+              this.toastr.error(err, this.translatePipe.transform('cabinet_error_sign'));
             } else {
-              this.toastr.error('Не удалось подписать', 'Ошибка подписи');
+              this.toastr.error(this.translatePipe.transform('cabinet_not_sign'), this.translatePipe.transform('cabinet_error_sign'));
             }
             this.signLoading = false;
           });
@@ -222,14 +225,14 @@ export class CabinetComponent implements OnInit {
     let documentId = null;
     if (document && document.company) {
       companyName = document.company.name;
-      documentId=document.id;
+      documentId = document.id;
     }
     this.renameCompanyDialogRef = this.dialog.open(RenameCompanyDialogComponent as Component, {
       size: 'lg',
       backdrop: 'static'
     });
     this.renameCompanyDialogRef.componentInstance.companyName = companyName;
-    this.renameCompanyDialogRef.componentInstance.documentId=document.id
+    this.renameCompanyDialogRef.componentInstance.documentId = document.id;
     this.renameCompanyDialogRef.result
       .then(response => {
         console.log(response);
@@ -248,10 +251,10 @@ export class CabinetComponent implements OnInit {
       });
   }
 
-  downloadDocument(bin: string, documentId:string) {
+  downloadDocument(bin: string, documentId: string) {
     this.backendService.downloadDocumentRemote(documentId)
       .subscribe(response => this.saveToFileSystem(response, bin), error => {
-        this.toastr.warning('Не удалось скачать файл', 'Ошибка');
+        this.toastr.warning(this.translatePipe.transform('cabinet_error_download'), this.translatePipe.transform('dashboard_error'));
       });
   }
 

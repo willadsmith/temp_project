@@ -99,11 +99,11 @@
       <!-- Divider -->
       <hr class="my-2">
       <!-- Heading -->
-      <h6 class="navbar-heading text-muted">Документы</h6>
+      <h6 class="navbar-heading text-muted" [translate]="'base_sidebar_docs'">Документы</h6>
       <ul class="navbar-nav">
         <li class="nav-item">
           <a routerLinkActive="active" [routerLink]="'base/company-users'" class="nav-link">
-            <i class="ni ni-key-25"></i>Подписанты
+            <i class="ni ni-key-25"></i>{{'base_sidebar_signs' | translate}}
           </a>
         </li>
       </ul>
@@ -125,10 +125,19 @@
 <!--        </li>-->
         <li class="nav-item" (click)="logout()">
           <a class="nav-link">
-            <i class="ni ni-curved-next"></i> Выход
+            <i class="ni ni-curved-next"></i> {{'base_sidebar_exit' | translate}}
           </a>
         </li>
       </ul>
+      <div style="position: absolute;bottom: 94px;left: 37px;width: 77px;height: 44px;">
+        <div ngbDropdown>
+          <button type="button" class="btn btn-outline-success" id="dropdownConfig" ngbDropdownToggle [translate]="'language'">Язык</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <button ngbDropdownItem>Русский</button>
+            <button ngbDropdownItem>Қазақша</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>

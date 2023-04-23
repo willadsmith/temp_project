@@ -1,140 +1,140 @@
 <div class="modal-header">
-  <h5 class="modal-title">Заполнение данных организации для Договора.</h5>
-  <button type="button" class="close" data-dismiss="modal"
-          [disabled]="loading" (click)="dialogRef.dismiss()">
-    <span>&times;</span>
-  </button>
+    <h5 class="modal-title" [translate]="'contract_detail_full_data_org_for_contract'">Заполнение данных организации для Договора.</h5>
+    <button type="button" class="close" data-dismiss="modal"
+            [disabled]="loading" (click)="dialogRef.dismiss()">
+        <span>&times;</span>
+    </button>
 </div>
 <div class="modal-body" style="padding: 0;">
-  <form name="editForm" novalidate #editForm="ngForm" >
-    <div class="m-2 p-2">
-      <div>
-<!--        <div class="contract-detail-title">* Поля для заполнения организаций</div>-->
-        <app-form-control valueClass="col-6">
-          <form-label>Должность руководителя:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="userPosition" [(ngModel)]="userPosition" required  autocomplete="off"
-                   #model="ngModel">
-          </form-value>
-        </app-form-control>
-        <app-form-control labelClass="col-4" valueClass="col-6">
-          <form-label>ФИО руководителя:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="srtsSerialNumber" [(ngModel)]="userFio" required  autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <div class="form-group row" style="margin-bottom: 13px;">
-          <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;">
-            На основании какого документа действует руководитель:
-          </label>
-          <div class="col-6" style="padding-top: 12px;">
-            <input type="text" class="form-control own-form-control" name="maxWeight" [(ngModel)]="userDoc" required  autocomplete="off">
-            <small class="font-weight-bold">* (пример: Устав / Доверенность)</small>
-          </div>
-        </div>
-        <app-form-control valueClass="col-6">
-          <form-label>Юридический адрес:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="legalAddress" [(ngModel)]="legalAddress" required  autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>Фактический адрес:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="factAddress" [(ngModel)]="factAddress" required  autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>Email:</form-label>
-          <form-value>
-            <input type="email" class="form-control own-form-control" name="email" [(ngModel)]="email" required
-                   autocomplete="off" #sendEmail="ngModel"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-            <small class="form-text text-danger"
-                   *ngIf="sendEmail.invalid">
-              {{'Невалидный email'}}
-            </small>
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>ИИК:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="iik" [(ngModel)]="iik" required autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>КБЕ:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="kbe" [(ngModel)]="kbe" required autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>БИК:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="bik" [(ngModel)]="bik" required autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>Банк:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="bank" [(ngModel)]="bank" required autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>Телефон:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="phone" [(ngModel)]="phone" required  autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <app-form-control valueClass="col-6">
-          <form-label>Сайт:</form-label>
-          <form-value>
-            <input type="text" class="form-control own-form-control" name="website" [(ngModel)]="website" autocomplete="off">
-          </form-value>
-        </app-form-control>
-        <div class="upload-div">
-          <app-form-control valueClass="col-6" *ngIf="hasAssets">
-            <form-label>Прикрепленный документ:</form-label>
-            <form-value>
-              <span class="badge badge-dark">{{assetsName}}</span><button class="btn btn-sm btn-danger ml-1" (click)="changeFile()">Заменить</button>
-            </form-value>
-          </app-form-control>
-          <div class="form-group row" style="margin-bottom: 0px;"  *ngIf="!hasAssets">
-            <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;">
-              Вложить правоустанавливающие документы
-            </label>
-            <div class="col-6">
-              <input type="file" class="file-input"  accept=".zip,.rar,.7zip" required
-                     (change)="handleFileInput($event.target.files)" #fileUpload>
+    <form name="editForm" novalidate #editForm="ngForm" >
+        <div class="m-2 p-2">
+            <div>
+                <!--        <div class="contract-detail-title">* Поля для заполнения организаций</div>-->
+                <app-form-control valueClass="col-6">
+                    <form-label [translate]="'contract_detail_position_boss'">Должность руководителя:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="userPosition" [(ngModel)]="userPosition" required  autocomplete="off"
+                               #model="ngModel">
+                    </form-value>
+                </app-form-control>
+                <app-form-control labelClass="col-4" valueClass="col-6">
+                    <form-label [translate]="'contract_detail_fio_boss'">ФИО руководителя:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="srtsSerialNumber" [(ngModel)]="userFio" required  autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <div class="form-group row" style="margin-bottom: 13px;">
+                    <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;" [translate]="'contract_detail_main_doc_boss'">
+                        На основании какого документа действует руководитель:
+                    </label>
+                    <div class="col-6" style="padding-top: 12px;">
+                        <input type="text" class="form-control own-form-control" name="maxWeight" [(ngModel)]="userDoc" required  autocomplete="off">
+                        <small class="font-weight-bold">* {{ 'contract_detail_example' | translate }}</small>
+                    </div>
+                </div>
+                <app-form-control valueClass="col-6">
+                    <form-label [translate]="'contract_detail_legal_address'">Юридический адрес:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="legalAddress" [(ngModel)]="legalAddress" required  autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label [translate]="'contract_detail_fact_address'">Фактический адрес:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="factAddress" [(ngModel)]="factAddress" required  autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label [translate]="'contract_detail_email'">Email:</form-label>
+                    <form-value>
+                        <input type="email" class="form-control own-form-control" name="email" [(ngModel)]="email" required
+                               autocomplete="off" #sendEmail="ngModel"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        <small class="form-text text-danger"
+                               *ngIf="sendEmail.invalid">
+                            {{ 'contract_detail_email_invalid' | translate }}
+                        </small>
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_iik' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="iik" [(ngModel)]="iik" required autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_kbe' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="kbe" [(ngModel)]="kbe" required autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_bik' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="bik" [(ngModel)]="bik" required autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_bank' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="bank" [(ngModel)]="bank" required autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_phone' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="phone" [(ngModel)]="phone" required  autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <app-form-control valueClass="col-6">
+                    <form-label>{{ 'contract_detail_site' | translate }}:</form-label>
+                    <form-value>
+                        <input type="text" class="form-control own-form-control" name="website" [(ngModel)]="website" autocomplete="off">
+                    </form-value>
+                </app-form-control>
+                <div class="upload-div">
+                    <app-form-control valueClass="col-6" *ngIf="hasAssets">
+                        <form-label>{{ 'contract_detail_add_doc' | translate }}:</form-label>
+                        <form-value>
+                            <span class="badge badge-dark">{{assetsName}}</span><button class="btn btn-sm btn-danger ml-1" (click)="changeFile()" [translate]="'contract_detail_replace'">Заменить</button>
+                        </form-value>
+                    </app-form-control>
+                    <div class="form-group row" style="margin-bottom: 0px;"  *ngIf="!hasAssets">
+                        <label class="col-4 col-form-label text-right font-weight-bold" style="padding-top: 5px; padding-bottom: 5px;" [translate]="'contract_detail_add_confirm_docs'">
+                            Вложить правоустанавливающие документы
+                        </label>
+                        <div class="col-6">
+                            <input type="file" class="file-input"  accept=".zip,.rar,.7zip" required
+                                   (change)="handleFileInput($event.target.files)" #fileUpload>
 
-              <div class="file-upload" style="margin-top: 13px;">
-                {{fileToUpload ? fileToUpload.name : "Выберите архив файл."}}
-                <button color="primary" class="btn btn-info btn-upload" style="padding: 0.25rem 0.5rem 0.1rem 0.5rem;"
-                        (click)="fileUpload.click()">
-                  <i class="ni ni-folder-17"></i>
-                </button>
-              </div>
-              <small class="font-weight-bold">* (одним архивом не более 20мб.)</small>
-            </div>
-          </div>
-          <span class="badge badge-warning" style="white-space: normal;font-size: 75%;">
-            - для ИП: свидетельство о регистрации, реквизиты;<br><br>
-            - для других форм: Устав, Св-во о регистрации, Св-во о НДС, Приказ/доверенность на руководителя, Решение учредителей о назначении директора, реквизиты
+                            <div class="file-upload" style="margin-top: 13px;">
+                                {{fileToUpload ? fileToUpload.name : 'contract_detail_choose_file_archive' | translate }}
+                                <button color="primary" class="btn btn-info btn-upload" style="padding: 0.25rem 0.5rem 0.1rem 0.5rem;"
+                                        (click)="fileUpload.click()">
+                                    <i class="ni ni-folder-17"></i>
+                                </button>
+                            </div>
+                            <small class="font-weight-bold">* {{ 'contract_detail_archive_title' | translate}}</small>
+                        </div>
+                    </div>
+                    <span class="badge badge-warning" style="white-space: normal;font-size: 75%;">
+            <span [translate]="'contract_detail_for_ip'"> - для ИП: свидетельство о регистрации, реквизиты;</span><br><br>
+            <span [translate]="'contract_detail_for_another_form'"> - для других форм: Устав, Св-во о регистрации, Св-во о НДС, Приказ/доверенность на руководителя, Решение учредителей о назначении директора, реквизиты</span>
           </span>
-        </div>
+                </div>
 
-      </div>
-    </div>
-  </form>
+            </div>
+        </div>
+    </form>
 </div>
 <div class="modal-footer">
-  <button type="button"
-          class="btn btn-secondary ml-2"
-          [disabled]="loading"
-          (click)="dialogRef.dismiss()">Закрыть
-  </button>
-  <button type="button"
-          class="btn btn-primary mr-2"
-          [disabled]="loading || editForm.form.invalid || (!hasAssets && !fileToUpload)"
-          (click)="confirm()">Сохранить <fa-icon icon="spinner" spin="true" *ngIf="loading"></fa-icon>
-  </button>
+    <button type="button"
+            class="btn btn-secondary ml-2"
+            [disabled]="loading"
+            (click)="dialogRef.dismiss()" [translate]="'contract_detail_close'">Закрыть
+    </button>
+    <button type="button"
+            class="btn btn-primary mr-2"
+            [disabled]="loading || editForm.form.invalid || (!hasAssets && !fileToUpload)"
+            (click)="confirm()"> <span [translate]="'contract_detail_save'">Сохранить</span> <fa-icon icon="spinner" spin="true" *ngIf="loading"></fa-icon>
+    </button>
 </div>

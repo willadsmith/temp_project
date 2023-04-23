@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BackendService } from '@app/_services/backend-service';
 import { ToastrService } from 'ngx-toastr';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-pass-document-dialog',
-  templateUrl: './pass-document-dialog.component.html'
+  templateUrl: './pass-document-dialog.component.html',
+  providers: [TranslatePipe]
 })
 export class PassDocumentDialogComponent implements OnInit {
   public router: Router;
@@ -24,6 +26,7 @@ export class PassDocumentDialogComponent implements OnInit {
               public dialogRef: NgbActiveModal,
               public http: HttpClient,
               private toastr: ToastrService,
+              private translatePipe: TranslatePipe,
               private backendService: BackendService) {}
 
   ngOnInit() {
@@ -40,7 +43,7 @@ export class PassDocumentDialogComponent implements OnInit {
         }
       },
       (err: any) => {
-        this.toastr.warning('Не удалось подтвердить документ!', 'Ошибка Сервиса!');
+        this.toastr.warning(this.translatePipe.transform('pass_document_error_confirm'), this.translatePipe.transform('pass_document_error_service'));
       }
     );
   }
