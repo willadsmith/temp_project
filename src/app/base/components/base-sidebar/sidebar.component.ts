@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/_services';
+import {TranslateService} from '@ngx-translate/core';
 
 declare interface RouteInfo {
     path: string;
@@ -31,6 +32,7 @@ export class BaseSidebarComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private translate: TranslateService,
     private router: Router) { }
 
   logout(): void {
@@ -48,4 +50,9 @@ export class BaseSidebarComponent implements OnInit {
       this.isCollapsed = true;
    });
   }
+
+    setLang(lang: string) {
+        localStorage.setItem('lang', lang);
+        this.translate.use(lang);
+    }
 }

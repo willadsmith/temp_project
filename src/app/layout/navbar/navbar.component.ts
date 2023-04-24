@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToasterService} from 'angular2-toaster';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
   public firstName;
   public lastName;
 
-  constructor() {
+  constructor(private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -28,5 +29,10 @@ export class NavbarComponent implements OnInit {
         this.userProfileName = this.userProfileName.slice(0, 11) + '...';
       }
     }
+  }
+
+  setLang(lang: string) {
+    localStorage.setItem('lang', lang);
+    this.translate.use(lang);
   }
 }

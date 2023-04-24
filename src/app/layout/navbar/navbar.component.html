@@ -28,8 +28,8 @@
     <div ngbDropdown>
       <button type="button" class="btn btn-outline-success" id="dropdownConfig" ngbDropdownToggle [translate]="'language'">Язык</button>
       <div ngbDropdownMenu aria-labelledby="dropdownConfig">
-        <button ngbDropdownItem>Русский</button>
-        <button ngbDropdownItem>Казакша</button>
+        <button ngbDropdownItem (click)="setLang('ru')">Русский</button>
+        <button ngbDropdownItem (click)="setLang('ru')">Казакша</button>
       </div>
     </div>
   </div>
