@@ -34,6 +34,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CompanyDetailService } from './_services/company-detail.service';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {LoginBaseComponent} from '@app/base/login/login-base.component';
 
 registerLocaleData(localeRu);
 registerLocaleData(localeKz);
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
         HomeComponent,
         LoginComponent,
         QrVerifyComponent,
+        LoginBaseComponent,
         FoundComponent
     ],
     providers: [

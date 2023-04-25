@@ -14,8 +14,10 @@ export class NavbarComponent implements OnInit {
   public userProfile;
   public firstName;
   public lastName;
+  public currentLang;
 
   constructor(private translate: TranslateService) {
+    this.currentLang = this.translate.currentLang;
   }
 
   ngOnInit() {
@@ -32,7 +34,10 @@ export class NavbarComponent implements OnInit {
   }
 
   setLang(lang: string) {
+    console.log(lang);
     localStorage.setItem('lang', lang);
     this.translate.use(lang);
+
+    this.currentLang = this.translate.currentLang;
   }
 }
