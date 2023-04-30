@@ -55,7 +55,7 @@
             </form-value>
           </app-form-control>
           <app-form-control valueClass="bg-light-own">
-            <form-label>{{'ИИН/БИН владельца:'}}</form-label>
+            <form-label>{{'legal_account_iin_bin_founder' | translate}}:</form-label>
             <form-value>
               <p class="form-control-plaintext font-weight-bold">{{vehicle.owner?.xin || 'Нет'}}</p>
             </form-value>
@@ -71,7 +71,7 @@
         <div class="col-md-6">
           <div *ngIf="accountInfos">
             <app-form-control valueClass="bg-light-own" *ngIf="personalAccountInfo">
-              <form-label>{{'Лицевой счет:'}}</form-label>
+              <form-label>{{'legal_account_detail_personal_account' | translate}}:</form-label>
               <form-value>
                 <p class="form-control-plaintext font-weight-bold">{{personalAccountInfo.accountNumber}}</p>
               </form-value>
